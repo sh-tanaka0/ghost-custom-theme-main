@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{meta_title}}</title>
+    <link rel="stylesheet" type="text/css" href="{{asset "css/screen.css"}}" />
+
+    {{! --- Font Awesome (アイコン用) ---}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    {{! --- Ghost必須ヘルパー(Head) --- }}
+    {{ghost_head}}
+</head>
+<body class="{{body_class}}" style="margin: -8px;">
+
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-actions">
+                <button class="action-button circle-button search-button" data-ghost-search aria-label="検索">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="action-button circle-button theme-toggle-button" aria-label="テーマ切り替え">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="action-button circle-button menu-toggle-button" aria-label="メニューを開く">
+                    <span class="menu-text">MENU</span>
+                    <span class="close-icon">×</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- フルスクリーンナビゲーションコンテナを修正 -->
+    <div class="fullscreen-nav-container">
+        <nav class="fullscreen-nav">
+            <div class="nav-column">
+                <h2>All articles</h2>
+                <p>すべての記事</p>
+                
+                <h2>All series</h2>
+                <p>すべての連載</p>
+                
+                <h2>Books</h2>
+                <p>ここに文庫</p>
+                
+                <h2>Products</h2>
+                <p>ここなイッピン</p>
+            </div>
+            
+            <div class="nav-column">
+                <h2>News & topics</h2>
+                <p>ニュース＆トピックス</p>
+                
+                <h2>From editor</h2>
+                <p>ここに編集部より</p>
+                
+                <h2>Index</h2>
+                <p>インデックス</p>
+            </div>
+            
+            <div class="nav-column nav-column-right">
+                <div class="nav-footer">
+                    <p>ここについて</p>
+                    <p>お問い合わせ</p>
+                    
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Line"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    {{! --- ここに各ページの内容が挿入される --- }}
+    {{{body}}}
+
+
+    {{! --- フッター --- }}
+    <footer class="site-footer">
+        <div class="footer-container">
+            {{! --- サイト情報 & 今日のひとこと --- }}
+            <div class="footer-column about-column">
+                
+                
+                <div class="word-of-the-day">
+                    <div class="word-icon">
+                        {{! ここにキャラクターアイコンを配置 }}
+                        <img src="{{asset "images/アイコン.webp"}}" alt="キャラクターアイコン">
+                    </div>
+                    <div class="word-bubble">
+                        {{#get "posts" filter="tag:word-of-the-day" limit="1"}}
+                            {{#foreach posts}}
+                                <p>{{excerpt}}</p>
+                            {{else}}
+                                <p>今日のひとことは、お休みです。</p>
+                            {{/foreach}}
+                        {{/get}}
+                    </div>
+                </div>
+            </div>
+
+            {{! --- サイト内リンク --- }}
+            <div class="footer-column links-column">
+                <h4 class="footer-title">リンク</h4>
+                <ul>
+                    <li><a href="{{@site.url}}">ホーム</a></li>
+                    <li><a href="/essays/">エッセイ</a></li>
+                    <li><a href="/novels/">小説</a></li>
+                    <li><a href="/reviews/">批評・レビュー</a></li>
+                    <li><a href="/gallery/">ピクセルアート</a></li>
+                    <li><a href="#/portal/support">サポートについて</a></li>
+                </ul>
+            </div>
+
+            {{! --- フォロー & お問い合わせ --- }}
+            <div class="footer-column follow-column">
+                <h4 class="footer-title">フォロー</h4>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+                <h4 class="footer-title">お問い合わせ</h4>
+                <a href="/contact/" class="btn-contact">お問い合わせフォーム</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {{date format="YYYY"}} {{@site.title}} All Rights Reserved.</p>
+            <nav class="footer-nav">
+                <a href="/privacy-policy/">プライバシーポリシー</a>
+                <a href="/terms/">利用規約</a>
+                <a href="/sitemap/">サイトマップ</a>
+            </nav>
+        </div>
+    </footer>
+
+    {{! (既存のスクリプト) }}
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+    <script src="{{asset "js/main.js"}}"></script>
+
+    {{! --- Ghost必須ヘルパー(Foot) --- }}
+    {{ghost_foot}}
+</body>
+</html>

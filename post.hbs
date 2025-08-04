@@ -1,0 +1,29 @@
+{{!< default}}
+
+<main class="site-main">
+    {{#post}}
+        <article class="post-full {{post_class}}">
+            <header class="post-full-header">
+                {{#if feature_image}}
+                    <img class="post-full-image" src="{{feature_image}}" alt="{{title}}" />
+                {{/if}}
+
+                <div class="post-full-meta">
+                    <time class="post-full-meta-date" datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY.MM.DD"}}</time>
+                    {{#primary_tag}}
+                        <span class="post-full-meta-tag"> | <a href="{{url}}">{{name}}</a></span>
+                    {{/primary_tag}}
+                </div>
+
+                <h1 class="post-full-title">{{title}}</h1>
+            </header>
+
+            <section class="post-full-content">
+                {{content}}
+            </section>
+            
+            {{!-- ここに著者のプロフィールや関連記事などを将来的に追加できる --}}
+
+        </article>
+    {{/post}}
+</main>

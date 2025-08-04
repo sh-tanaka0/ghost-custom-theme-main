@@ -1,0 +1,356 @@
+{{!< default}}
+
+
+{{! --- メインビジュアルセクション --- }}
+<section class="main-visual">  
+    <div class="main-visual-bg">
+        {{! 背景画像はCSSで設定します }}
+    </div>
+    <div class="main-visual-content">
+        <div class="main-visual-text">
+            <h1 class="main-visual-title">HANAGORI</h1>
+            <p class="main-visual-subtitle">ICICLE FLOWER</p>
+        </div>
+        
+        {{! --- キャラクターイラスト --- }}
+        <div class="character-illustration">
+            <img src="{{asset "images/top-image.webp"}}" alt="Character illustration">
+        </div>
+       
+        {{! --- 更新履歴 --- }}
+        <div class="update-history">
+            <div class="update-header">
+                <h3>更新履歴</h3>
+                <button class="expand-button" aria-label="更新履歴を展開">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+            <div class="update-content">
+                {{#get "posts" limit="10" order="published_at desc"}}
+                    {{#foreach posts limit="3"}}
+                        <div class="update-item">
+                            <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY/MM/DD"}}</time>
+                            <span class="separator">——</span>
+                            <a href="{{url}}">「{{title}}」</a>
+                        </div>
+                    {{/foreach}}
+                    <div class="history-extra">
+                        {{#foreach posts from="4"}}
+                            <div class="update-item">
+                                <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY/MM/DD"}}</time>
+                                <span class="separator">——</span>
+                                <a href="{{url}}">「{{title}}」</a>
+                            </div>
+                        {{/foreach}}
+                    </div>
+                {{/get}}
+            </div>
+        </div>
+        {{! --- /更新履歴 --- }}
+    </div>
+    
+    {{! --- スクロールダウンインジケーター --- }}
+    <div class="scroll-indicator">
+        <span class="scroll-text">Scroll</span>
+        <div class="scroll-arrow">
+            <svg width="24" height="40" viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0L12 38" stroke="url(#gradient)" stroke-width="2"/>
+                <path d="M12 38L6 32M12 38L18 32" stroke="url(#gradient)" stroke-width="2"/>
+                <defs>
+                    <linearGradient id="gradient" x1="12" y1="0" x2="12" y2="40" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#999999">
+                            <animate attributeName="stop-color" values="#999999;#333333;#999999" dur="2s" repeatCount="indefinite"/>
+                        </stop>
+                        <stop offset="100%" stop-color="#333333">
+                            <animate attributeName="stop-color" values="#333333;#999999;#333333" dur="2s" repeatCount="indefinite"/>
+                        </stop>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    </div>
+    {{! --- /スクロールダウンインジケーター --- }}
+</section>
+
+
+
+
+<div class="main-content">
+    {{! --- ピックアップセクション --- }}
+    <section class="pickup-section">
+        <h2 class="section-title">PICK UP</h2>
+        <div class="carousel-container">
+            <div class="carousel-viewport">
+                <div class="carousel-track">
+                    {{#get "posts" filter="featured:true" limit="5" include="tags"}}
+                        {{#foreach posts}}
+                            {{! data-* 属性に表示したい情報を格納する }}
+                            <div class="carousel-item" 
+                                data-url="{{url}}"
+                                data-title="{{title}}"
+                                data-tag="{{primary_tag.name}}"
+                                data-date="{{date format="YYYY.MM.DD"}}"
+                                data-datetime="{{date format="YYYY-MM-DD"}}">
+                                <div class="carousel-item__image-container">
+                                    {{#if feature_image}}
+                                        <div class="carousel-item__bg-image" style="background-image: url({{feature_image}});"></div>
+                                        <img class="carousel-item__image" src="{{feature_image}}" alt="{{title}}" loading="lazy">
+                                    {{else}}
+                                        <div class="placeholder-image"><span>No Image</span></div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        {{/foreach}}
+                    {{/get}}
+                </div>
+            </div>
+
+            {{! --- 静的な情報表示エリア --- }}
+            <a href="#" class="carousel-info-display">
+                <div class="info-left-column">
+                    <span class="info-tag"></span>
+                    <time class="info-date"></time>
+                </div>
+                <div class="info-right-column">
+                    <h3 class="info-title"></h3>
+                </div>
+            </a>
+
+            {{! --- ナビゲーション矢印 (PC用) --- }}
+            <button class="carousel-arrow carousel-arrow--left" id="carousel-prev" aria-label="前のスライドへ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="carousel-arrow carousel-arrow--right" id="carousel-next" aria-label="次のスライドへ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+
+            {{! --- インジケーター --- }}
+            <div class="carousel-indicators"></div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+    {{! --- 思考・エッセイセクション ---}}
+    <section class="posts-section">
+        <h2 class="section-title">思考・エッセイ</h2>
+        <div class="post-feed">
+            {{#get "posts" filter="tag:rambles" limit="6"}}
+                {{#foreach posts}}
+                    {{!-- ステップ4で作成したカードのデザインを再利用 --}}
+                    <a href="{{url}}" class="post-card">
+                        {{#if feature_image}}
+                            <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" />
+                        {{/if}}
+                        <div class="post-card-content">
+                            <h2 class="post-card-title">{{title}}</h2>
+                            <p class="post-card-excerpt">{{excerpt}}</p>
+                            <footer class="post-card-meta">
+                                <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY.MM.DD"}}</time>
+                                <span> | {{reading_time}}</span>
+                            </footer>
+                        </div>
+                    </a>
+                {{/foreach}}
+            {{/get}}
+        </div>
+    </section>
+
+    {{! --- 連載作品セクション --- }}
+    <section class="serialized-works-section">
+        <h2 class="section-title">連載作品</h2>
+
+        {{! --- 進行中の小説 --- }}
+        <div class="subsection">
+            <h3 class="subsection-title">進行中の小説</h3>
+            <div class="ongoing-list">
+                {{! --- 投稿(posts)ではなく、固定ページ(pages)を取得 ---}}
+                {{#get "pages" filter="tag:serial-hub" limit="4" include="tags"}}
+                    {{#foreach pages}}
+                        <div class="novel-card" data-novel-id="{{id}}">
+                            <a href="{{url}}" class="novel-card-image-link">
+                                {{#if feature_image}}
+                                    <img src="{{feature_image}}" alt="{{title}}" class="novel-card-image">
+                                {{else}}
+                                    <div class="novel-card-placeholder"><span>{{title}}</span></div>
+                                {{/if}}
+                            </a>
+                            <div class="novel-card-content">
+                                <div>
+                                    <h4 class="novel-card-title"><a href="{{url}}">{{title}}</a></h4>
+                                    {{! --- excerpt（あらすじ）を表示 ---}}
+                                    <p class="novel-card-excerpt">{{excerpt}}</p>
+                                </div>
+                                <div class="novel-card-footer">
+                                    <div class="novel-card-meta">
+                                        {{! --- JSで最終更新日をここに挿入 ---}}
+                                        <span class="novel-last-updated" data-tag-slug="{{tags.[0].slug}}">
+                                            <i class="icon-clock"></i> 読み込み中...
+                                        </span>
+                                        {{! --- JSで話数をここに挿入 ---}}
+                                        <span class="novel-chapter-count">
+                                            <i class="icon-book"></i> 読み込み中...
+                                        </span>
+                                    </div>
+                                    <a href="{{url}}" class="btn-read-more">シリーズ紹介へ</a>
+                                </div>
+                            </div>
+                        </div>
+                    {{/foreach}}
+                {{/get}}
+            </div>
+        </div>
+
+
+
+        {{! --- 中編・完結作品 --- }}
+        <div class="subsection">
+            <h3 class="subsection-title">中編・完結作品</h3>
+            <div class="completed-list">
+                {{! --- pageを取得し、tags情報も一緒に取得する ---}}
+                {{#get "pages" filter="tags:complete" limit="4" include="tags"}}
+                    {{#foreach pages}}
+                        <a href="{{url}}" class="banner-card">
+                            <div class="banner-card-image-wrapper">
+                                {{#if feature_image}}
+                                    <img src="{{feature_image}}" alt="{{title}}" class="banner-card-image">
+                                {{else}}
+                                    <div class="banner-card-placeholder"><span>{{title}}</span></div>
+                                {{/if}}
+                            </div>
+                            <div class="banner-card-overlay">
+                                <div class="banner-card-content">
+                                    <div class="banner-card-tags">
+                                        <span class="banner-card-status">完結</span>
+                                        {{#foreach tags from="2"}}
+                                            <span class="genre-tag">{{name}}</span>
+                                        {{/foreach}}
+                                    </div>
+                                    <h4 class="banner-card-title">{{title}}</h4>
+                                    <p class="banner-card-meta">全10話 / 2023年8月完結</p>
+                                </div>
+                            </div>
+                        </a>
+                    {{/foreach}}
+                {{/get}}
+            </div>
+        </div>
+
+
+        {{! --- 短編集 --- }}
+        <div class="subsection">
+            <h3 class="subsection-title">短編集</h3>
+            <ul class="shorts-list">
+                {{! --- limitを増やしてグリッドを満たす ---}}
+                {{#get "posts" filter="tag:short" limit="16"}}
+                    {{#foreach posts}}
+                        <li class="shorts-item">
+                            <a href="{{url}}">
+                                <h5 class="shorts-title">{{title}}</h5>
+                                <time class="shorts-date">{{date format="YYYY.MM.DD"}}</time>
+                            </a>
+                        </li>
+                    {{/foreach}}
+                {{/get}}
+            </ul>
+        </div>
+    </section>
+
+    {{! --- 批評・レビューセクション --- }}
+    <section class="critique-section">
+        <h2 class="section-title">批評・レビュー</h2>
+        <div class="post-feed">
+            {{#get "posts" filter="tag:review" limit="3"}}
+                {{#foreach posts}}
+                    {{!-- 「思考・エッセイ」と同じカードデザインを再利用 --}}
+                    <a href="{{url}}" class="post-card">
+                        {{#if feature_image}}
+                            <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" />
+                        {{/if}}
+                        <div class="post-card-content">
+                            <h2 class="post-card-title">{{title}}</h2>
+                            <p class="post-card-excerpt">{{excerpt}}</p>
+                            <footer class="post-card-meta">
+                                <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY.MM.DD"}}</time>
+                                <span> | {{reading_time}}</span>
+                            </footer>
+                        </div>
+                    </a>
+                {{/foreach}}
+            {{/get}}
+        </div>
+    </section>
+
+    {{! --- サブスクリプションセクション ----}}
+    {{^if @member}}
+        <section class="subscription-cta-section">
+            <div class="cta-content">
+                <h3 class="cta-title">創作の庭をサポート</h3>
+                <p class="cta-description">
+                    私たちの活動を支援し、メンバー限定のコンテンツにアクセスしませんか？
+                </p>
+                <a href="#/portal/signup" class="btn-cta-subscribe">
+                    メンバーシップに登録する
+                </a>
+            </div>
+        </section>
+    {{/if}}
+
+    {{! --- アートトギャラリーセクション --- }}
+    <section class="art-gallery-section">
+        <div class="section-header">
+            <h2 class="section-title">アートギャラリー</h2>
+            {{! --- フィルターボタンを追加 ---}}
+            <div class="filter-button-group">
+                <button class="filter-button is-checked" data-filter="*">すべて</button>
+                <button class="filter-button" data-filter=".landscape">風景</button>
+                <button class="filter-button" data-filter=".character">キャラクター</button>
+                <button class="filter-button" data-filter=".animation">アニメーション</button>
+            </div>
+        </div>
+        <div class="gallery-grid">
+            {{#get "posts" filter="tag:dot-art" limit="15" include="tags"}}
+                {{#foreach posts}}
+                    {{! --- タグのスラッグをクラスとして追加 ---}}
+                    <a href="{{url}}" class="gallery-item {{#foreach tags visibility="public"}}{{slug}} {{/foreach}}">
+                        {{#if feature_image}}
+                            <img src="{{feature_image}}" alt="{{title}}">
+                        {{/if}}
+                    </a>
+                {{/foreach}}
+            {{/get}}
+        </div>
+        {{! --- 「もっと見る」ボタンを追加 ---}}
+        <div class="gallery-footer">
+            <a href="/tag/artwork/" class="btn-see-more">ギャラリーをもっと見る</a>
+        </div>
+    </section>
+
+    {{! --- ランダム記事セクション --- }}
+    <section class="random-posts-section">
+        <div class="section-header">
+            <h2 class="section-title">ランダム記事</h2>
+            <button class="refresh-button" aria-label="記事を再読み込み">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+        {{! --- JSで記事がここに挿入される ---}}
+        <div class="random-posts-list">
+            <p class="loading-message">記事を読み込んでいます...</p>
+        </div>
+    </section>
+
+
+
+
+
+</div>
+
+
+
