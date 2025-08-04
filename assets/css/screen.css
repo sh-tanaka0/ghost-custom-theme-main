@@ -1583,51 +1583,161 @@
     padding: 0;
     margin: 0;
     display: grid;
-    /* PCでは4列 */
-    grid-template-columns: repeat(8, 1fr);
-    gap: 15px;
+    /* PCでは6列に変更（より見やすく） */
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+}
+
+.shorts-item {
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.shorts-item:hover {
+    transform: translateY(-2px);
 }
 
 .shorts-item a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 15px;
-    border-radius: 8px;
+    padding: 20px;
+    min-height: 120px;
+    border-radius: 12px;
     color: #333;
     text-decoration: none;
-    transition: background-color 0.2s, border-color 0.2s;
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ホバー時のグラデーション効果 */
+.shorts-item a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(88, 86, 214, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
 .shorts-item a:hover {
-    background-color: #f8f8f8;
-    border-color: #ccc;
+    border-color: #5856d6;
+    box-shadow: 0 4px 12px rgba(88, 86, 214, 0.15);
+}
+
+.shorts-item a:hover::before {
+    opacity: 1;
 }
 
 .shorts-title {
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.4;
-    margin-bottom: 10px;
+    margin: 0 0 auto 0;
+    font-size: 0.95rem;
+    color: #2c3e50;
+    transition: color 0.2s ease;
+    /* タイトルが長い場合の処理 */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.shorts-item a:hover .shorts-title {
+    color: #5856d6;
 }
 
 .shorts-date {
-    font-size: 0.8rem;
-    color: #888;
-    margin-top: auto; /* 日付を下に配置 */
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 12px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* 日付の前にアイコンを追加（CSS疑似要素で） */
+.shorts-date::before {
+    content: '📅';
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+
+/* 各行の最初のアイテムに微妙な強調 */
+.shorts-item:nth-child(6n+1) a {
+    background: linear-gradient(135deg, #fafafa 0%, #fff 100%);
+}
+
+/* ダークモード対応 */
+.dark-mode .shorts-item a {
+    background: #1a1a1a;
+    border-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+.dark-mode .shorts-item a:hover {
+    border-color: #5856d6;
+    background: #222;
+}
+
+.dark-mode .shorts-title {
+    color: #e0e0e0;
+}
+
+.dark-mode .shorts-item a:hover .shorts-title {
+    color: #7c7adb;
+}
+
+.dark-mode .shorts-date {
+    color: #666;
 }
 
 /* --- 短編集レスポンシブ対応 --- */
+@media (max-width: 1200px) {
+    .shorts-list {
+        /* 中型画面では4列 */
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 @media (max-width: 992px) {
     .shorts-list {
         /* タブレットでは3列 */
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    .shorts-item a {
+        padding: 15px;
+        min-height: 100px;
     }
 }
 
 @media (max-width: 767px) {
     .shorts-list {
         /* スマホでは2列 */
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .shorts-item a {
+        padding: 12px;
+        min-height: 90px;
+    }
+    .shorts-title {
+        font-size: 0.85rem;
+        -webkit-line-clamp: 2;
+    }
+    .shorts-date {
+        font-size: 0.7rem;
     }
 }
 
