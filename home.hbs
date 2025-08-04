@@ -137,32 +137,7 @@
 
 
 
-    {{! --- 思考・エッセイセクション ---}}
-    <section class="posts-section">
-        <h2 class="section-title">思考・エッセイ</h2>
-        <div class="post-feed">
-            {{#get "posts" filter="tag:rambles" limit="6"}}
-                {{#foreach posts}}
-                    {{!-- ステップ4で作成したカードのデザインを再利用 --}}
-                    <a href="{{url}}" class="post-card">
-                        {{#if feature_image}}
-                            <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" />
-                        {{/if}}
-                        <div class="post-card-content">
-                            <h2 class="post-card-title">{{title}}</h2>
-                            <p class="post-card-excerpt">{{excerpt}}</p>
-                            <footer class="post-card-meta">
-                                <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY.MM.DD"}}</time>
-                                <span> | {{reading_time}}</span>
-                            </footer>
-                        </div>
-                    </a>
-                {{/foreach}}
-            {{/get}}
-        </div>
-    </section>
-
-   {{! --- 連載作品セクション --- }}
+    {{! --- 連載作品セクション --- }}
     <section class="serialized-works-section">
         <h2 class="section-title">連載作品</h2>
 
@@ -223,12 +198,12 @@
                                 <div class="banner-card-content">
                                     <div class="banner-card-tags">
                                         <span class="banner-card-status">完結</span>
-                                        {{#foreach tags from="2"}}
+                                        {{#foreach tags from="1"}}
                                             <span class="genre-tag">{{name}}</span>
                                         {{/foreach}}
                                     </div>
                                     <h4 class="banner-card-title">{{title}}</h4>
-                                    <p class="banner-card-meta">全10話 / 2023年8月完結</p>
+                                    <p class="banner-card-meta" data-tags="{{#foreach tags}}{{slug}}{{#unless @last}},{{/unless}}{{/foreach}}">読み込み中...</p>
                                 </div>
                             </div>
                         </a>

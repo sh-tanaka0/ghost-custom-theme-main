@@ -223,11 +223,14 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     const fetchNovelData = () => {
         const novelCards = document.querySelectorAll('.novel-card');
-        if (novelCards.length === 0) return;
+        const bannerCards = document.querySelectorAll('.banner-card');
+        
+        if (novelCards.length === 0 && bannerCards.length === 0) return;
 
         const apiKey = window.GHOST_API_KEY;
         const apiURL = window.location.origin;
 
+        // 連載中の小説データ取得
         novelCards.forEach(card => {
             const lastUpdatedEl = card.querySelector('.novel-last-updated');
             const chapterCountEl = card.querySelector('.novel-chapter-count');
@@ -260,6 +263,46 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Error fetching novel data:', error);
                     if(lastUpdatedEl) lastUpdatedEl.innerHTML = `<i class="icon-clock"></i> 情報取得エラー`;
                     if(chapterCountEl) chapterCountEl.innerHTML = `<i class="icon-book"></i> 情報取得エラー`;
+                });
+        });
+
+        // 完結作品のデータ取得
+        bannerCards.forEach(card => {
+            const metaEl = card.querySelector('.banner-card-meta');
+            if (!metaEl) return;
+
+            // data-tagsから全タグを取得し、complete以外の最初のタグを見つける
+            const tagsData = metaEl.dataset.tags;
+            if (!tagsData || !apiKey) return;
+            
+            const tags = tagsData.split(',');
+            const uniqueTag = tags.find(tag => tag !== 'complete');
+            
+            if (!uniqueTag) return;
+
+            const url = `${apiURL}/ghost/api/content/posts/?key=${apiKey}&filter=tag:${uniqueTag}&limit=1&order=published_at%20desc&fields=published_at`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const totalPosts = data.meta.pagination.total;
+                    let completedDateText = '完結';
+                    
+                    if (data.posts.length > 0) {
+                        const lastPostDate = new Date(data.posts[0].published_at);
+                        completedDateText = `${lastPostDate.getFullYear()}年${lastPostDate.getMonth() + 1}月完結`;
+                    }
+                    
+                    metaEl.innerHTML = `全${totalPosts}話 / ${completedDateText}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching completed novel data:', error);
+                    metaEl.innerHTML = '情報取得エラー';
                 });
         });
     };
