@@ -162,7 +162,7 @@
         </div>
     </section>
 
-    {{! --- 連載作品セクション --- }}
+   {{! --- 連載作品セクション --- }}
     <section class="serialized-works-section">
         <h2 class="section-title">連載作品</h2>
 
@@ -173,41 +173,36 @@
                 {{! --- 投稿(posts)ではなく、固定ページ(pages)を取得 ---}}
                 {{#get "pages" filter="tag:serial-hub" limit="4" include="tags"}}
                     {{#foreach pages}}
-                        <div class="novel-card" data-novel-id="{{id}}">
-                            <a href="{{url}}" class="novel-card-image-link">
+                        <a href="{{url}}" class="novel-card" data-novel-id="{{id}}">
+                            <div class="novel-card-image-wrapper">
                                 {{#if feature_image}}
                                     <img src="{{feature_image}}" alt="{{title}}" class="novel-card-image">
                                 {{else}}
                                     <div class="novel-card-placeholder"><span>{{title}}</span></div>
                                 {{/if}}
-                            </a>
+                            </div>
                             <div class="novel-card-content">
-                                <div>
-                                    <h4 class="novel-card-title"><a href="{{url}}">{{title}}</a></h4>
+                                <div class="novel-card-info">
+                                    <h4 class="novel-card-title">{{title}}</h4>
                                     {{! --- excerpt（あらすじ）を表示 ---}}
                                     <p class="novel-card-excerpt">{{excerpt}}</p>
                                 </div>
-                                <div class="novel-card-footer">
-                                    <div class="novel-card-meta">
-                                        {{! --- JSで最終更新日をここに挿入 ---}}
-                                        <span class="novel-last-updated" data-tag-slug="{{tags.[0].slug}}">
-                                            <i class="icon-clock"></i> 読み込み中...
-                                        </span>
-                                        {{! --- JSで話数をここに挿入 ---}}
-                                        <span class="novel-chapter-count">
-                                            <i class="icon-book"></i> 読み込み中...
-                                        </span>
-                                    </div>
-                                    <a href="{{url}}" class="btn-read-more">シリーズ紹介へ</a>
+                                <div class="novel-card-meta">
+                                    {{! --- JSで話数をここに挿入 ---}}
+                                    <span class="novel-chapter-count">
+                                        <i class="icon-book"></i> 読み込み中...
+                                    </span>
+                                    {{! --- JSで最終更新日をここに挿入 ---}}
+                                    <span class="novel-last-updated" data-tag-slug="{{tags.[0].slug}}">
+                                        <i class="icon-clock"></i> 読み込み中...
+                                    </span>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     {{/foreach}}
                 {{/get}}
             </div>
         </div>
-
-
 
         {{! --- 中編・完結作品 --- }}
         <div class="subsection">
@@ -241,7 +236,6 @@
                 {{/get}}
             </div>
         </div>
-
 
         {{! --- 短編集 --- }}
         <div class="subsection">

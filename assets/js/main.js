@@ -1,100 +1,77 @@
-// ページのすべてのコンテンツが読み込まれてから一度だけ実行
-window.addEventListener('DOMContentLoaded', (event) => {
-
-/**
- * ヘッダーの機能
- * - フルスクリーンメニューの開閉
- * - テーマ（ナイトモード）の切り替え
- * - スクロール検知
- */
-const initHeader = () => {
-    const menuToggleButton = document.querySelector('.menu-toggle-button');
-    const fullscreenNav = document.querySelector('.fullscreen-nav-container');
-    
-    if (menuToggleButton && fullscreenNav) {
-        menuToggleButton.addEventListener('click', () => {
-            const isNavOpen = document.body.classList.toggle('nav-is-open');
-            fullscreenNav.classList.toggle('is-open');
-
-            if (isNavOpen) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        });
-    }
-
-    // --- ダークモードの切り替えと状態保存 ---
-    const themeToggleButton = document.querySelector('.theme-toggle-button');
-    if (themeToggleButton) {
-        // ページ読み込み時に保存されたテーマを確認
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-        }
-
-        themeToggleButton.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            
-            // 現在のテーマをlocalStorageに保存
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-            } else {
-                localStorage.removeItem('theme');
-            }
-        });
-    }
-    
-    // --- スクロール検知機能 ---
-    const siteHeader = document.querySelector('.site-header');
-    let scrollPosition = 0;
-    
-    window.addEventListener('scroll', () => {
-        scrollPosition = window.scrollY;
-        
-        // 100px以上スクロールしたらヘッダーにクラスを追加
-        if (scrollPosition > 100) {
-            siteHeader.classList.add('scrolled');
-        } else {
-            siteHeader.classList.remove('scrolled');
-        }
-    });
-};
-
-// DOMContentLoadedイベントで初期化
+// ページのすべてのコンテンツが読み込まれてから一度だけ実行する
 document.addEventListener('DOMContentLoaded', () => {
-    initHeader();
-});
 
-/**
- * 更新履歴のアコーディオン機能
- */
-const initUpdateHistory = () => {
-    const updateHistory = document.querySelector('.update-history');
-    if (updateHistory) {
-        const expandButton = updateHistory.querySelector('.expand-button');
-        expandButton.addEventListener('click', () => {
-            updateHistory.classList.toggle('active');
-        });
-    }
-};
-
-/**
- * スクロールインジケーターのクリック機能
- */
-const initScrollIndicator = () => {
-    const scrollIndicator = document.querySelector('.scroll-indicator');
-    if (scrollIndicator) {
-        scrollIndicator.addEventListener('click', () => {
-            window.scrollTo({
-                top: window.innerHeight,
-                behavior: 'smooth'
+    /**
+     * ヘッダーの機能
+     * - フルスクリーンメニューの開閉
+     * - テーマ（ナイトモード）の切り替え
+     * - スクロール検知
+     */
+    const initHeader = () => {
+        const menuToggleButton = document.querySelector('.menu-toggle-button');
+        const fullscreenNav = document.querySelector('.fullscreen-nav-container');
+        
+        if (menuToggleButton && fullscreenNav) {
+            menuToggleButton.addEventListener('click', () => {
+                const isNavOpen = document.body.classList.toggle('nav-is-open');
+                fullscreenNav.classList.toggle('is-open');
+                document.body.style.overflow = isNavOpen ? 'hidden' : '';
             });
-        });
-    }
-};
+        }
 
- /**
-     * ピックアップセクションのカルーセル機能 (Reimagined)
+        const themeToggleButton = document.querySelector('.theme-toggle-button');
+        if (themeToggleButton) {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            themeToggleButton.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.removeItem('theme');
+                }
+            });
+        }
+        
+        const siteHeader = document.querySelector('.site-header');
+        if(siteHeader) {
+            window.addEventListener('scroll', () => {
+                siteHeader.classList.toggle('scrolled', window.scrollY > 100);
+            });
+        }
+    };
+
+    /**
+     * 更新履歴のアコーディオン機能
+     */
+    const initUpdateHistory = () => {
+        const updateHistory = document.querySelector('.update-history');
+        if (updateHistory) {
+            const expandButton = updateHistory.querySelector('.expand-button');
+            expandButton.addEventListener('click', () => {
+                updateHistory.classList.toggle('active');
+            });
+        }
+    };
+
+    /**
+     * スクロールインジケーターのクリック機能
+     */
+    const initScrollIndicator = () => {
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (scrollIndicator) {
+            scrollIndicator.addEventListener('click', () => {
+                window.scrollTo({
+                    top: window.innerHeight,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    };
+
+    /**
+     * ピックアップセクションのカルーセル機能
      */
     const initCarouselReimagined = () => {
         const container = document.querySelector('.carousel-container');
@@ -105,20 +82,17 @@ const initScrollIndicator = () => {
         const nextBtn = container.querySelector('#carousel-next');
         const prevBtn = container.querySelector('#carousel-prev');
         const indicatorsContainer = container.querySelector('.carousel-indicators');
-        
-        // --- 静的な情報表示エリアの要素を取得 ---
         const infoDisplay = container.querySelector('.carousel-info-display');
-        const infoTitle = infoDisplay.querySelector('.info-title');
-        const infoTag = infoDisplay.querySelector('.info-tag');
-        const infoDate = infoDisplay.querySelector('.info-date');
-
-
-        if (items.length === 0) {
+        
+        if (!track || !infoDisplay || items.length === 0) {
             const pickupSection = document.querySelector('.pickup-section');
             if (pickupSection) pickupSection.style.display = 'none';
             return;
         }
-
+        
+        const infoTitle = infoDisplay.querySelector('.info-title');
+        const infoTag = infoDisplay.querySelector('.info-tag');
+        const infoDate = infoDisplay.querySelector('.info-date');
         let currentIndex = 0;
         const totalItems = items.length;
 
@@ -126,44 +100,43 @@ const initScrollIndicator = () => {
             if(nextBtn) nextBtn.style.display = 'none';
             if(prevBtn) prevBtn.style.display = 'none';
             if(indicatorsContainer) indicatorsContainer.style.display = 'none';
+        } else {
+            for (let i = 0; i < totalItems; i++) {
+                const bar = document.createElement('div');
+                bar.classList.add('indicator-bar');
+                indicatorsContainer.appendChild(bar);
+                bar.addEventListener('click', () => {
+                    if (i === currentIndex) return;
+                    currentIndex = i;
+                    updateCarousel();
+                });
+            }
         }
-
-        for (let i = 0; i < totalItems; i++) {
-            const bar = document.createElement('div');
-            bar.classList.add('indicator-bar');
-            indicatorsContainer.appendChild(bar);
-            bar.addEventListener('click', () => {
-                if (i === currentIndex) return;
-                currentIndex = i;
-                updateCarousel();
-            });
-        }
+        
         const indicators = indicatorsContainer.querySelectorAll('.indicator-bar');
 
         const updateCarousel = (instant = false) => {
             const activeItem = items[currentIndex];
             
-            // --- 1. スライドを移動 ---
             if (instant) track.style.transition = 'none';
             track.style.transform = `translateX(-${currentIndex * 100}%)`;
             if (instant) track.offsetHeight;
             track.style.transition = '';
 
-            // --- 2. インジケーターを更新 ---
-            indicators.forEach((bar, index) => {
-                bar.classList.toggle('active', index === currentIndex);
-            });
+            if(indicators.length > 0) {
+                indicators.forEach((bar, index) => {
+                    bar.classList.toggle('active', index === currentIndex);
+                });
+            }
 
-            // --- 3. 静的な情報エリアを更新 (フェード効果付き) ---
-            infoDisplay.classList.add('is-updating'); // まずは透明にする
-            
+            infoDisplay.classList.add('is-updating');
             setTimeout(() => {
                 const data = activeItem.dataset;
                 infoTitle.textContent = data.title || '';
                 infoDate.textContent = data.date || '';
                 infoDate.setAttribute('datetime', data.datetime || '');
                 
-                if (data.tag) {
+                if (data.tag && data.tag !== "null") {
                     infoTag.textContent = data.tag;
                     infoTag.style.display = 'inline-block';
                 } else {
@@ -171,9 +144,8 @@ const initScrollIndicator = () => {
                 }
                 
                 infoDisplay.href = data.url || '#';
-                
-                infoDisplay.classList.remove('is-updating'); // テキスト更新後にフェードイン
-            }, 200); // 0.2秒後にテキストを更新
+                infoDisplay.classList.remove('is-updating');
+            }, 200);
         };
 
         const checkImageRatios = () => {
@@ -192,12 +164,12 @@ const initScrollIndicator = () => {
             });
         };
         
-        nextBtn.addEventListener('click', () => {
+        if(nextBtn) nextBtn.addEventListener('click', () => {
             currentIndex = (currentIndex + 1) % totalItems;
             updateCarousel();
         });
 
-        prevBtn.addEventListener('click', () => {
+        if(prevBtn) prevBtn.addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + totalItems) % totalItems;
             updateCarousel();
         });
@@ -208,7 +180,7 @@ const initScrollIndicator = () => {
         const dragStart = (e) => {
             isDragging = true;
             startPos = getPositionX(e);
-            prevTranslate = -currentIndex * container.offsetWidth;
+            prevTranslate = -currentIndex * track.offsetWidth;
             track.style.transition = 'none';
         };
 
@@ -259,13 +231,20 @@ const initScrollIndicator = () => {
         novelCards.forEach(card => {
             const lastUpdatedEl = card.querySelector('.novel-last-updated');
             const chapterCountEl = card.querySelector('.novel-chapter-count');
-            const tagSlug = lastUpdatedEl.dataset.tagSlug;
-            if (!tagSlug) return;
+            
+            const tagSlug = lastUpdatedEl ? lastUpdatedEl.dataset.tagSlug : null;
+
+            if (!tagSlug || !apiKey || !chapterCountEl) return;
 
             const url = `${apiURL}/ghost/api/content/posts/?key=${apiKey}&filter=tag:${tagSlug}&limit=1&order=published_at%20desc&fields=published_at`;
 
             fetch(url)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const totalPosts = data.meta.pagination.total;
                     chapterCountEl.innerHTML = `<i class="icon-book"></i> 全${totalPosts}話`;
@@ -279,8 +258,8 @@ const initScrollIndicator = () => {
                 })
                 .catch(error => {
                     console.error('Error fetching novel data:', error);
-                    lastUpdatedEl.innerHTML = `<i class="icon-clock"></i> 情報取得エラー`;
-                    chapterCountEl.innerHTML = `<i class="icon-book"></i> 情報取得エラー`;
+                    if(lastUpdatedEl) lastUpdatedEl.innerHTML = `<i class="icon-clock"></i> 情報取得エラー`;
+                    if(chapterCountEl) chapterCountEl.innerHTML = `<i class="icon-book"></i> 情報取得エラー`;
                 });
         });
     };
@@ -290,16 +269,13 @@ const initScrollIndicator = () => {
      */
     const initArtGallery = () => {
         const galleryGrid = document.querySelector('.gallery-grid');
-        if (!galleryGrid) return;
+        if (!galleryGrid || typeof imagesLoaded === 'undefined' || typeof Isotope === 'undefined') return;
 
         imagesLoaded(galleryGrid, function() {
             const iso = new Isotope(galleryGrid, {
                 itemSelector: '.gallery-item',
                 layoutMode: 'masonry',
-                masonry: {
-                    gutter: 15,
-                    fitWidth: true
-                }
+                masonry: { gutter: 15, fitWidth: true }
             });
 
             const filterButtonGroup = document.querySelector('.filter-button-group');
@@ -315,8 +291,7 @@ const initScrollIndicator = () => {
         });
     };
 
-
-     /**
+    /**
      * ランダム記事セクションの機能
      */
     const initRandomPosts = () => {
@@ -327,9 +302,10 @@ const initScrollIndicator = () => {
         const refreshButton = section.querySelector('.refresh-button');
         const apiKey = window.GHOST_API_KEY;
         const apiURL = window.location.origin;
-        let allPosts = []; // 取得した記事をキャッシュする配列
+        if (!listContainer || !refreshButton || !apiKey) return;
 
-        // アイコンとタグの色を定義
+        let allPosts = [];
+
         const tagStyles = {
             'default': { icon: 'fas fa-feather-alt', color: '#8e44ad' },
             'ramble': { icon: 'fas fa-feather-alt', color: '#8e44ad' },
@@ -338,7 +314,6 @@ const initScrollIndicator = () => {
             'movie': { icon: 'fas fa-film', color: '#f39c12' }
         };
 
-        // 配列をシャッフルする関数
         const shuffleArray = (array) => {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -347,16 +322,13 @@ const initScrollIndicator = () => {
             return array;
         };
 
-        // 記事リストをHTMLにレンダリングする関数
         const renderPosts = () => {
-            listContainer.innerHTML = ''; // コンテナを空にする
-            const shuffled = shuffleArray([...allPosts]);
-            const random5Posts = shuffled.slice(0, 5);
+            listContainer.innerHTML = '';
+            const random5Posts = shuffleArray([...allPosts]).slice(0, 5);
 
             random5Posts.forEach(post => {
                 const postDate = new Date(post.published_at);
                 const formattedDate = `${postDate.getFullYear()}年${postDate.getMonth() + 1}月${postDate.getDate()}日`;
-                
                 const primaryTagSlug = post.primary_tag ? post.primary_tag.slug : 'default';
                 const style = tagStyles[primaryTagSlug] || tagStyles['default'];
                 
@@ -370,21 +342,17 @@ const initScrollIndicator = () => {
 
                 const itemHTML = `
                     <a href="${post.url}" class="random-post-item">
-                        <div class="random-post-icon" style="background-color: ${style.color};">
-                            <i class="${style.icon}"></i>
-                        </div>
+                        <div class="random-post-icon" style="background-color: ${style.color};"><i class="${style.icon}"></i></div>
                         <div class="random-post-content">
                             <h4 class="random-post-title">${post.title}</h4>
                             <div class="random-post-tags">${tagsHTML}</div>
                         </div>
                         <time class="random-post-date">${formattedDate}</time>
-                    </a>
-                `;
+                    </a>`;
                 listContainer.insertAdjacentHTML('beforeend', itemHTML);
             });
         };
 
-        // APIから全記事を取得する関数
         const fetchAllPosts = () => {
             refreshButton.classList.add('is-loading');
             const url = `${apiURL}/ghost/api/content/posts/?key=${apiKey}&limit=all&include=tags`;
@@ -394,19 +362,12 @@ const initScrollIndicator = () => {
                 .then(data => {
                     allPosts = data.posts;
                     renderPosts();
-                    refreshButton.classList.remove('is-loading');
                 })
-                .catch(error => {
-                    console.error('Error fetching random posts:', error);
-                    listContainer.innerHTML = '<p>記事の読み込みに失敗しました。</p>';
-                    refreshButton.classList.remove('is-loading');
-                });
+                .catch(error => console.error('Error fetching random posts:', error))
+                .finally(() => refreshButton.classList.remove('is-loading'));
         };
 
-        // 更新ボタンのクリックイベント
         refreshButton.addEventListener('click', renderPosts);
-
-        // 初期表示
         fetchAllPosts();
     };
 
@@ -415,10 +376,7 @@ const initScrollIndicator = () => {
     initUpdateHistory();
     initScrollIndicator();
     initCarouselReimagined();
-    initCarousel();
     fetchNovelData();
     initArtGallery();
     initRandomPosts();
-
-
 });

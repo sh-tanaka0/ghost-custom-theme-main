@@ -1201,7 +1201,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 7.65em; /* 0.9rem * 1.7 * 5 lines */
 }
 
 .posts-section .post-card-meta {
@@ -1221,13 +1220,24 @@
 @media (max-width: 767px) {
     .posts-section .post-feed {
         /* スマートフォンでは1列 */
-        grid-template-columns: 1fr;
-        padding: 0 20px;
+        padding-left: 10px;
+        padding-right: 5px;
+        gap: 20px 10px; /* 縦の隙間を少し狭く */  
+    }
+
+    .posts-section .post-card-title {
+        font-size: 0.85rem;
+    }
+
+    .posts-section .post-card-excerpt {        
+        font-size: 0.75rem;
+        margin-bottom: 5px;
+    }
+
+    .posts-section .post-card-meta {
+        font-size: 0.7rem;
     }
 }
-
-
-
 
 /* ==========================================================================
    Serialized Works Section Styles - 連載作品セクション
@@ -1263,9 +1273,23 @@
     display: flex;
     gap: 25px;
     align-items: flex-start; /* 上揃え */
+    text-decoration: none; /* リンクの下線を削除 */
+    color: inherit; /* テキスト色を継承 */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    padding: 15px;
+    margin: -15px; /* paddingの分だけ負のマージンを設定 */
+    border-radius: 12px;
 }
 
-.novel-card-image-link {
+/* ホバー時のエフェクト */
+.novel-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    background-color: #f8f9fa;
+}
+
+.novel-card-image-wrapper {
     flex-shrink: 0;
     width: 160px;
 }
@@ -1273,10 +1297,15 @@
 .novel-card-image {
     width: 100%;
     height: auto;
-    aspect-ratio: 3 / 4; /* 縦長の比率 */
+    aspect-ratio: 3.5 / 5; /* 縦長の比率 */
     object-fit: cover;
     border-radius: 8px; /* 角丸 */
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: box-shadow 0.2s ease;
+}
+
+.novel-card:hover .novel-card-image {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
 .novel-card-placeholder {
@@ -1297,21 +1326,23 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    /* カードの高さいっぱいに広げる */
     justify-content: space-between;
     height: 100%;
 }
 
+.novel-card-info {
+    flex-grow: 1;
+}
+
 .novel-card-title {
     margin: 0 0 10px;
-}
-.novel-card-title a {
-    color: inherit;
-    text-decoration: none;
     font-size: 1.2rem;
     font-weight: 600;
+    color: #333;
+    transition: color 0.2s ease;
 }
-.novel-card-title a:hover {
+
+.novel-card:hover .novel-card-title {
     color: #5856d6;
 }
 
@@ -1319,11 +1350,13 @@
     font-size: 0.9rem;
     color: #555;
     line-height: 1.7;
-    margin-bottom: 15px;
-}
-
-.novel-card-footer {
-    margin-top: auto; /* フッターを下に配置 */
+    margin: 0;
+    /* 長いテキストの省略表示 */
+    display: -webkit-box;
+    -webkit-line-clamp: 5; /* 4行まで表示 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .novel-card-meta {
@@ -1332,24 +1365,9 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    margin-bottom: 15px;
-}
-
-.btn-read-more {
-    display: inline-block;
-    background-color: #f0f0f0;
-    color: #333;
-    padding: 8px 20px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.btn-read-more:hover {
-    background-color: #5856d6;
-    color: #fff;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
 }
 
 /* --- レスポンシブ対応 --- */
@@ -1362,10 +1380,26 @@
         /* スマートフォンでは1列表示 */
         grid-template-columns: 1fr;
     }
+    
     .novel-card {
-        /* 画像を少し小さくする */
+        padding: 10px;
+        margin: -10px;
     }
-    .novel-card-image-link {
+
+    .novel-card-title {
+        font-size: 1rem; /* タイトルを少し小さく */
+    }
+
+    .novel-card-excerpt {
+        font-size: 0.8rem; /* 抜粋を少し小さく */
+        -webkit-line-clamp: 4; /* モバイルでは3行まで */
+    }
+
+    .novel-card-meta {
+        font-size: 0.7rem; /* メタ情報を小さく */
+    }
+
+    .novel-card-image-wrapper {
         width: 120px;
     }
 }
