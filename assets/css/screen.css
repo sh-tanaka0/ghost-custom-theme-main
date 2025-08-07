@@ -1745,26 +1745,31 @@
    Critique Section - 批評・レビューセクション
    ========================================================================== */
 
-/* .posts-section のスタイルをほぼそのまま流用 */
 .critique-section {
     padding: 50px 0;
-    background-color: #f8f9fa; /* 背景色を少し変えて区別 */
+    /* 他のセクションとの区切りを明確にする */
 }
+
+/* .section-title は既存のスタイルを再利用します */
 
 .critique-section .post-feed {
     display: grid;
+    /* PCでは3列表示 */
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px 30px;
+    gap: 40px 30px; /* 縦の隙間を少し広げる */
+    /* セクション内の左右に余白を持たせる */
     padding: 0 30px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
+/* カード全体のリンクとしての機能は維持 */
 .critique-section .post-card {
     display: flex;
     flex-direction: column;
     color: #333;
     text-decoration: none;
+    /* 枠線と背景、影を削除 */
     background: none;
     border-radius: 0;
     box-shadow: none;
@@ -1774,18 +1779,22 @@
 
 .critique-section .post-card:hover {
     opacity: 0.8;
+    /* 浮き上がる効果を削除 */
     transform: none;
 }
 
 .critique-section .post-card-image {
     width: 100%;
+    /* 画像の高さをアスペクト比16:9で固定 */
     aspect-ratio: 16 / 9;
     object-fit: cover;
+    /* 画像の角を丸める */
     border-radius: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* 画像とタイトルの間に余白 */
 }
 
 .critique-section .post-card-content {
+    /* パディングを削除し、レイアウトをシンプルに */
     padding: 0;
     flex-grow: 1;
     display: flex;
@@ -1793,7 +1802,7 @@
 }
 
 .critique-section .post-card-title {
-    font-size: 1.1rem;
+    font-size: 1.1rem; /* 少し小さくして調整 */
     font-weight: 600;
     margin: 0 0 10px;
     line-height: 1.5;
@@ -1805,31 +1814,47 @@
     line-height: 1.7;
     margin: 0 0 15px;
     flex-grow: 1;
+    /* 5行で省略表示するための設定 */
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 7.65em;
 }
 
 .critique-section .post-card-meta {
     font-size: 0.8rem;
     color: #888;
-    margin-top: auto;
+    margin-top: auto; /* メタ情報を最下部に配置 */
 }
 
 /* --- レスポンシブ対応 --- */
 @media (max-width: 992px) {
     .critique-section .post-feed {
+        /* タブレットでは2列 */
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 767px) {
     .critique-section .post-feed {
-        grid-template-columns: 1fr;
-        padding: 0 20px;
+        /* スマートフォンでは1列 */
+        padding-left: 10px;
+        padding-right: 5px;
+        gap: 20px 10px; /* 縦の隙間を少し狭く */  
+    }
+
+    .critique-section .post-card-title {
+        font-size: 0.85rem;
+    }
+
+    .critique-section .post-card-excerpt {        
+        font-size: 0.75rem;
+        margin-bottom: 5px;
+    }
+
+    .critique-section .post-card-meta {
+        font-size: 0.7rem;
     }
 }
 
