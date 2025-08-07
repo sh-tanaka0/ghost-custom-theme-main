@@ -279,17 +279,42 @@
         </div>
     </section>
 
+
     {{! --- サブスクリプションセクション ----}}
     {{^if @member}}
         <section class="subscription-cta-section">
-            <div class="cta-content">
-                <h3 class="cta-title">創作の庭をサポート</h3>
-                <p class="cta-description">
-                    私たちの活動を支援し、メンバー限定のコンテンツにアクセスしませんか？
-                </p>
-                <a href="#/portal/signup" class="btn-cta-subscribe">
-                    メンバーシップに登録する
-                </a>
+            <div class="cta-container">
+                <div class="cta-content">
+                    <span class="cta-badge">メンバーシップ</span>
+                    <h3 class="cta-title">創作の庭を、共に育てる</h3>
+                    <p class="cta-description">
+                        独自の視点で紡がれる批評、思考の深層を探るエッセイ。<br class="pc-only">
+                        メンバー限定コンテンツで、新たな知的体験をお届けします。
+                    </p>
+                    
+                    <div class="cta-benefits">
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span class="benefit-text">全記事へのフルアクセス</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span class="benefit-text">限定コンテンツの深層分析</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span class="benefit-text">新着記事の先行配信</span>
+                        </div>
+                    </div>
+
+                    <div class="cta-action">
+                        <a href="#/portal/signup" class="btn-cta-subscribe">
+                            <span class="btn-text">メンバーシップに参加する</span>
+                            <span class="btn-arrow">→</span>
+                        </a>
+                        <p class="cta-note">いつでも解約可能・安心してお試しください</p>
+                    </div>
+                </div>
             </div>
         </section>
     {{/if}}

@@ -1859,52 +1859,317 @@
 }
 
 /* ==========================================================================
-   Subscription CTA Section - 購読促進CTAセクション
+   Enhanced Subscription CTA Section - 強化版購読促進CTAセクション
    ========================================================================== */
 .subscription-cta-section {
-    padding: 60px 20px;
-    margin: 50px auto;
+    padding: 80px 20px;
+    margin: 60px auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-container {
     max-width: 1200px;
-    text-align: center;
-    background-color: #f0f2f5;
-    border-radius: 12px;
+    margin: 0 auto;
+    position: relative;
 }
 
 .cta-content {
-    max-width: 550px;
+    max-width: 680px;
     margin: 0 auto;
+    text-align: center;
+    padding: 60px 40px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+/* 装飾的な背景パターン（控えめ） */
+.cta-content::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(88, 86, 214, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.cta-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #5856d6;
+    background: rgba(88, 86, 214, 0.1);
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
 }
 
 .cta-title {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     font-weight: 700;
-    margin: 0 0 15px;
+    margin: 0 0 20px;
     color: #1a1a1a;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
 }
 
 .cta-description {
-    font-size: 1rem;
-    color: #555;
-    margin: 0 auto 30px;
+    font-size: 1.1rem;
+    color: #4a4a4a;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+    max-width: 520px;
+}
+
+/* ベネフィットリスト */
+.cta-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0 auto 40px;
+    max-width: 340px; /* コンパクトなテキストに合わせて幅を調整 */
+    text-align: left;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: flex-start; /* 上揃えに変更 */
+    gap: 12px;
+}
+
+.benefit-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #5856d6 0%, #7c7aff 100%);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 2px; /* テキストの行高さに合わせて微調整 */
+}
+
+.benefit-text {
+    font-size: 0.95rem;
+    color: #333;
     line-height: 1.6;
+    flex: 1; /* 残りのスペースを使用 */
+    min-width: 0; /* 長いテキストの折り返しを確実にする */
+}
+
+/* CTA アクション部分 */
+.cta-action {
+    margin-top: 40px;
 }
 
 .btn-cta-subscribe {
-    display: inline-block;
-    background-color: #5856d6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #5856d6 0%, #6b69e0 100%);
     color: #fff;
-    padding: 12px 35px;
-    border-radius: 25px;
+    padding: 16px 40px;
+    border-radius: 30px;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 15px rgba(88, 86, 214, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 30px rgba(88, 86, 214, 0.35);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-cta-subscribe::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #6b69e0 0%, #7c7aff 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-text,
+.btn-arrow {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-arrow {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
 }
 
 .btn-cta-subscribe:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(88, 86, 214, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(88, 86, 214, 0.45);
+}
+
+.btn-cta-subscribe:hover::before {
+    opacity: 1;
+}
+
+.btn-cta-subscribe:hover .btn-arrow {
+    transform: translateX(4px);
+}
+
+.cta-note {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: #888;
+    font-weight: 400;
+}
+
+/* 改行制御用クラス */
+.pc-only {
+    display: inline;
+}
+
+/* --- レスポンシブ対応 --- */
+@media (max-width: 768px) {
+    .subscription-cta-section {
+        padding: 60px 15px;
+        margin: 40px auto;
+    }
+
+    .cta-content {
+        padding: 40px 25px;
+    }
+
+    .cta-title {
+        font-size: 1.8rem;
+    }
+
+    .cta-description {
+        font-size: 1rem;
+        margin-bottom: 30px;
+        line-height: 1.7;
+    }
+
+    .pc-only {
+        display: none; /* モバイルでは改行を削除 */
+    }
+
+    .cta-benefits {
+        gap: 20px; /* スマホでは行間を少し広げる */
+        max-width: 280px;
+        margin: 0 auto 40px; /* 中央揃え */ 
+    }
+
+    .benefit-item {
+        gap: 14px; /* アイコンとテキストの間隔を広げる */
+    }
+
+    .benefit-text {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .btn-cta-subscribe {
+        padding: 14px 32px;
+        font-size: 1rem;
+    }
+
+    .cta-note {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cta-content {
+        padding: 35px 20px;
+    }
+
+    .cta-title {
+        font-size: 1.5rem;
+        line-height: 1.4;
+    }
+
+    .cta-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .cta-benefits {
+        gap: 18px;
+        max-width: 260px;
+        margin: 0 auto 40px; /* 幅制限を解除 */
+    }
+
+    .benefit-text {
+        font-size: 0.85rem;
+        line-height: 1.45;
+    }
+
+    .btn-cta-subscribe {
+        width: 100%;
+        padding: 14px 24px;
+    }
+}
+
+/* ダークモード対応 */
+.dark-mode .subscription-cta-section {
+    background: transparent;
+}
+
+.dark-mode .cta-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .cta-content::before {
+    background: radial-gradient(circle, rgba(88, 86, 214, 0.08) 0%, transparent 70%);
+}
+
+.dark-mode .cta-badge {
+    color: #8a88ff;
+    background: rgba(138, 136, 255, 0.15);
+}
+
+.dark-mode .cta-title {
+    color: #e0e0e0;
+}
+
+.dark-mode .cta-description {
+    color: #a8a8a8;
+}
+
+.dark-mode .benefit-icon {
+    background: linear-gradient(135deg, #6b69e0 0%, #8583ff 100%);
+}
+
+.dark-mode .benefit-text {
+    color: #c0c0c0;
+}
+
+.dark-mode .btn-cta-subscribe {
+    background: linear-gradient(135deg, #6b69e0 0%, #8583ff 100%);
+    box-shadow: 0 8px 30px rgba(107, 105, 224, 0.25);
+}
+
+.dark-mode .btn-cta-subscribe:hover {
+    box-shadow: 0 12px 40px rgba(107, 105, 224, 0.35);
+}
+
+.dark-mode .btn-cta-subscribe:hover::before {
+    background: linear-gradient(135deg, #7c7aff 0%, #9593ff 100%);
+}
+
+.dark-mode .cta-note {
+    color: #666;
 }
 
 
