@@ -2756,123 +2756,338 @@
 }
 
 /* ==========================================================================
-   Random Posts Section - ランダム記事セクション
+   Random Posts Section - ランダム記事セクション（ミニマルデザイン版）
    ========================================================================== */
+
 .random-posts-section {
-    padding: 50px 0 80px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 50px 0;
+    background-color: transparent;
 }
 
 .random-posts-section .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding: 0 20px;
+    margin-bottom: 3rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 30px;
 }
 
+.random-posts-section .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--color-text, #1a1a1a);
+    margin: 0;
+}
+
+/* リフレッシュボタン - よりミニマルに */
 .refresh-button {
-    background: #f0f2f5;
-    border: none;
-    width: 40px;
-    height: 40px;
+    background: transparent;
+    border: 1.5px solid #ccc;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     cursor: pointer;
-    color: #555;
-    font-size: 1rem;
-    transition: transform 0.5s ease, background-color 0.2s;
-}
-
-.refresh-button:hover {
-    background-color: #e5e5e5;
-}
-
-.refresh-button.is-loading {
-    transform: rotate(360deg);
-}
-
-.random-posts-list {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
-    padding: 15px;
-}
-
-.random-post-item {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid #f0f2f5;
-    text-decoration: none;
-    color: inherit;
-}
-.random-post-item:last-child {
-    border-bottom: none;
-}
-.random-post-item:hover {
-    background-color: #f8f9fa;
-}
-
-.random-post-icon {
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    margin-right: 15px;
-    /* アイコンごとの背景色はJSで設定 */
-    border-radius: 8px;
+    color: #666;
+    font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    color: #fff;
+    position: relative;
 }
 
+.refresh-button:hover {
+    border-color: #4fc0c0;
+    color: #4fc0c0;
+    transform: rotate(90deg);
+}
+
+.refresh-button.is-loading {
+    animation: spin 0.8s linear infinite;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* リストコンテナ */
+.random-posts-list {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* ローディングメッセージ */
+.loading-message {
+    text-align: center;
+    color: #999;
+    padding: 40px;
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+/* 記事アイテム - ミニマルなテキストデザイン */
+.random-post-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.random-post-item:first-child {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ホバー時の効果 */
+.random-post-item::before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    right: -30px;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(79, 192, 192, 0.03), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.random-post-item:hover::before {
+    opacity: 1;
+}
+
+.random-post-item:hover {
+    padding-left: 10px;
+}
+
+.random-post-item:hover .random-post-title {
+    color: #4fc0c0;
+}
+
+/* 番号インジケーター */
+.random-post-number {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #bbb;
+    font-family: 'Georgia', serif;
+    min-width: 20px;
+}
+
+/* メインコンテンツ */
 .random-post-content {
-    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .random-post-title {
     font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0 0 8px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #333;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.random-post-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .random-post-tags {
     display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
+    gap: 8px;
+    align-items: center;
 }
 
 .random-post-tag {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     padding: 2px 8px;
-    border-radius: 4px;
-    color: #fff;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.06);
+    color: #666;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
+.random-post-item:hover .random-post-tag {
+    background: rgba(79, 192, 192, 0.1);
+    color: #4fc0c0;
+}
+
+/* 日付 */
 .random-post-date {
-    flex-shrink: 0;
-    margin-left: 20px;
-    font-size: 0.9rem;
-    color: #888;
+    font-size: 0.85rem;
+    color: #999;
+    white-space: nowrap;
 }
 
-/* レスポンシブ */
+/* セパレーター */
+.meta-separator {
+    color: #ddd;
+    font-size: 0.8rem;
+}
+
+/* --- ダークモード対応 --- */
+.dark-mode .random-posts-section {
+    background-color: transparent;
+}
+
+.dark-mode .section-title {
+    color: #f0f0f0;
+}
+
+.dark-mode .refresh-button {
+    border-color: #555;
+    color: #aaa;
+}
+
+.dark-mode .refresh-button:hover {
+    border-color: #4fc0c0;
+    color: #4fc0c0;
+}
+
+.dark-mode .random-post-item {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .random-post-item:first-child {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .random-post-item::before {
+    background: linear-gradient(90deg, transparent, rgba(79, 192, 192, 0.05), transparent);
+}
+
+.dark-mode .random-post-number {
+    color: #666;
+}
+
+.dark-mode .random-post-title {
+    color: #e0e0e0;
+}
+
+.dark-mode .random-post-item:hover .random-post-title {
+    color: #5fd3d3;
+}
+
+.dark-mode .random-post-tag {
+    background: rgba(255, 255, 255, 0.08);
+    color: #aaa;
+}
+
+.dark-mode .random-post-item:hover .random-post-tag {
+    background: rgba(79, 192, 192, 0.15);
+    color: #5fd3d3;
+}
+
+.dark-mode .random-post-date {
+    color: #777;
+}
+
+.dark-mode .meta-separator {
+    color: #444;
+}
+
+.dark-mode .loading-message {
+    color: #666;
+}
+
+/* --- レスポンシブ対応 --- */
 @media (max-width: 767px) {
-    .random-post-item {
-        flex-direction: column;
-        align-items: flex-start;
+    .random-posts-section {
+        padding: 30px 0;
     }
+    
+    .random-posts-section .section-header {
+        padding: 0 20px;
+        margin-bottom: 2rem;
+    }
+    
+    .random-posts-list {
+        padding: 0 20px;
+    }
+    
+    .random-post-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 15px 0;
+    }
+    
+    .random-post-number {
+        display: none;
+    }
+    
     .random-post-date {
-        margin-left: 0;
-        margin-top: 10px;
-        width: 100%;
-        text-align: right;
+        order: -1;
+        font-size: 0.8rem;
+    }
+    
+    .random-post-title {
+        font-size: 1rem;
+    }
+    
+    .random-post-meta {
+        gap: 8px;
+    }
+    
+    .random-post-tag {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+    
+    .refresh-button {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+    
+    .random-post-item:hover {
+        padding-left: 5px;
+    }
+    
+    .random-post-item::before {
+        left: -20px;
+        right: -20px;
     }
 }
 
+/* アニメーション */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
+.random-post-item {
+    animation: fadeInUp 0.4s ease backwards;
+}
+
+.random-post-item:nth-child(1) { animation-delay: 0.05s; }
+.random-post-item:nth-child(2) { animation-delay: 0.1s; }
+.random-post-item:nth-child(3) { animation-delay: 0.15s; }
+.random-post-item:nth-child(4) { animation-delay: 0.2s; }
+.random-post-item:nth-child(5) { animation-delay: 0.25s; }
 
 /* ==========================================================================
    Dark Mode Styles - ダークモード

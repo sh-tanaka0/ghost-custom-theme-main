@@ -351,8 +351,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    /**
-     * ランダム記事セクションの機能
+   /**
+     * ランダム記事セクションの機能（ミニマルデザイン版）
      */
     const initRandomPosts = () => {
         const section = document.querySelector('.random-posts-section');
@@ -366,14 +366,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let allPosts = [];
 
-        const tagStyles = {
-            'default': { icon: 'fas fa-feather-alt', color: '#8e44ad' },
-            'ramble': { icon: 'fas fa-feather-alt', color: '#8e44ad' },
-            'review': { icon: 'fas fa-book-open', color: '#27ae60' },
-            'art': { icon: 'fas fa-palette', color: '#2980b9' },
-            'movie': { icon: 'fas fa-film', color: '#f39c12' }
-        };
-
         const shuffleArray = (array) => {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -382,52 +374,102 @@ document.addEventListener('DOMContentLoaded', () => {
             return array;
         };
 
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}.${month}.${day}`;
+        };
+
         const renderPosts = () => {
+            // ローディングメッセージをクリア
             listContainer.innerHTML = '';
+            
+            // ランダムに5つの記事を選択
             const random5Posts = shuffleArray([...allPosts]).slice(0, 5);
 
-            random5Posts.forEach(post => {
-                const postDate = new Date(post.published_at);
-                const formattedDate = `${postDate.getFullYear()}年${postDate.getMonth() + 1}月${postDate.getDate()}日`;
-                const primaryTagSlug = post.primary_tag ? post.primary_tag.slug : 'default';
-                const style = tagStyles[primaryTagSlug] || tagStyles['default'];
+            random5Posts.forEach((post, index) => {
+                const formattedDate = formatDate(post.published_at);
                 
+                // タグのHTML生成（最大2つまで表示、シンプルに）
                 let tagsHTML = '';
-                if (post.tags) {
-                    post.tags.forEach(tag => {
-                        const tagStyle = tagStyles[tag.slug] || tagStyles['default'];
-                        tagsHTML += `<span class="random-post-tag" style="background-color: ${tagStyle.color};">${tag.name}</span>`;
-                    });
+                if (post.tags && post.tags.length > 0) {
+                    const displayTags = post.tags.slice(0, 2);
+                    tagsHTML = displayTags
+                        .map(tag => `<span class="random-post-tag">${tag.name}</span>`)
+                        .join('');
                 }
 
+                // 番号は01, 02形式で表示
+                const numberDisplay = String(index + 1).padStart(2, '0');
+
+                // シンプルなHTML構造
                 const itemHTML = `
                     <a href="${post.url}" class="random-post-item">
-                        <div class="random-post-icon" style="background-color: ${style.color};"><i class="${style.icon}"></i></div>
+                        <span class="random-post-number">${numberDisplay}</span>
                         <div class="random-post-content">
                             <h4 class="random-post-title">${post.title}</h4>
-                            <div class="random-post-tags">${tagsHTML}</div>
+                            <div class="random-post-meta">
+                                ${tagsHTML ? `<div class="random-post-tags">${tagsHTML}</div>` : ''}
+                                ${tagsHTML ? '<span class="meta-separator">·</span>' : ''}
+                                <time class="random-post-date">${formattedDate}</time>
+                            </div>
                         </div>
-                        <time class="random-post-date">${formattedDate}</time>
                     </a>`;
+                
                 listContainer.insertAdjacentHTML('beforeend', itemHTML);
             });
         };
 
         const fetchAllPosts = () => {
             refreshButton.classList.add('is-loading');
+            
+            // ローディング中のメッセージ
+            listContainer.innerHTML = '<p class="loading-message">記事を読み込んでいます...</p>';
+            
             const url = `${apiURL}/ghost/api/content/posts/?key=${apiKey}&limit=all&include=tags`;
             
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    allPosts = data.posts;
-                    renderPosts();
+                    if (data.posts && data.posts.length > 0) {
+                        allPosts = data.posts;
+                        renderPosts();
+                    } else {
+                        listContainer.innerHTML = '<p class="loading-message">記事が見つかりませんでした。</p>';
+                    }
                 })
-                .catch(error => console.error('Error fetching random posts:', error))
-                .finally(() => refreshButton.classList.remove('is-loading'));
+                .catch(error => {
+                    console.error('Error fetching random posts:', error);
+                    listContainer.innerHTML = '<p class="loading-message">記事の読み込みに失敗しました。</p>';
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        refreshButton.classList.remove('is-loading');
+                    }, 300);
+                });
         };
 
-        refreshButton.addEventListener('click', renderPosts);
+        // リフレッシュボタンのイベント
+        refreshButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!refreshButton.classList.contains('is-loading')) {
+                // 既存の記事をフェードアウト
+                const items = listContainer.querySelectorAll('.random-post-item');
+                items.forEach((item, index) => {
+                    item.style.transition = 'opacity 0.2s ease';
+                    item.style.opacity = '0';
+                });
+                
+                // 少し待ってから新しい記事を表示
+                setTimeout(() => {
+                    renderPosts();
+                }, 200);
+            }
+        });
+
+        // 初期読み込み
         fetchAllPosts();
     };
 
