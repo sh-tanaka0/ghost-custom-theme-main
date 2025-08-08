@@ -371,3 +371,26 @@
 
 
 
+{{! --- スクリプトセクション --- }}
+{{! jQueryがまだ読み込まれていない場合は、先に追加します }}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+{{! 以前の手順でアップロードしたsnowfallプラグインを読み込みます }}
+<script src="{{asset "js/snowfall.jquery.min.js"}}"></script>
+
+{{! 雪を降らせるための設定 }}
+<script>
+$(document).ready(function(){
+  // 雪を降らせたい要素をクラス名で指定します
+  $('.main-visual').snowfall({
+    flakeCount : 35,
+    minSize : 5,
+    maxSize : 40,
+    minSpeed : 1,
+    maxSpeed : 3,
+    round : true,
+    // 雪の結晶画像のパスをassetヘルパーで指定します
+    image: "{{asset "images/flake_02_by_icooonmono.png"}}"
+  });
+});
+</script>
