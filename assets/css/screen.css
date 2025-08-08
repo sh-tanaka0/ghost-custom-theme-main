@@ -1332,6 +1332,121 @@
     }
 }
 
+/* ==================================
+    思考・エッセイセクションのホバー効果
+   ================================== */
+
+.posts-section .post-card {
+    position: relative;
+    isolation: isolate; /* z-indexコンテキストを独立させる */
+}
+
+/* 画像を包むコンテナとして機能させる */
+.posts-section .post-card-image {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* ホバー時のオーバーレイ */
+.posts-section .post-card::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* 画像と同じアスペクト比 */
+    aspect-ratio: 16 / 9;
+    background: rgba(255, 255, 255, 0.7); /* 白いオーバーレイ */
+    border-radius: 8px; /* 画像と同じ角丸 */
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    z-index: 2;
+    pointer-events: none; /* クリックを妨げない */
+}
+
+/* "Read More" テキスト */
+.posts-section .post-card::after {
+    content: "Read More";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* 画像と同じアスペクト比 */
+    aspect-ratio: 16 / 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+                letter-spacing 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    z-index: 3;
+    pointer-events: none; /* クリックを妨げない */
+}
+
+/* ホバー時の効果 */
+.posts-section .post-card:hover::before,
+.posts-section .post-card:hover::after {
+    opacity: 1;
+}
+
+.posts-section .post-card:hover::after {
+    letter-spacing: 0.1em;
+}
+
+/* 既存のopacity効果を削除（競合を避けるため） */
+.posts-section .post-card:hover {
+    opacity: 1; /* 元の0.8から1に変更 */
+}
+
+/* オプション: 画像の微細なスケール効果 */
+.posts-section .post-card:hover .post-card-image {
+    transform: scale(0.98);
+}
+
+/* --- ダークモード対応 --- */
+.dark-mode .posts-section .post-card::before {
+    background: rgba(0, 0, 0, 0.6); /* ダークモードでは黒いオーバーレイ */
+}
+
+.dark-mode .posts-section .post-card::after {
+    color: #fff; /* ダークモードでは白いテキスト */
+}
+
+/* --- タブレット対応 --- */
+@media (max-width: 992px) {
+    .posts-section .post-card::after {
+        font-size: 1.1rem;
+    }
+}
+
+/* --- スマートフォン対応 --- */
+@media (max-width: 767px) {
+    .posts-section .post-card::after {
+        font-size: 1rem;
+    }
+    
+    /* タッチデバイスでは控えめな効果 */
+    @media (hover: none) {
+        .posts-section .post-card::before {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* タップ時の視覚フィードバック */
+        .posts-section .post-card:active::before,
+        .posts-section .post-card:active::after {
+            opacity: 1;
+        }
+    }
+}
+
+
+
 /* ==========================================================================
    Serialized Works Section Styles - 連載作品セクション
    ========================================================================== */
@@ -1368,23 +1483,72 @@
     align-items: flex-start; /* 上揃え */
     text-decoration: none; /* リンクの下線を削除 */
     color: inherit; /* テキスト色を継承 */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.3s ease;
     cursor: pointer;
     padding: 15px;
     margin: -15px; /* paddingの分だけ負のマージンを設定 */
     border-radius: 12px;
 }
 
-/* ホバー時のエフェクト */
+/* ホバー時のエフェクト（修正版） */
 .novel-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    background-color: #f8f9fa;
+    /* カード全体の浮き上がり効果を削除 */
+    transform: none;
+    box-shadow: none;
+    background-color: transparent;
 }
 
 .novel-card-image-wrapper {
     flex-shrink: 0;
     width: 160px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* 画像のホバー用オーバーレイ */
+.novel-card-image-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    z-index: 1;
+    transition: all 0.4s ease;
+    pointer-events: none;
+}
+
+/* "Read More"テキスト */
+.novel-card-image-wrapper::after {
+    content: "Read More";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #333;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 0.4s ease, letter-spacing 0.4s ease;
+    z-index: 2;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.novel-card:hover .novel-card-image-wrapper::before {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+.novel-card:hover .novel-card-image-wrapper::after {
+    opacity: 1;
+    letter-spacing: 0.1em;
 }
 
 .novel-card-image {
@@ -1394,11 +1558,13 @@
     object-fit: cover;
     border-radius: 8px; /* 角丸 */
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: box-shadow 0.2s ease;
+    transition: transform 0.4s ease;
+    position: relative;
 }
 
 .novel-card:hover .novel-card-image {
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: scale(1.02);
 }
 
 .novel-card-placeholder {
@@ -1413,6 +1579,53 @@
     padding: 10px;
     font-weight: bold;
     color: #555;
+    position: relative;
+    overflow: hidden;
+}
+
+/* プレースホルダーのホバー効果 */
+.novel-card-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    z-index: 1;
+    transition: all 0.4s ease;
+    pointer-events: none;
+}
+
+/* プレースホルダーの"Read More"テキスト */
+.novel-card-placeholder::after {
+    content: "Read More";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #333;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 0.4s ease, letter-spacing 0.4s ease;
+    z-index: 2;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.novel-card:hover .novel-card-placeholder::before {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+.novel-card:hover .novel-card-placeholder::after {
+    opacity: 1;
+    letter-spacing: 0.1em;
 }
 
 .novel-card-content {
@@ -1432,7 +1645,7 @@
     font-size: 1.2rem;
     font-weight: 600;
     color: #333;
-    transition: color 0.2s ease;
+    transition: color 0.3s ease;
 }
 
 .novel-card:hover .novel-card-title {
@@ -1461,6 +1674,28 @@
     margin-top: 15px;
     padding-top: 10px;
     border-top: 1px solid #eee;
+}
+
+/* --- ダークモード対応 --- */
+.dark-mode .novel-card-image-wrapper::before {
+    background: rgba(0, 0, 0, 0);
+}
+
+.dark-mode .novel-card:hover .novel-card-image-wrapper::before {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode .novel-card-image-wrapper::after,
+.dark-mode .novel-card-placeholder::after {
+    color: #fff;
+}
+
+.dark-mode .novel-card-placeholder::before {
+    background: rgba(0, 0, 0, 0);
+}
+
+.dark-mode .novel-card:hover .novel-card-placeholder::before {
+    background: rgba(0, 0, 0, 0.4);
 }
 
 /* --- レスポンシブ対応 --- */
@@ -1494,6 +1729,35 @@
 
     .novel-card-image-wrapper {
         width: 120px;
+    }
+    
+    /* モバイルでの"Read More"テキストサイズ調整 */
+    .novel-card-image-wrapper::after,
+    .novel-card-placeholder::after {
+        font-size: 0.85rem;
+    }
+    
+    /* タッチデバイスでは控えめな効果 */
+    .novel-card:hover .novel-card-image-wrapper::before,
+    .novel-card:hover .novel-card-placeholder::before {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(1px);
+        -webkit-backdrop-filter: blur(1px);
+    }
+    
+    /* タップ時の視覚フィードバック */
+    .novel-card:active .novel-card-image-wrapper::before,
+    .novel-card:active .novel-card-placeholder::before {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .novel-card:active .novel-card-image-wrapper::after,
+    .novel-card:active .novel-card-placeholder::after {
+        opacity: 1;
+    }
+    
+    .novel-card:active .novel-card-image {
+        transform: scale(0.98);
     }
 }
 
@@ -2584,6 +2848,7 @@
     background-color: #222;
 }
 
+.dark-mode .novel-card-title,
 .dark-mode .novel-card-excerpt,
 .dark-mode .novel-card-meta {
     color: #aaa;
