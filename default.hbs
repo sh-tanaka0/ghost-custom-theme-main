@@ -85,20 +85,26 @@
             {{! --- サイト情報 & 今日のひとこと --- }}
             <div class="footer-column about-column">
                 
-                
-                <div class="word-of-the-day">
-                    <div class="word-icon">
-                        {{! ここにキャラクターアイコンを配置 }}
-                        <img src="{{asset "images/アイコン.webp"}}" alt="キャラクターアイコン">
-                    </div>
-                    <div class="word-bubble">
-                        {{#get "posts" filter="tag:word-of-the-day" limit="1"}}
-                            {{#foreach posts}}
-                                <p>{{excerpt}}</p>
-                            {{else}}
-                                <p>今日のひとことは、お休みです。</p>
-                            {{/foreach}}
-                        {{/get}}
+                {{! --- 今日のひとことセクション --- }}
+                <div class="word-of-the-day-section">
+                    <h4 class="word-of-the-day-title">
+                        <span class="title-icon">💭</span>
+                        今日のひとこと
+                    </h4>
+                    <div class="word-of-the-day">
+                        <div class="word-icon">
+                            {{! ここにキャラクターアイコンを配置 }}
+                            <img src="{{asset "images/アイコン.webp"}}" alt="キャラクターアイコン">
+                        </div>
+                        <div class="word-bubble">
+                            {{#get "posts" filter="tag:word-of-the-day" limit="1"}}
+                                {{#foreach posts}}
+                                    <p>{{excerpt}}</p>
+                                {{else}}
+                                    <p>今日のひとことは、お休みです。</p>
+                                {{/foreach}}
+                            {{/get}}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -392,13 +392,34 @@
     margin-bottom: 30px;
 }
 
+/* --- 今日のひとことセクション --- */
+
+/* 今日のひとことタイトル */
+.word-of-the-day-title {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 20px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.word-of-the-day-title .title-icon {
+    font-size: 1.2rem;
+    filter: grayscale(0.2);
+}
+
+/* 吹き出し部分 */
 .word-of-the-day {
     display: flex;
     align-items: flex-start;
     gap: 15px;
 }
 .word-icon img {
-    width: 60px;
+    width: 100px;
     border-radius: 50%;
 }
 .word-bubble {
@@ -502,6 +523,54 @@
     color: #fff;
 }
 
+/* --- ダークモード対応 --- */
+.dark-mode .site-footer {
+    background-color: #0f1419;
+}
+
+.dark-mode .footer-title,
+.dark-mode .word-of-the-day-title {
+    color: #f0f0f0;
+    border-bottom-color: #444;
+}
+
+.dark-mode .word-bubble {
+    background-color: #1e2832;
+}
+
+.dark-mode .word-bubble::before {
+    border-right-color: #1e2832;
+}
+
+.dark-mode .footer-column .social-links a {
+    background-color: #1e2832;
+}
+
+.dark-mode .footer-column .social-links a:hover {
+    background-color: #4fc0c0;
+}
+
+.dark-mode .btn-contact {
+    background-color: #4fc0c0;
+    color: #0f1419;
+}
+
+.dark-mode .btn-contact:hover {
+    background-color: #5fd3d3;
+}
+
+.dark-mode .footer-bottom {
+    border-top-color: #444;
+}
+
+.dark-mode .footer-nav a {
+    color: #aaa;
+}
+
+.dark-mode .footer-nav a:hover {
+    color: #f0f0f0;
+}
+
 /* --- レスポンシブ対応 --- */
 @media (max-width: 992px) {
     .footer-container {
@@ -516,6 +585,24 @@
     .footer-container {
         grid-template-columns: 1fr; /* 1カラム表示 */
     }
+    
+    .word-of-the-day-title {
+        font-size: 0.95rem;
+    }
+    
+    .word-of-the-day {
+        gap: 12px;
+    }
+    
+    .word-icon img {
+        width: 70px;
+    }
+    
+    .word-bubble {
+        padding: 15px;
+        font-size: 0.85rem;
+    }
+    
     .footer-bottom {
         flex-direction: column;
         gap: 15px;
@@ -826,7 +913,7 @@
     /* メインビジュアルの上に重なるように設定 */
     position: relative;
     z-index: 2;
-    background-color: #f8f9fa; /* サイトの背景色 */
+    background-color: #F2F2F2; /* サイトの背景色 */
     padding-top: 50px; /* セクション間の余白 */
 }
 
@@ -1115,7 +1202,7 @@
     }
     .info-title { font-size: 1rem; }
     .info-date { font-size: 0.8rem; }
-    .carousel-indicators { bottom: -20px; }
+    .carousel-indicators { bottom: -40px; }
 }
 
 
@@ -1222,6 +1309,7 @@
 .posts-section {
     padding: 50px 0;
     /* 他のセクションとの区切りを明確にする */
+    background-color: #FFFEF9; /* 明るい背景色 */
 }
 
 /* .section-title は既存のスタイルを再利用します */
@@ -1453,7 +1541,6 @@
 
 .serialized-works-section {
     padding: 50px 0;
-    background-color: #fff; /* 背景色を変えて区別 */
 }
 
 .subsection {
@@ -2100,6 +2187,7 @@
 .critique-section {
     padding: 50px 0;
     /* 他のセクションとの区切りを明確にする */
+    background-color: #FFFEF9; /* 明るい背景色 */
 }
 
 /* .section-title は既存のスタイルを再利用します */
@@ -2306,9 +2394,9 @@
    ========================================================================== */
 .subscription-cta-section {
     padding: 80px 20px;
-    margin: 60px auto;
     position: relative;
     overflow: hidden;
+    background-color: #FFFEF9; 
 }
 
 .cta-container {
@@ -2336,7 +2424,6 @@
     right: -20%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(88, 86, 214, 0.05) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -2485,7 +2572,6 @@
 @media (max-width: 768px) {
     .subscription-cta-section {
         padding: 60px 15px;
-        margin: 40px auto;
     }
 
     .cta-content {
@@ -2573,9 +2659,6 @@
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-.dark-mode .cta-content::before {
-    background: radial-gradient(circle, rgba(88, 86, 214, 0.08) 0%, transparent 70%);
-}
 
 .dark-mode .cta-badge {
     color: #8a88ff;
@@ -3140,6 +3223,10 @@
     color: #e5e5e5;
 }
 
+.dark-mode .posts-section {
+    background-color: #2a2a2a;
+}
+
 .dark-mode .post-card-excerpt,
 .dark-mode .post-card-meta {
     color: #aaa;
@@ -3173,7 +3260,8 @@
     color: #aaa;
 }
 
-.dark-mode .subscription-cta-section {
+.dark-mode .subscription-cta-section,
+.dark-mode .critique-section {
     background-color: #2a2a2a;
 }
 .dark-mode .cta-title {
