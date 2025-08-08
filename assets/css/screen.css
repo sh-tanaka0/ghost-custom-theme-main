@@ -2023,12 +2023,7 @@
     gap: 5px;
 }
 
-/* 日付の前にアイコンを追加（CSS疑似要素で） */
-.shorts-date::before {
-    content: '📅';
-    font-size: 0.9rem;
-    opacity: 0.6;
-}
+
 
 /* 各行の最初のアイテムに微妙な強調 */
 .shorts-item:nth-child(6n+1) a {
@@ -2131,11 +2126,13 @@
     border-radius: 0;
     box-shadow: none;
     overflow: visible;
-    transition: opacity 0.3s ease;
+    position: relative;
+    isolation: isolate; /* z-indexコンテキストを独立させる */
 }
 
+/* 既存のopacity効果を削除 */
 .critique-section .post-card:hover {
-    opacity: 0.8;
+    opacity: 1;
     /* 浮き上がる効果を削除 */
     transform: none;
 }
@@ -2148,6 +2145,65 @@
     /* 画像の角を丸める */
     border-radius: 8px;
     margin-bottom: 15px; /* 画像とタイトルの間に余白 */
+    position: relative;
+    z-index: 1;
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* ホバー時のオーバーレイ */
+.critique-section .post-card::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* 画像と同じアスペクト比 */
+    aspect-ratio: 16 / 9;
+    background: rgba(255, 255, 255, 0.7); /* 白いオーバーレイ */
+    border-radius: 8px; /* 画像と同じ角丸 */
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    z-index: 2;
+    pointer-events: none; /* クリックを妨げない */
+}
+
+/* "Read More" テキスト */
+.critique-section .post-card::after {
+    content: "Read More";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* 画像と同じアスペクト比 */
+    aspect-ratio: 16 / 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+                letter-spacing 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    z-index: 3;
+    pointer-events: none; /* クリックを妨げない */
+}
+
+/* ホバー時の効果 */
+.critique-section .post-card:hover::before,
+.critique-section .post-card:hover::after {
+    opacity: 1;
+}
+
+.critique-section .post-card:hover::after {
+    letter-spacing: 0.1em;
+}
+
+/* オプション: 画像の微細なスケール効果 */
+.critique-section .post-card:hover .post-card-image {
+    transform: scale(0.98);
 }
 
 .critique-section .post-card-content {
@@ -2185,11 +2241,24 @@
     margin-top: auto; /* メタ情報を最下部に配置 */
 }
 
+/* --- ダークモード対応 --- */
+.dark-mode .critique-section .post-card::before {
+    background: rgba(0, 0, 0, 0.6); /* ダークモードでは黒いオーバーレイ */
+}
+
+.dark-mode .critique-section .post-card::after {
+    color: #fff; /* ダークモードでは白いテキスト */
+}
+
 /* --- レスポンシブ対応 --- */
 @media (max-width: 992px) {
     .critique-section .post-feed {
         /* タブレットでは2列 */
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .critique-section .post-card::after {
+        font-size: 1.1rem;
     }
 }
 
@@ -2212,6 +2281,23 @@
 
     .critique-section .post-card-meta {
         font-size: 0.7rem;
+    }
+    
+    .critique-section .post-card::after {
+        font-size: 1rem;
+    }
+    
+    /* タッチデバイスでは控えめな効果 */
+    @media (hover: none) {
+        .critique-section .post-card::before {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* タップ時の視覚フィードバック */
+        .critique-section .post-card:active::before,
+        .critique-section .post-card:active::after {
+            opacity: 1;
+        }
     }
 }
 
