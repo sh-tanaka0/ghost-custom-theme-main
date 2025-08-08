@@ -2175,71 +2175,93 @@
 
 
 /* ==========================================================================
-   Art Gallery Section - アートギャラリーセクション
+   Art Gallery Section - アートギャラリーセクション (修正案)
    ========================================================================== */
 .art-gallery-section {
-    padding: 50px 0;
+    padding: 50px 15px; /* 上下左右のパディングを統一 */
+    max-width: 1200px;  /* セクション全体の最大幅を設定 */
+    margin: 0 auto;     /* 中央揃え */
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 30px;
-    padding: 0 15px; /* 左右のパディングを追加 */
+    margin-bottom: 40px; /* 少し余白を広げる */
+}
+
+.section-title {
+    font-size: 2.5rem; /* タイトルを少し大きく */
+    margin-bottom: 20px;
 }
 
 .filter-button-group {
     display: inline-flex;
-    flex-wrap: wrap; /* スマホで折り返すように */
-    justify-content: center; /* 中央揃え */
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
     background-color: #f0f2f5;
-    padding: 5px;
-    border-radius: 20px;
-    margin-top: 15px;
+    padding: 6px;
+    border-radius: 50px; /* 角をより丸く */
 }
 
 .filter-button {
     background: none;
     border: none;
-    padding: 8px 20px;
-    border-radius: 16px;
+    padding: 10px 25px; /* パディングを調整 */
+    border-radius: 30px; /* 角をより丸く */
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600; /* 少し太く */
     cursor: pointer;
     color: #555;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
+}
+
+.filter-button:hover:not(.is-checked) {
+    background-color: #e9e9e9; /* ホバー時の背景色を追加 */
 }
 
 .filter-button.is-checked {
     background-color: #fff;
     color: #5856d6;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 影を少しリッチに */
+    transform: translateY(-2px);
 }
 
 .gallery-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    /* はみ出しを防ぐため、paddingは削除 */
+    /* --- ここからがメイソンリーレイアウトの核 --- */
+    column-count: 4;          /* PCでは4列表示 */
+    column-gap: 15px;         /* 列間の隙間 */
+    /* --- ここまで --- */
 }
 
 .gallery-item {
+    /* --- CSS Masonryのためのスタイル --- */
+    width: 100%;              /* 列の幅いっぱいに広がる */
     margin-bottom: 15px;
-    /* box-sizingを追加して、計算を正確にする */
+    break-inside: avoid;      /* ★重要: アイテムが列をまたいで分割されるのを防ぐ */
+    /* --- デザインのためのスタイル --- */
+    display: inline-block;    /* break-insideを正しく機能させる */
     box-sizing: border-box;
-    /* PCでは3列 */
-    width: 33.333%;
+    border-radius: 12px;
+    overflow: hidden;         /* 画像の角丸を適用するため */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
 .gallery-item img {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 8px;
     transition: opacity 0.3s ease;
 }
 
-.gallery-item:hover img {
-    opacity: 0.8;
+/* --- フィルタリングで非表示にするためのクラス --- */
+.gallery-item.hidden {
+    display: none;
 }
 
 .gallery-footer {
@@ -2251,36 +2273,42 @@
     display: inline-block;
     background-color: #5856d6;
     color: #fff;
-    padding: 12px 35px;
-    border-radius: 25px;
+    padding: 14px 40px;
+    border-radius: 50px;
     text-decoration: none;
     font-size: 1rem;
     font-weight: 600;
     transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(88, 86, 214, 0.3);
 }
 
 .btn-see-more:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(88, 86, 214, 0.4);
 }
 
 /* --- レスポンシブ対応 --- */
-@media (max-width: 992px) {
-    /* タブレットでは2列 */
-    .gallery-item {
-        width: 50%;
+/* ブラウザの幅が1399px以下の場合 (標準的なPC、大きめのタブレット) */
+@media (max-width: 1399px) {
+    .gallery-grid {
+        column-count: 3; /* ★ 3列で表示 */
+    }
+}
+
+
+@media (max-width: 991px) {
+    .gallery-grid {
+        column-count: 2; /* タブレットでは2列 */
     }
 }
 
 @media (max-width: 767px) {
-    /* スマホでも2列 */
-    .gallery-item {
-        width: 50%;
+    .section-title {
+        font-size: 2rem;
     }
-    .filter-button-group {
-        gap: 5px;
-    }
+
     .filter-button {
-        padding: 8px 15px;
+        padding: 8px 20px;
     }
 }
 

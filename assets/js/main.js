@@ -308,31 +308,48 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * アートギャラリーのMasonry & Isotope機能
+     * アートギャラリーのフィルタリング機能 (ライブラリ不要版)
      */
     const initArtGallery = () => {
-        const galleryGrid = document.querySelector('.gallery-grid');
-        if (!galleryGrid || typeof imagesLoaded === 'undefined' || typeof Isotope === 'undefined') return;
+        const filterButtonGroup = document.querySelector('.filter-button-group');
+        const galleryItems = document.querySelectorAll('.gallery-item');
 
-        imagesLoaded(galleryGrid, function() {
-            const iso = new Isotope(galleryGrid, {
-                itemSelector: '.gallery-item',
-                layoutMode: 'masonry',
-                masonry: { gutter: 15, fitWidth: true }
-            });
+        // 要素がページに存在しない場合は何もしない
+        if (!filterButtonGroup || galleryItems.length === 0) {
+            return;
+        }
 
-            const filterButtonGroup = document.querySelector('.filter-button-group');
-            if (filterButtonGroup) {
-                filterButtonGroup.addEventListener('click', function(event) {
-                    if (!event.target.matches('button')) return;
-                    const filterValue = event.target.getAttribute('data-filter');
-                    iso.arrange({ filter: filterValue });
-                    filterButtonGroup.querySelector('.is-checked').classList.remove('is-checked');
-                    event.target.classList.add('is-checked');
-                });
+        filterButtonGroup.addEventListener('click', (event) => {
+            // クリックされたのがボタンでなければ処理を中断
+            if (!event.target.matches('button.filter-button')) {
+                return;
             }
+
+            const clickedButton = event.target;
+            const filterValue = clickedButton.getAttribute('data-filter');
+
+            // 1. ボタンのアクティブ状態を切り替え
+            // 既存のアクティブなボタンから 'is-checked' クラスを削除
+            const currentCheckedButton = filterButtonGroup.querySelector('.is-checked');
+            if (currentCheckedButton) {
+                currentCheckedButton.classList.remove('is-checked');
+            }
+            // クリックされたボタンに 'is-checked' クラスを追加
+            clickedButton.classList.add('is-checked');
+
+
+            // 2. ギャラリーアイテムの表示・非表示を切り替え
+            galleryItems.forEach(item => {
+                // "すべて"が選択された場合、またはアイテムがフィルター条件に一致する場合
+                if (filterValue === '*' || item.classList.contains(filterValue.substring(1))) {
+                    item.classList.remove('hidden'); // 表示する
+                } else {
+                    item.classList.add('hidden');    // 非表示にする
+                }
+            });
         });
     };
+
 
     /**
      * ランダム記事セクションの機能
