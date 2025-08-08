@@ -87,7 +87,7 @@
                     {{#get "posts" filter="featured:true" limit="5" include="tags"}}
                         {{#foreach posts}}
                             {{! data-* 属性に表示したい情報を格納する }}
-                            <div class="carousel-item" 
+                            <a href="{{url}}" class="carousel-item" 
                                 data-url="{{url}}"
                                 data-title="{{title}}"
                                 data-tag="{{primary_tag.name}}"
@@ -101,7 +101,7 @@
                                         <div class="placeholder-image"><span>No Image</span></div>
                                     {{/if}}
                                 </div>
-                            </div>
+                            </a>
                         {{/foreach}}
                     {{/get}}
                 </div>
