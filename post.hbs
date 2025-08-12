@@ -13,7 +13,6 @@
             </header>
 
             <div class="main-content-wrapper">
-
                 <div class="post-header-and-content">
                     <div class="post-header-content">
                         <h1 class="post-full-title">{{title}}</h1>
@@ -44,10 +43,9 @@
                         </div>
                     </div>
 
-
                     {{!-- 本文エリア --}}
                     <section class="post-full-content gh-content">
-                        {{content}}
+                        {{{content}}}
                     </section>
                 </div>
             </div>
@@ -62,9 +60,9 @@
                     <div class="setting-group">
                         <label>フォント</label>
                         <div class="font-selector">
-                            <button data-font="gothic" class="active">ゴシック</button>
-                            <button data-font="mincho">明朝</button>
-                            <button data-font="yu-gothic">游ゴシック</button>
+                            <button data-font="noto-sans" class="active">ゴシック</button>
+                            <button data-font="noto-serif">明朝</button>
+                            <button data-font="rounded-mplus">丸ゴシック</button>
                         </div>
                     </div>
                     <div class="setting-group">
@@ -74,6 +72,11 @@
                             <button data-size="medium" class="active">中</button>
                             <button data-size="large">大</button>
                         </div>
+                    </div>
+                    <div class="setting-group">
+                         <button class="scroll-to-top-btn">
+                            <i class="fas fa-arrow-up"></i> TOPへ戻る
+                        </button>
                     </div>
                 </div>
             </div>
@@ -153,6 +156,8 @@
 </main>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@400;700&family=Rounded+M+1c:wght@400;700&display=swap');
+
 /* 基本スタイル */
 .site-main {
     width: 100%;
@@ -167,7 +172,7 @@
 
 /* ヘッダー部 */
 .post-feature-image-wrapper {
-    max-width: 800px;
+    max-width: 550px; /* 800pxから縮小 */
     margin: 0 auto 30px;
     border-radius: 12px;
     overflow: hidden;
@@ -240,32 +245,22 @@
     position: relative;
 }
 
-/* PC表示時のレイアウト調整 */
-@media (min-width: 1300px) {
-    .main-content-wrapper {
-        /* グリッドレイアウトを解除 */
-    }
-    
-    .post-header-and-content {
-        /* max-widthとmargin:autoで中央揃えを維持 */
-    }
-}
-
 /* 読みやすさ設定パネル（常に右下に固定） */
 .reading-settings-panel {
     position: fixed;
     bottom: 30px;
     right: 30px;
     z-index: 100;
+    opacity: 1; /* 初期状態は不透明 */
     transition: opacity 0.3s ease;
 }
 
 .reading-settings-panel.scrolled {
-    opacity: 0.3;
+    opacity: 0.3; /* スクロール中に半透明 */
 }
 
 .reading-settings-panel:hover {
-    opacity: 1;
+    opacity: 1; /* ホバー時は常に不透明 */
 }
 
 .settings-toggle {
@@ -354,13 +349,87 @@
     border-color: #4b5563;
 }
 
+.scroll-to-top-btn {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    color: #374151;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    margin-top: 10px;
+    font-size: 0.8rem;
+}
+.scroll-to-top-btn:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+}
+.scroll-to-top-btn i {
+    margin-right: 5px;
+}
+
+
 /* 本文エリア */
 .post-full-content {
-    font-size: 1.125rem;
-    line-height: 1.8;
+    line-height: 2; /* 変更 */
+    letter-spacing: 0.1em; /* 変更 */
     margin-bottom: 60px;
     color: #1f2937;
+    font-family: 'Noto Sans JP', sans-serif; /* デフォルトフォント */
 }
+/* 埋め込みコンテンツのキャプションスタイル */
+.kg-embed-card figcaption {
+    text-align: left; /* テキストを中央揃えに */
+    color: #888;         /* 文字色をグレーに */
+    font-size: 0.8em;   /* 文字サイズを小さく */
+}
+
+.kg-embed-card #twitter-widget-0 {
+    margin-top: 30px;
+}
+
+
+/* 埋め込みコンテンツのレスポンシブ対応 */
+
+@media (max-width: 767px) {
+.kg-embed-card,
+.kg-embed-card iframe {
+    max-width: 100% !important; /* 親要素の幅を超えないようにする */
+    width: 100% !important;     /* 横幅を100%に */
+    box-sizing: border-box;
+}
+
+.kg-embed-card figcaption {
+    text-align: center; /* テキストを中央揃えに */
+    color: #888;         /* 文字色をグレーに */
+    font-size: 0.8em;   /* 文字サイズを小さく */
+    margin-top: 8px;      /* 埋め込み要素との間に余白を追加 */
+}
+
+.kg-embed-card #twitter-widget-0 {
+    margin-top: 30px;
+    height: 400px !important; /* 高さを400pxに固定 */
+}
+}
+
+/* 本文中の画像 */
+.post-full-content .kg-image-card img,
+.post-full-content .kg-gallery-image img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 6px;
+}
+
+.post-full-content .kg-image-card figcaption {
+    font-size: 95%;
+    opacity: .7;
+    margin: 0 auto 1.5em;
+    text-align: center;
+    font-size: 12px;
+}
+
 
 .post-full-content h2 {
     margin-top: 48px;
@@ -582,11 +651,6 @@
 .share-btn.copy-link { background: #6b7280; }
 
 /* ダークモード対応 */
-.dark-mode {
-    background-color: #1a1a1a;
-    color: #e5e5e5;
-}
-
 .dark-mode .post-full-title {
     color: #e5e5e5;
 }
@@ -699,11 +763,6 @@
     color: #9ca3af;
 }
 
-/* レスポンシブ: タブレット・スマホ (1299px以下) */
-@media (max-width: 1299px) {
-    /* 目次関連のスタイルは削除済み */
-}
-
 /* レスポンシブ: タブレット (768px - 1299px) */
 @media (min-width: 768px) and (max-width: 1299px) {
     .related-posts-grid {
@@ -759,28 +818,81 @@
     }
 }
 
+
+/* インタビュアーの発言スタイル */
+.post-full-content p.interviewer {
+    position: relative;
+    padding-left: 1.5em; /* テキストのインデント */
+    margin-left: 1em;   /* 全体のインデント */
+    padding-bottom: 1em;
+    margin-bottom: 1.5em;
+    margin-top: 1.5em;
+    text-decoration: underline;
+}
+
+.post-full-content p.interviewer::before {
+    content: "—"; /* 左側のアクセント記号 */
+    position: absolute;
+    left: 0;
+    top: 0.1em; /* 位置を微調整 */
+    color: #888;
+    font-weight: bold;
+}
+
+
 /* フォント切り替え */
-body[data-font="mincho"] .post-full-content {
-    font-family: "游明朝", "Yu Mincho", serif;
+body[data-font="noto-sans"] .post-full-content {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+body[data-font="noto-serif"] .post-full-content {
+    font-family: 'Noto Serif JP', serif;
+}
+body[data-font="rounded-mplus"] .post-full-content {
+    font-family: 'Rounded M+ 1c', sans-serif;
 }
 
-body[data-font="yu-gothic"] .post-full-content {
-    font-family: "游ゴシック", "Yu Gothic", sans-serif;
+
+/* === 文字サイズ切り替え（PC/スマホ別） === */
+
+/* デフォルトの文字サイズ（中サイズ） */
+.post-full-content {
+    font-size: 14px; /* スマホの「中」サイズ */
+}
+@media (min-width: 768px) {
+    .post-full-content {
+        font-size: 16px; /* PCの「中」サイズ */
+    }
 }
 
-/* 文字サイズ切り替え */
-body[data-size="small"] .post-full-content {
-    font-size: 0.95em;
+/* --- スマホ用の文字サイズ設定 (767px以下) --- */
+@media (max-width: 767px) {
+    body[data-size="small"] .post-full-content {
+        font-size: 12px;
+    }
+    body[data-size="medium"] .post-full-content {
+        font-size: 14px;
+    }
+    body[data-size="large"] .post-full-content {
+        font-size: 16px;
+    }
 }
 
-body[data-size="large"] .post-full-content {
-    font-size: 1.25em;
+/* --- PC用の文字サイズ設定 (768px以上) --- */
+@media (min-width: 768px) {
+    body[data-size="small"] .post-full-content {
+        font-size: 14px;
+    }
+    body[data-size="medium"] .post-full-content {
+        font-size: 16px;
+    }
+    body[data-size="large"] .post-full-content {
+        font-size: 18px;
+    }
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Tocbotの初期化スクリプトは削除済み
     
     const settingsPanel = document.querySelector('.reading-settings-panel');
     const settingsToggle = document.querySelector('.settings-toggle');
@@ -799,20 +911,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // スクロール時の透過処理
-    let scrolling = false;
+    // スクロール時の透過処理（修正版）
     let scrollTimer;
-    
     window.addEventListener('scroll', () => {
-        if (!scrolling) {
-            settingsPanel?.classList.add('scrolled');
-            scrolling = true;
+        // ページトップにいる場合は、クラスを削除して不透明にする
+        if (window.scrollY <= 20) {
+            settingsPanel?.classList.remove('scrolled');
+            clearTimeout(scrollTimer);
+            return;
         }
+
+        // スクロール中はクラスを追加して半透明にする
+        settingsPanel?.classList.add('scrolled');
         
+        // スクロールが止まったら1.5秒後に不透明に戻すためのタイマー
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(() => {
             settingsPanel?.classList.remove('scrolled');
-            scrolling = false;
         }, 1500);
     });
     
@@ -837,31 +952,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // 保存した設定を読み込み
-    const savedFont = localStorage.getItem('preferred-font');
-    const savedSize = localStorage.getItem('preferred-size');
+    const savedFont = localStorage.getItem('preferred-font') || 'noto-sans';
+    const savedSize = localStorage.getItem('preferred-size') || 'medium';
     
-    if (savedFont) {
-        document.body.setAttribute('data-font', savedFont);
-        const fontBtn = document.querySelector(`.font-selector button[data-font="${savedFont}"]`);
-        if (fontBtn) {
-            document.querySelectorAll('.font-selector button').forEach(b => b.classList.remove('active'));
-            fontBtn.classList.add('active');
-        }
+    document.body.setAttribute('data-font', savedFont);
+    const fontBtn = document.querySelector(`.font-selector button[data-font="${savedFont}"]`);
+    if (fontBtn) {
+        document.querySelectorAll('.font-selector button').forEach(b => b.classList.remove('active'));
+        fontBtn.classList.add('active');
     }
     
-    if (savedSize) {
-        document.body.setAttribute('data-size', savedSize);
-        const sizeBtn = document.querySelector(`.size-selector button[data-size="${savedSize}"]`);
-        if (sizeBtn) {
-            document.querySelectorAll('.size-selector button').forEach(b => b.classList.remove('active'));
-            sizeBtn.classList.add('active');
-        }
+    document.body.setAttribute('data-size', savedSize);
+    const sizeBtn = document.querySelector(`.size-selector button[data-size="${savedSize}"]`);
+    if (sizeBtn) {
+        document.querySelectorAll('.size-selector button').forEach(b => b.classList.remove('active'));
+        sizeBtn.classList.add('active');
     }
     
     // リンクコピー
     document.querySelector('.copy-link')?.addEventListener('click', function() {
         const url = this.dataset.url;
-        // navigator.clipboard.writeTextがiframe内で動作しない場合があるため、代替手段を使用
         const textArea = document.createElement("textarea");
         textArea.value = url;
         document.body.appendChild(textArea);
@@ -878,6 +988,15 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('リンクのコピーに失敗しました', err);
         }
         document.body.removeChild(textArea);
+    });
+
+    // TOPへ戻るボタン
+    document.querySelector('.scroll-to-top-btn')?.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        settingsContent?.classList.remove('active');
     });
 });
 </script>
