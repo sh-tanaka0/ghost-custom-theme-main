@@ -968,7 +968,7 @@
 
 
 /* ==========================================================================
-   Pickup Section & Carousel Styles - ピックアップセクション
+   Pickup Section & Carousel Styles - ピックアップセクション (最終版)
    ========================================================================== */
 
 /* --- ピックアップセクション --- */
@@ -980,10 +980,11 @@
 
 .section-title {
     text-align: center;
+    font-family: 'DotGothic16', monospace; 
     font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    color: var(--color-text);
+    font-weight: 400; 
+    letter-spacing: 0.3em;
+    color: var(--color-text-secondary);
     margin-bottom: 2rem;
 }
 
@@ -998,9 +999,9 @@
 .carousel-viewport {
     overflow: hidden;
     width: 100%;
-    border-radius: 4px;
-    aspect-ratio: 16 / 9;
-    position: relative; /* 情報エリアの基準点 */
+    border-radius: 12px; /* 少し丸みを強くして柔らかい印象に */
+    background-color: rgba(0, 0, 0, 0.02);
+    aspect-ratio: 16 / 9; /* アスペクト比を16:9に設定 */
 }
 
 .carousel-track {
@@ -1014,7 +1015,8 @@
     width: 100%;
     height: 100%;
     position: relative;
-    background-color: #f0f2f5;
+    cursor: pointer;
+    background-color: transparent; /* 背景は透明に */
 }
 
 /* --- 画像コンテナ --- */
@@ -1030,7 +1032,7 @@
     overflow: hidden;
 }
 
-/* ぼかし背景 */
+/* 縦長の画像用のぼかし背景 */
 .carousel-item__bg-image {
     display: none;
     position: absolute;
@@ -1044,7 +1046,7 @@
     display: block;
 }
 
-/* メイン画像 */
+/* メイン画像とホバー効果 */
 .carousel-item__image {
     position: relative;
     display: block;
@@ -1052,23 +1054,25 @@
     height: 100%;
     object-fit: contain;
     z-index: 1;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-item:hover .carousel-item__image {
+    transform: scale(1.03);
 }
 
 /* --- 静的な記事情報エリア --- */
 .carousel-info-display {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: stretch;
-    padding: 1.5rem 2.5rem;
-    background: rgba(255, 255, 255, 0.85);
-    color: #1a1a1a;
-    z-index: 2;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    position: relative; 
+    display: block;
+    padding: 2rem 1.5rem;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    text-align: center;
     text-decoration: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
     transition: opacity 0.3s ease;
 }
 
@@ -1076,48 +1080,56 @@
     opacity: 0;
 }
 
-.info-left-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-right: 2rem;
-    flex-shrink: 0;
-}
-
 .info-tag {
     display: inline-block;
     font-size: 0.75rem;
-    font-weight: 700;
-    padding: 0.3em 1em;
-    background-color: #4fc0c0;
-    color: #fff;
-    border-radius: 3px;
+    font-weight: 400;
+    padding: 0;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border-radius: 0;
     margin-bottom: 1rem;
 }
 
 .info-date {
-    font-size: 1rem;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.info-right-column {
-    display: flex;
+    font-size: 0.8rem;
+    font-weight: 400;
 }
 
 .info-title {
-    font-size: 1.6rem;
-    font-weight: 700;
-    line-height: 1.4;
-    margin: 0;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0 auto 0.5rem;
+    color: var(--color-text);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+/* タイトルのホバー時下線効果 */
+.info-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-text-secondary);
+    transition: width 0.3s ease;
+}
+
+.carousel-info-display:hover .info-title::after {
+    width: 100%;
 }
 
 /* --- インジケーター (バー) --- */
 .carousel-indicators {
     position: absolute;
     bottom: -30px;
-    left: 0;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
     display: flex;
     justify-content: center;
     gap: 8px;
@@ -1136,7 +1148,7 @@
     background-color: #b8b8b8;
 }
 .indicator-bar.active {
-    background-color: #4fc0c0;
+    background-color: var(--color-text-secondary);
 }
 
 /* --- ナビゲーション矢印 --- */
@@ -1150,7 +1162,7 @@
     border: none;
     padding: 10px;
     cursor: pointer;
-    color: #000;
+    color: var(--color-text-secondary);
     opacity: 0.5;
     transition: opacity 0.2s, transform 0.2s;
 }
@@ -1160,16 +1172,6 @@
 }
 .carousel-arrow--left { left: 20px; }
 .carousel-arrow--right { right: 20px; }
-.carousel-arrow svg {
-    filter: drop-shadow(0 1px 2px rgba(255,255,255,0.3));
-}
-.dark-mode .carousel-arrow {
-    color: #fff;
-}
-.dark-mode .carousel-arrow svg {
-     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
-}
-
 
 /* --- レスポンシブ対応 --- */
 @media (min-width: 1024px) {
@@ -1183,133 +1185,28 @@
     }
     .carousel-arrow--left { left: 0; }
     .carousel-arrow--right { right: 0; }
-
-     .carousel-info-display {
-        left: 80px;
-        right: 80px;
-    }
 }
 
 @media (max-width: 767px) {
     .pickup-section {
-        padding: 2vw 0; /* スマホではパディングを少し小さく */
+        padding: 8vw 0;
     }
-
-    .carousel-container { width: 100%; }
-    .carousel-viewport { border-radius: 0; }
+    .carousel-container { 
+        width: 100%; 
+    }
+    .carousel-viewport { 
+        border-radius: 0; 
+    }
     .carousel-info-display {
-        position: relative; /* 静的配置に変更 */
-        background: var(--color-bg);
-        backdrop-filter: none;
-        padding: 0.5rem;
-        border-top: none;
+        padding: 1.5rem 1rem;
     }
-    .info-title { font-size: 1rem; }
-    .info-date { 
-        font-size: 0.8rem;
-        text-align: center;
-     }
-    .carousel-indicators { bottom: -40px; }
-
-    .info-left-column {
-        margin-right: 1rem;
+    .info-title { 
+        font-size: 1.1rem; 
+    }
+    .carousel-indicators { 
+        bottom: -40px; 
     }
 }
-
-
-/* =====================
-   ホバー効果の追加スタイル
-   ===================== */
-
-/* --- 画像のホバー効果 --- */
-.carousel-item {
-    cursor: pointer;
-}
-
-/* ホバー時の白いオーバーレイ */
-.carousel-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0);
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    z-index: 2;
-    transition: all 0.1s ease;
-    pointer-events: none;
-}
-
-.carousel-item:hover::before {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-}
-
-/* ダークモード対応（必要に応じて） */
-.dark-mode .carousel-item:hover::before {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* --- 情報エリアのホバー効果 --- */
-.carousel-info-display {
-    cursor: pointer;
-}
-
-.carousel-info-display:hover {
-    background: rgba(255, 255, 255, 0.95);
-}
-
-/* タイトルのホバー時下線効果 */
-.info-title {
-    text-decoration: none;
-    position: relative;
-    transition: color 0.3s ease;
-}
-
-/* 下線アニメーション */
-.carousel-info-display:hover .info-title {
-    color: #4fc0c0; /* ホバー時の色（お好みで調整） */
-}
-
-.info-title::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 0;
-    height: 2px;
-    background-color: #4fc0c0;
-    transition: width 0.3s ease;
-}
-
-.carousel-info-display:hover .info-title::after {
-    width: 100%;
-}
-
-/* --- モバイル対応 --- */
-@media (max-width: 767px) {
-    /* モバイルではホバー効果を控えめに */
-    .carousel-item:hover::before {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(1px);
-        -webkit-backdrop-filter: blur(1px);
-    }
-    
-    /* タッチデバイスでは下線を常に表示（オプション） */
-    @media (hover: none) {
-        .info-title::after {
-            display: none;
-        }
-        
-        .carousel-info-display:active .info-title {
-            color: #4fc0c0;
-        }
-    }
-}
-
 
 
 
