@@ -618,13 +618,17 @@
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 
 .main-visual {
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     position: relative;
     display: flex;
+    flex-direction: column;
+    justify-content: center; 
     align-items: center;
-    justify-content: center;
     color: #fff;
     overflow: hidden;
+    padding: 40px 20px; /* 左右にも少しパディングを持たせる */
+    box-sizing: border-box;
 }
 
 .main-visual-bg {
@@ -665,12 +669,11 @@
 /* タイトル部分 */
 .main-visual-text {
     text-align: center;
-    margin-top: -100px; /* 上部に寄せる */
 }
 
 .main-visual-title {
     font-family: 'DotGothic16', monospace;
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 8vw, 4rem);
     font-weight: 400;
     color: #333;
     letter-spacing: 0.2em;
@@ -709,8 +712,12 @@
 
 /* キャラクターイラスト */
 .character-illustration {
-    width: 400px;
-    height: 500px;
+    width: 30vw;
+    max-width: 400px;
+
+    min-width: 200px;
+
+    height: auto;
     position: relative;
 }
 
@@ -735,6 +742,7 @@
     padding-bottom: 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 1rem;
+    cursor: pointer;
 }
 
 .update-header h3 {
@@ -825,16 +833,12 @@
     transform: rotate(180deg);
 }
 
-/* スクロールインジケーター */
 .scroll-indicator {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     align-items: center;
     gap: 20px;
     cursor: pointer;
+    margin-top: 40px; /* ★コンテンツブロックとの間に固定マージンを設ける */
 }
 
 .scroll-text {
@@ -862,12 +866,10 @@
 
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
-    .main-visual-text {
-        margin-top: -50px;
-    }
+
     
     .main-visual-title {
-        font-size: 2.5rem;
+        font-size: 12vw; /* タイトルを画面幅に応じて調整 */
     }
     
     .main-visual-title::before,
@@ -881,8 +883,7 @@
     }
     
     .character-illustration {
-        width: 200px;
-        height: 280px;
+        width: 40vw;
     }
     
     .update-header {
@@ -1102,7 +1103,6 @@
 
 .info-right-column {
     display: flex;
-    align-items: center;
 }
 
 .info-title {
@@ -1191,18 +1191,29 @@
 }
 
 @media (max-width: 767px) {
+    .pickup-section {
+        padding: 2vw 0; /* スマホではパディングを少し小さく */
+    }
+
     .carousel-container { width: 100%; }
     .carousel-viewport { border-radius: 0; }
     .carousel-info-display {
         position: relative; /* 静的配置に変更 */
         background: var(--color-bg);
         backdrop-filter: none;
-        padding: 1rem;
+        padding: 0.5rem;
         border-top: none;
     }
     .info-title { font-size: 1rem; }
-    .info-date { font-size: 0.8rem; }
+    .info-date { 
+        font-size: 0.8rem;
+        text-align: center;
+     }
     .carousel-indicators { bottom: -40px; }
+
+    .info-left-column {
+        margin-right: 1rem;
+    }
 }
 
 

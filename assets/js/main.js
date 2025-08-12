@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const initUpdateHistory = () => {
         const updateHistory = document.querySelector('.update-history');
         if (updateHistory) {
-            const expandButton = updateHistory.querySelector('.expand-button');
+            // クリック対象をヘッダー全体にする
+            const expandButton = updateHistory.querySelector('.update-header');
             expandButton.addEventListener('click', () => {
                 updateHistory.classList.toggle('active');
             });
