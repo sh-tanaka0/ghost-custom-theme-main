@@ -26,10 +26,6 @@
                             {{date format="YYYY.MM.DD"}}
                         </time>
                     </span>
-                    <span class="divider">・</span>
-                    <span class="word-count" data-content="{{{content}}}"></span>
-                    <span class="divider">・</span>
-                    <span class="reading-time">{{reading_time minute="1分" minutes="%分"}}</span>
                 </div>
             </header>
 
@@ -53,8 +49,9 @@
                     <div class="setting-group">
                         <label>フォント</label>
                         <div class="font-selector">
-                            <button data-font="noto-serif" class="active">明朝</button>
-                            <button data-font="noto-sans">ゴシック</button>
+                            <button data-font="noto-sans" title="ゴシック">ゴ</button>
+                            <button data-font="noto-serif" class="active" title="明朝">明</button>
+                            <button data-font="rounded-mplus" title="丸ゴシック">丸</button>
                         </div>
                     </div>
                     
@@ -99,71 +96,84 @@
                             <span>しおりを挟む</span>
                         </button>
                     </div>
+                    
+                    <div class="setting-group">
+                        <button class="scroll-to-top-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                            </svg>
+                            <span>TOPへ戻る</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             {{!-- エピソードナビゲーション --}}
             <nav class="episode-navigation">
-                {{!-- 前の話 --}}
-                <div class="episode-nav-item prev">
-                    <span class="nav-label">前の話</span>
-                    {{#prev_post in="primary_tag"}}
-                        <a href="{{url}}" class="nav-link">
-                            <svg class="nav-arrow left" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                            </svg>
-                            <span class="nav-title">{{title}}</span>
-                        </a>
-                        {{!-- 前の話のティーザー --}}
-                        <div class="episode-teaser prev-teaser">
-                            <p class="teaser-text">{{excerpt words="30"}}...</p>
-                            <span class="continue-reading">← 前の話を読む</span>
-                        </div>
-                    {{else}}
-                        <div class="no-episode">
-                            <svg class="no-episode-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                            </svg>
-                            <span class="no-episode-text">第1話です</span>
-                        </div>
-                    {{/prev_post}}
+                <div class="episode-nav-row series-row">
+                    {{!-- シリーズ一覧 --}}
+                    <div class="episode-nav-item series">
+                        {{#primary_tag}}
+                            <a href="{{url}}" class="series-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                                </svg>
+                                <span>シリーズ一覧</span>
+                            </a>
+                        {{/primary_tag}}
+                    </div>
                 </div>
-                
-                {{!-- シリーズ一覧 --}}
-                <div class="episode-nav-item series">
-                    {{#primary_tag}}
-                        <a href="{{url}}" class="series-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-                            </svg>
-                            <span>シリーズ一覧</span>
-                        </a>
-                    {{/primary_tag}}
-                </div>
-                
-                {{!-- 次の話 --}}
-                <div class="episode-nav-item next">
-                    <span class="nav-label">次の話</span>
-                    {{#next_post in="primary_tag"}}
-                        <a href="{{url}}" class="nav-link">
-                            <span class="nav-title">{{title}}</span>
-                            <svg class="nav-arrow right" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                            </svg>
-                        </a>
-                        {{!-- 次の話のティーザー --}}
-                        <div class="episode-teaser next-teaser">
-                            <p class="teaser-text">{{excerpt words="30"}}...</p>
-                            <span class="continue-reading">続きを読む →</span>
-                        </div>
-                    {{else}}
-                        <div class="no-episode">
-                            <svg class="no-episode-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="no-episode-text">最新話です</span>
-                        </div>
-                    {{/next_post}}
+
+                <div class="episode-nav-row episodes-row">
+                    {{!-- 前の話 --}}
+                    <div class="episode-nav-item prev">
+                        <span class="nav-label">前の話</span>
+                        {{#prev_post in="primary_tag"}}
+                            <a href="{{url}}" class="nav-link">
+                                <svg class="nav-arrow left" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                </svg>
+                                <span class="nav-title">{{title}}</span>
+                            </a>
+                            {{!-- 前の話のティーザー --}}
+                            <div class="episode-teaser prev-teaser">
+                                <p class="teaser-text">{{excerpt characters="250"}}...</p>
+                                <span class="continue-reading">← 前の話を読む</span>
+                            </div>
+                        {{else}}
+                            <div class="no-episode">
+                                <svg class="no-episode-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                                </svg>
+                                <span class="no-episode-text">第1話です</span>
+                            </div>
+                        {{/prev_post}}
+                    </div>          
+                    
+                    {{!-- 次の話 --}}
+                    <div class="episode-nav-item next">
+                        <span class="nav-label">次の話</span>
+                        {{#next_post in="primary_tag"}}
+                            <a href="{{url}}" class="nav-link">
+                                <span class="nav-title">{{title}}</span>
+                                <svg class="nav-arrow right" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                </svg>
+                            </a>
+                            {{!-- 次の話のティーザー --}}
+                            <div class="episode-teaser next-teaser">
+                                <p class="teaser-text">{{excerpt characters="250"}}...</p>
+                                <span class="continue-reading">続きを読む →</span>
+                            </div>
+                        {{else}}
+                            <div class="no-episode">
+                                <svg class="no-episode-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="no-episode-text">最新話です</span>
+                            </div>
+                        {{/next_post}}
+                    </div>
                 </div>
             </nav>
 
@@ -189,8 +199,25 @@
     {{/post}}
 </main>
 
+{{!-- 初期設定のチラつき防止用インラインスタイル --}}
+<script>
+(function() {
+    // ローカルストレージから設定を即座に読み込み
+    const savedFont = localStorage.getItem('novel-font') || 'noto-serif';
+    const savedSize = localStorage.getItem('novel-size') || 'medium';
+    const savedLineHeight = localStorage.getItem('novel-line-height') || 'normal';
+    const savedTheme = localStorage.getItem('novel-theme') || 'default';
+    
+    // body要素に即座に属性を設定
+    document.body.setAttribute('data-font', savedFont);
+    document.body.setAttribute('data-size', savedSize);
+    document.body.setAttribute('data-line-height', savedLineHeight);
+    document.body.setAttribute('data-theme', savedTheme);
+})();
+</script>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=M+PLUS+Rounded+1c:wght@400;500&family=DotGothic16&display=swap');
 
 /* ==========================================================================
    Base & Reset
@@ -437,6 +464,10 @@ body[data-theme="night"] {
     margin-bottom: 20px;
 }
 
+.setting-group:last-child {
+    margin-bottom: 0;
+}
+
 .setting-group label {
     display: block;
     margin-bottom: 10px;
@@ -535,17 +566,60 @@ body[data-theme="night"] {
     color: var(--novel-bg);
 }
 
+/* TOPへ戻るボタン */
+.scroll-to-top-btn {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--novel-border);
+    background: transparent;
+    color: var(--novel-text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.scroll-to-top-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.scroll-to-top-btn:hover {
+    background: var(--novel-accent);
+    color: var(--novel-bg);
+    border-color: var(--novel-accent);
+}
+
 /* ==========================================================================
    Episode Navigation
    ========================================================================== */
 .episode-navigation {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
     margin: 80px 0;
     padding: 40px 0;
     border-top: 1px solid var(--novel-border);
     border-bottom: 1px solid var(--novel-border);
+}
+
+.episode-nav-row {
+    display: flex;
+}
+
+.series-row {
+    justify-content: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--novel-border);
+}
+
+.episodes-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
 }
 
 .episode-nav-item {
@@ -627,12 +701,47 @@ body[data-theme="night"] {
     color: var(--novel-accent);
 }
 
-/* 次話ティーザー */
-.next-episode-teaser {
+/* 前後の話がない場合の表示 */
+.no-episode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    background: linear-gradient(135deg, transparent, var(--novel-bg));
+    border-radius: 8px;
+    border: 1px dashed var(--novel-border);
+}
+
+.no-episode-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--novel-text-secondary);
+    opacity: 0.3;
+}
+
+.no-episode-text {
+    font-size: 0.875rem;
+    color: var(--novel-text-secondary);
+    font-style: italic;
+    letter-spacing: 0.05em;
+}
+
+/* エピソードティーザー共通スタイル */
+.episode-teaser {
     margin-top: 16px;
     padding: 16px;
     background: linear-gradient(to bottom, var(--novel-bg), transparent);
-    border-left: 2px solid var(--novel-border);
+    border-radius: 8px;
+    position: relative;
+}
+
+.prev-teaser {
+    text-align: left;
+}
+
+.next-teaser {
+    text-align: right;
 }
 
 .teaser-text {
@@ -647,6 +756,12 @@ body[data-theme="night"] {
     font-size: 0.75rem;
     color: var(--novel-accent);
     font-weight: 500;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.continue-reading:hover {
+    opacity: 0.7;
 }
 
 /* ==========================================================================
@@ -718,6 +833,10 @@ body[data-font="noto-serif"] .novel-content {
     font-family: 'Noto Serif JP', serif;
 }
 
+body[data-font="rounded-mplus"] .novel-content {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
 /* ==========================================================================
    文字サイズ切り替え
    ========================================================================== */
@@ -774,8 +893,25 @@ body[data-line-height="wide"] .novel-content {
     }
     
     .episode-navigation {
+        gap: 20px;
+    }
+
+    .series-row {
+        padding-bottom: 15px;
+    }
+    
+    .episodes-row {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 20px;
+    }
+    
+    /* モバイルでは前の話を上に表示 */
+    .episode-nav-item.prev {
+        order: 1;
+    }
+    
+    .episode-nav-item.next {
+        order: 2;
     }
     
     .episode-nav-item.series {
@@ -792,92 +928,6 @@ body[data-line-height="wide"] .novel-content {
         height: 44px;
     }
     
-    body[data-size="small"] .novel-content {
-        font-size: 13px;
-    }
-    
-    body[data-size="medium"] .novel-content {
-        font-size: 15px;
-    }
-    
-    body[data-size="large"] .novel-content {
-        font-size: 17px;
-    }
-}
-
-/* ==========================================================================
-   Episode Navigation - 修正・追加部分
-   ========================================================================== */
-
-/* 前後の話がない場合の表示 */
-.no-episode {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding: 20px;
-    background: linear-gradient(135deg, transparent, var(--novel-bg));
-    border-radius: 8px;
-    border: 1px dashed var(--novel-border);
-}
-
-.no-episode-icon {
-    width: 32px;
-    height: 32px;
-    color: var(--novel-text-secondary);
-    opacity: 0.3;
-}
-
-.no-episode-text {
-    font-size: 0.875rem;
-    color: var(--novel-text-secondary);
-    font-style: italic;
-    letter-spacing: 0.05em;
-}
-
-/* エピソードティーザー共通スタイル（前話・次話両方） */
-.episode-teaser {
-    margin-top: 16px;
-    padding: 16px;
-    background: linear-gradient(to bottom, var(--novel-bg), transparent);
-    border-radius: 8px;
-    position: relative;
-}
-
-/* 前話ティーザー専用 */
-.prev-teaser {
-    border-right: 2px solid var(--novel-border);
-    text-align: left;
-}
-
-/* 次話ティーザー専用 */
-.next-teaser {
-    border-left: 2px solid var(--novel-border);
-    text-align: right;
-}
-
-.teaser-text {
-    font-size: 0.875rem;
-    line-height: 1.6;
-    color: var(--novel-text-secondary);
-    margin: 0 0 8px;
-    opacity: 0.8;
-}
-
-.continue-reading {
-    font-size: 0.75rem;
-    color: var(--novel-accent);
-    font-weight: 500;
-    display: inline-block;
-    transition: all 0.3s ease;
-}
-
-.continue-reading:hover {
-    opacity: 0.7;
-}
-
-/* レスポンシブ調整 */
-@media (max-width: 768px) {
     .no-episode {
         padding: 16px;
     }
@@ -890,6 +940,18 @@ body[data-line-height="wide"] .novel-content {
     .prev-teaser,
     .next-teaser {
         text-align: left;
+    }
+    
+    body[data-size="small"] .novel-content {
+        font-size: 13px;
+    }
+    
+    body[data-size="medium"] .novel-content {
+        font-size: 15px;
+    }
+    
+    body[data-size="large"] .novel-content {
+        font-size: 17px;
     }
 }
 
@@ -1049,7 +1111,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // ==========================================================================
-    // 保存した設定を読み込み
+    // TOPへ戻るボタン
+    // ==========================================================================
+    document.querySelector('.scroll-to-top-btn')?.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        settingsContent?.classList.remove('active');
+    });
+    
+    // ==========================================================================
+    // 保存した設定を読み込み（DOMContentLoaded時）
     // ==========================================================================
     const savedFont = localStorage.getItem('novel-font') || 'noto-serif';
     const savedSize = localStorage.getItem('novel-size') || 'medium';
@@ -1057,7 +1130,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const savedTheme = localStorage.getItem('novel-theme') || 'default';
     
     // フォント
-    document.body.setAttribute('data-font', savedFont);
     const fontBtn = document.querySelector(`.font-selector button[data-font="${savedFont}"]`);
     if (fontBtn) {
         document.querySelectorAll('.font-selector button').forEach(b => b.classList.remove('active'));
@@ -1065,7 +1137,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // サイズ
-    document.body.setAttribute('data-size', savedSize);
     const sizeBtn = document.querySelector(`.size-selector button[data-size="${savedSize}"]`);
     if (sizeBtn) {
         document.querySelectorAll('.size-selector button').forEach(b => b.classList.remove('active'));
@@ -1073,7 +1144,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // 行間
-    document.body.setAttribute('data-line-height', savedLineHeight);
     const lineHeightBtn = document.querySelector(`.line-height-selector button[data-line-height="${savedLineHeight}"]`);
     if (lineHeightBtn) {
         document.querySelectorAll('.line-height-selector button').forEach(b => b.classList.remove('active'));
@@ -1081,7 +1151,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // テーマ
-    document.body.setAttribute('data-theme', savedTheme);
     const themeBtn = document.querySelector(`.theme-selector button[data-theme="${savedTheme}"]`);
     if (themeBtn) {
         document.querySelectorAll('.theme-selector button').forEach(b => b.classList.remove('active'));
