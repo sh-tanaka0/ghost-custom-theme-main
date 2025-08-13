@@ -1,0 +1,739 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@400;700&family=Rounded+M+1c:wght@400;700&display=swap');
+
+/* 基本スタイル */
+.site-main {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.post-full {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* ヘッダー部 */
+.post-feature-image-wrapper {
+    max-width: 550px; /* 800pxから縮小 */
+    margin: 0 auto 30px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.post-full-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* メインコンテンツラッパー */
+.main-content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* コンテンツエリア（タイトルと本文） */
+.post-header-and-content {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-header-content {
+    margin-bottom: 40px;
+}
+
+.post-full-title {
+    font-size: clamp(1.875rem, 4vw, 3rem);
+    font-weight: 700;
+    margin: 20px 0;
+    line-height: 1.3;
+    color: #1a1a1a;
+}
+
+.post-full-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+.post-full-meta i {
+    margin-right: 5px;
+}
+
+.tag-chip {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #f3f4f6;
+    border-radius: 20px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #4b5563;
+    transition: all 0.3s;
+    font-size: 0.875rem;
+}
+
+.tag-chip:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+/* 本文エリア */
+.gh-content {
+    position: relative;
+}
+
+/* 読みやすさ設定パネル（常に右下に固定） */
+.reading-settings-panel {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 100;
+    opacity: 1; /* 初期状態は不透明 */
+    transition: opacity 0.3s ease;
+}
+
+.reading-settings-panel.scrolled {
+    opacity: 0.3; /* スクロール中に半透明 */
+}
+
+.reading-settings-panel:hover {
+    opacity: 1; /* ホバー時は常に不透明 */
+}
+
+.settings-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.settings-toggle:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.settings-content {
+    display: none;
+    position: absolute;
+    bottom: 54px;
+    right: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    min-width: 220px;
+    border: 1px solid #e5e7eb;
+}
+
+.settings-content.active {
+    display: block;
+}
+
+.settings-title {
+    margin: 0 0 16px;
+    font-size: 0.95rem;
+    color: #374151;
+    font-weight: 600;
+}
+
+.setting-group {
+    margin-bottom: 18px;
+}
+
+.setting-group:last-child {
+    margin-bottom: 0;
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+.font-selector,
+.size-selector {
+    display: flex;
+    gap: 4px;
+}
+
+.font-selector button,
+.size-selector button {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #374151;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.2s;
+}
+
+.font-selector button:hover,
+.size-selector button:hover {
+    border-color: #9ca3af;
+}
+
+.font-selector button.active,
+.size-selector button.active {
+    background: #4b5563;
+    color: #fff;
+    border-color: #4b5563;
+}
+
+.scroll-to-top-btn {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    color: #374151;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    margin-top: 10px;
+    font-size: 0.8rem;
+}
+.scroll-to-top-btn:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+}
+.scroll-to-top-btn i {
+    margin-right: 5px;
+}
+
+
+/* 本文エリア */
+.post-full-content {
+    line-height: 2; /* 変更 */
+    letter-spacing: 0.1em; /* 変更 */
+    margin-bottom: 60px;
+    color: #1f2937;
+    font-family: 'Noto Sans JP', sans-serif; /* デフォルトフォント */
+}
+/* 埋め込みコンテンツのキャプションスタイル */
+.kg-embed-card figcaption {
+    text-align: left; /* テキストを中央揃えに */
+    color: #888;         /* 文字色をグレーに */
+    font-size: 0.8em;   /* 文字サイズを小さく */
+}
+
+.kg-embed-card #twitter-widget-0 {
+    margin-top: 30px;
+}
+
+
+/* 埋め込みコンテンツのレスポンシブ対応 */
+
+@media (max-width: 767px) {
+.kg-embed-card,
+.kg-embed-card iframe {
+    max-width: 100% !important; /* 親要素の幅を超えないようにする */
+    width: 100% !important;     /* 横幅を100%に */
+    box-sizing: border-box;
+}
+
+.kg-embed-card figcaption {
+    text-align: center; /* テキストを中央揃えに */
+    color: #888;         /* 文字色をグレーに */
+    font-size: 0.8em;   /* 文字サイズを小さく */
+    margin-top: 8px;      /* 埋め込み要素との間に余白を追加 */
+}
+
+.kg-embed-card #twitter-widget-0 {
+    margin-top: 30px;
+    height: 400px !important; /* 高さを400pxに固定 */
+}
+}
+
+/* 本文中の画像 */
+.post-full-content .kg-image-card img,
+.post-full-content .kg-gallery-image img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 6px;
+}
+
+.post-full-content .kg-image-card figcaption {
+    font-size: 95%;
+    opacity: .7;
+    margin: 0 auto 1.5em;
+    text-align: center;
+    font-size: 12px;
+}
+
+
+.post-full-content h2 {
+    margin-top: 48px;
+    margin-bottom: 24px;
+    font-size: 1.875rem;
+    font-weight: 600;
+}
+
+.post-full-content h3 {
+    margin-top: 36px;
+    margin-bottom: 18px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* 本文中のリンク */
+.post-full-content  a {
+    color: 	#333132; /* リンク色 */
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+@media (max-width: 767px) {
+    .post-full-content h2 {
+        font-size: 20px;
+    }
+    
+    .post-full-content h3 {
+        font-size: 18px;
+    }
+}
+
+
+
+ /* ==========================================================================
+    Support Section - 寄付セクション (最終版)
+    ========================================================================== */
+
+.support-section {
+    max-width: 600px; /* 少しコンパクトに */
+    margin: 80px auto;
+    text-align: center;
+}
+
+/* 以前の .support-card のスタイルを撤廃し、シンプルな構成に */
+
+/* アイコンをサイトの雰囲気に合わせた繊細なSVGに変更 */
+.support-icon-svg {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 24px;
+    color: var(--color-text-secondary);
+    opacity: 0.5;
+}
+
+/* タイトルにDotGothic16を適用 */
+.support-title {
+    font-family: 'DotGothic16', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+    color: var(--color-text);
+    font-weight: 400;
+}
+
+.support-description {
+    color: var(--color-text-secondary);
+    margin-bottom: 32px;
+    line-height: 1.8;
+    font-size: 0.9rem;
+}
+
+/* ボタンのデザインを他のセクションと統一 */
+.support-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-border-hover, #ccc);
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.support-btn:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+    border-color: var(--color-text);
+}
+
+.support-btn .btn-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* ==========================================================================
+   Article Comments Section - 記事コメントセクション
+   ========================================================================== */
+
+.article-comments {
+    /* 上下のセクションとの間に「余白の美」を確保 */
+    padding: 80px 0;
+    margin-top: 60px;
+    position: relative;
+}
+
+/* セクションの区切りとして、儚く繊細な境界線を上部に追加 */
+.article-comments::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.15); /* 真っ黒ではない、抑制の効いたダークグレー */
+}
+
+.article-comments-container {
+    /* 記事本文など、他のコンテンツと幅を合わせる */
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.article-comments-title {
+    /* コンセプトに合わせてDotGothic16フォントを指定 */
+    font-family: 'DotGothic16', sans-serif;
+    font-size: 1.5rem; /* 24px */
+    font-weight: 400; /* 通常の太さ */
+    
+    /* 文字間を広くとり、抜け感と風格を演出 */
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    
+    /* アクセントカラーであるダークグレー */
+    color: #4a4a4a;
+    margin: 0 0 15px;
+}
+
+.article-comments-meta {
+    font-size: 0.875rem; /* 14px */
+    color: #7d7d7d; /* 少し明るめのグレーで優しく */
+    margin-bottom: 40px;
+}
+
+/* {{comment_count}} が出力するspanのスタイル */
+.comment-count-text {
+    /* シンプルなゴシック体を想定 */
+    font-family: sans-serif;
+}
+
+/*
+  Ghostが生成するコメント欄本体のコンテナ(.gh-comments-container)への微調整
+  !importantが必要になる場合があります。
+*/
+.gh-comments-container {
+    text-align: left; /* コメント欄の内部は左揃えにリセット */
+    margin-top: 30px;
+}
+
+/* --- ダークモード対応 (必要に応じて調整) --- */
+.dark-mode .article-comments::before {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.dark-mode .article-comments-title {
+    color: #b0b0b0;
+}
+
+.dark-mode .article-comments-meta {
+    color: #8a8a8a;
+}
+
+
+/* フッター */
+.post-footer {
+    max-width: 800px;
+    margin: 60px auto 0;
+    padding: 40px 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.share-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.share-label {
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.share-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.share-btn:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.share-btn.twitter { background: #1da1f2; }
+.share-btn.facebook { background: #1877f2; }
+.share-btn.linkedin { background: #0077b5; }
+.share-btn.copy-link { background: #6b7280; }
+
+/* ダークモード対応 */
+.dark-mode .post-full-title {
+    color: #e5e5e5;
+}
+
+.dark-mode .post-full-meta {
+    color: #9ca3af;
+}
+
+.dark-mode .tag-chip {
+    background: #2d2d2d;
+    color: #9ca3af;
+    border: 1px solid #404040;
+}
+
+.dark-mode .tag-chip:hover {
+    background: #404040;
+    color: #e5e5e5;
+}
+
+.dark-mode .settings-toggle {
+    background: #2d2d2d;
+    border-color: #404040;
+    color: #e5e5e5;
+}
+
+.dark-mode .settings-content {
+    background: #2d2d2d;
+    border-color: #404040;
+}
+
+.dark-mode .settings-title {
+    color: #e5e5e5;
+}
+
+.dark-mode .setting-group label {
+    color: #e5e5e5;
+}
+
+.dark-mode .font-selector button,
+.dark-mode .size-selector button {
+    background: #1a1a1a;
+    border-color: #404040;
+    color: #9ca3af;
+}
+
+.dark-mode .font-selector button:hover,
+.dark-mode .size-selector button:hover {
+    border-color: #6b7280;
+}
+
+.dark-mode .font-selector button.active,
+.dark-mode .size-selector button.active {
+    background: #6b7280;
+    color: #e5e5e5;
+    border-color: #6b7280;
+}
+
+.dark-mode .post-full-content {
+    color: #e5e5e5;
+}
+
+.dark-mode .post-full-content h2,
+.dark-mode .post-full-content h3 {
+    color: #e5e5e5;
+}
+.dark-mode .post-full-content a {
+    color: #9ca3af;
+}
+
+.dark-mode .support-card {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    border-color: #404040;
+}
+
+.dark-mode .support-icon {
+    background: #2d2d2d;
+}
+
+.dark-mode .support-card h3 {
+    color: #e5e5e5;
+}
+
+.dark-mode .support-card p {
+    color: #9ca3af;
+}
+
+.dark-mode .related-post-card {
+    background: #2d2d2d;
+    border-color: #404040;
+}
+
+.dark-mode .related-post-content a {
+    color: #e5e5e5;
+}
+
+.dark-mode .related-post-content a:hover {
+    color: #9ca3af;
+}
+
+.dark-mode .related-post-content p {
+    color: #9ca3af;
+}
+
+.dark-mode .related-post-content time {
+    color: #6b7280;
+}
+
+.dark-mode .post-footer {
+    border-top-color: #404040;
+}
+
+.dark-mode .share-label {
+    color: #9ca3af;
+}
+
+/* レスポンシブ: タブレット (768px - 1299px) */
+@media (min-width: 768px) and (max-width: 1299px) {
+    .related-posts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* レスポンシブ: スマホ (767px以下) */
+@media (max-width: 767px) {
+    .site-main {
+        padding: 15px;
+    }
+    
+    .post-full-title {
+        font-size: 1.75rem;
+    }
+    
+    .post-full-meta {
+        font-size: 0.875rem;
+        gap: 15px;
+    }
+    
+    .reading-settings-panel {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .settings-toggle {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .settings-content {
+        width: 260px;
+        max-width: calc(100vw - 40px);
+        bottom: 50px;
+    }
+    
+    .post-full-content {
+        font-size: 1rem;
+    }
+    
+    .support-card {
+        padding: 32px 24px;
+    }
+    
+    .related-posts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .share-buttons {
+        flex-wrap: wrap;
+    }
+}
+
+
+/* インタビュアーの発言スタイル */
+.post-full-content p.interviewer {
+    position: relative;
+    padding-left: 1.5em; /* テキストのインデント */
+    margin-left: 1em;   /* 全体のインデント */
+    padding-bottom: 1em;
+    margin-bottom: 1.5em;
+    margin-top: 1.5em;
+    text-decoration: underline;
+}
+
+.post-full-content p.interviewer::before {
+    content: "—"; /* 左側のアクセント記号 */
+    position: absolute;
+    left: 0;
+    top: 0.1em; /* 位置を微調整 */
+    color: #888;
+    font-weight: bold;
+}
+
+
+/* フォント切り替え */
+body[data-font="noto-sans"] .post-full-content {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+body[data-font="noto-serif"] .post-full-content {
+    font-family: 'Noto Serif JP', serif;
+}
+body[data-font="rounded-mplus"] .post-full-content {
+    font-family: 'Rounded M+ 1c', sans-serif;
+}
+
+
+/* === 文字サイズ切り替え（PC/スマホ別） === */
+
+/* デフォルトの文字サイズ（中サイズ） */
+.post-full-content {
+    font-size: 14px; /* スマホの「中」サイズ */
+}
+@media (min-width: 768px) {
+    .post-full-content {
+        font-size: 16px; /* PCの「中」サイズ */
+    }
+}
+
+/* --- スマホ用の文字サイズ設定 (767px以下) --- */
+@media (max-width: 767px) {
+    body[data-size="small"] .post-full-content {
+        font-size: 12px;
+    }
+    body[data-size="medium"] .post-full-content {
+        font-size: 14px;
+    }
+    body[data-size="large"] .post-full-content {
+        font-size: 16px;
+    }
+}
+
+/* --- PC用の文字サイズ設定 (768px以上) --- */
+@media (min-width: 768px) {
+    body[data-size="small"] .post-full-content {
+        font-size: 14px;
+    }
+    body[data-size="medium"] .post-full-content {
+        font-size: 16px;
+    }
+    body[data-size="large"] .post-full-content {
+        font-size: 18px;
+    }
+}
