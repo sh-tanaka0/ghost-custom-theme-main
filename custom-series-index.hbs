@@ -1,0 +1,238 @@
+{{! 
+  ファイル名: page-sakuhin.hbs
+  用途: 特定の作品のまとめページ用のカスタムテンプレート
+  更新: 参照テンプレートの構成に合わせて構造を調整
+}}
+
+{{! デフォルトのレイアウトを継承します }}
+{{!< default}}
+
+{{! ページコンテキストを開始。このテンプレート全体をpageでラップします。 }}
+{{#page}}
+
+{{! bodyに専用クラスを付与して、このテンプレートのみにスタイルが適用されるようにします }}
+{{#contentFor "body_class"}}sakuhin-template{{/contentFor}}
+
+<main id="site-main" class="site-main">
+    <article class="sakuhin-article {{post_class}}">
+
+        {{! 3.1 作品紹介エリア }}
+        <header class="sakuhin-header gh-canvas">
+            {{#if feature_image}}
+                {{! ① 作品キービジュアル }}
+                <figure class="sakuhin-feature-image">
+                    <img
+                        srcset="{{img_url feature_image size="s"}} 300w,
+                                {{img_url feature_image size="m"}} 600w,
+                                {{img_url feature_image size="l"}} 1000w"
+                        sizes="(max-width: 1000px) 90vw, 800px"
+                        src="{{img_url feature_image size="m"}}"
+                        alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                    />
+                </figure>
+            {{/if}}
+            
+            {{! ② 作品タイトル }}
+            <h1 class="sakuhin-title">{{title}}</h1>
+
+             {{! ページ設定の「Excerpt」に入力した内容がここに表示されます }}
+            {{#if excerpt}}
+                <p class="sakuhin-excerpt">{{excerpt}}</p>
+            {{/if}}
+
+            {{! ③ 作品概要 (デフォルトのスタイルを継承するクラスを追加) }}
+            <section class="sakuhin-content gh-content">
+                {{{html}}}
+            </section>
+        </header>
+
+        {{! 3.2 各話リストエリア }}
+        {{! 
+            [重要] ここで各話の投稿を読み込みます。
+            filterに指定する内部タグ（例: hash-hanagori）を、
+            あなたの作品に合わせて変更してください。
+        }}
+        {{#get "posts" filter="tags:[{{primary_tag.slug}}]" include="authors" order="published_at asc" as |episodes|}}
+            {{#if episodes}}
+            <section class="episode-list-section gh-canvas">
+                <div class="episode-list">
+                    {{#foreach episodes}}
+                        <a href="{{url}}" class="episode-item">
+                            <div class="episode-item-inner">
+                                <h2 class="episode-title">{{title}}</h2>
+                                <div class="episode-date">
+                                    <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY.MM.DD"}}</time>
+                                </div>
+                                <p class="episode-excerpt">{{excerpt characters="300"}}...</p>
+                            </div>
+                        </a>
+                    {{/foreach}}
+                </div>
+                 {{! 3.3 ページネーション }}
+                {{pagination}}
+            </section>
+            {{/if}}
+        {{/get}}
+
+    </article>
+</main>
+
+{{/page}}
+
+
+{{! ==========================================================================
+    Custom Template CSS: Sakuhin Page
+    ========================================================================== }}
+<style>
+    :root {
+        --color-bg: #f7faf9; /* 背景色: ごく淡いミントグリーン */
+        --color-text-dark: #3a3a3a; /* テキスト色: ダークグレー */
+        --color-text-light: #777; /* テキスト色: 明るいグレー */
+        --color-border: #eef2f1; /* 境界線の色 */
+        --font-title: 'DotGothic16', sans-serif;
+        --font-body: 'Noto Sans JP', sans-serif;
+    }
+
+    /* このテンプレートが適用された時だけbodyの背景色を変更 */
+    .sakuhin-template {
+        background-color: var(--color-bg);
+    }
+
+    .sakuhin-template .site-main {
+        padding-top: 4vw;
+        padding-bottom: 4vw;
+    }
+
+    /* 3.1 作品紹介エリア */
+    .sakuhin-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    /* ① 作品キービジュアル */
+    .sakuhin-feature-image {
+        margin: 0 auto 40px;
+    }
+    .sakuhin-feature-image img {
+        max-width: 400px;
+        height: auto;
+    }
+
+    /* ② 作品タイトル */
+    .sakuhin-title {
+        font-family: var(--font-title);
+        font-size: 2.8rem;
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        color: var(--color-text-dark);
+        margin: 0 0 20px;
+    }
+
+    /* [NEW] ③ 作品概要（抜粋） */
+    .sakuhin-excerpt {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.8;
+        color: var(--color-text-light);
+        max-width: 620px;
+        margin: 0 auto 30px;
+    }
+
+    /* ③ 作品概要 */
+    .sakuhin-content {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.8;
+        color: var(--color-text-light);
+    }
+    /* gh-contentクラスによって中央寄せや最大幅がテーマから継承されることを期待 */
+    .sakuhin-content p:last-of-type {
+        margin-bottom: 0;
+    }
+
+    /* 3.2 各話リストエリア */
+    .episode-list-section {
+        /* gh-canvasによって左右のパディングが確保される */
+    }
+    .episode-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-width: 800px; /* リストの最大幅を制限 */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .episode-item {
+        display: block;
+        padding: 30px 20px;
+        border-bottom: 1px solid var(--color-border);
+        text-decoration: none;
+        color: inherit;
+        transition: background-color 0.3s ease;
+    }
+
+    .episode-item:first-of-type {
+        border-top: 1px solid var(--color-border);
+    }
+
+    .episode-item:hover {
+        background-color: #fff;
+    }
+
+    .episode-item-inner {
+        text-align: left;
+    }
+
+    .episode-title {
+        font-family: var(--font-body);
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin: 0 0 8px;
+        color: var(--color-text-dark);
+    }
+
+    .episode-date {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        color: var(--color-text-light);
+        margin-bottom: 12px;
+    }
+
+    .episode-excerpt {
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        line-height: 1.7;
+        color: var(--color-text-dark);
+        margin: 0;
+    }
+
+    /* 3.3 ページネーション */
+    .pagination {
+        text-align: center;
+        padding: 40px 0;
+        font-family: var(--font-body);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pagination a {
+        color: var(--color-text-light);
+        text-decoration: none;
+    }
+
+    .pagination a:hover {
+        color: var(--color-text-dark);
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 767px) {
+        .sakuhin-title {
+            font-size: 2rem;
+        }
+        .episode-title {
+            font-size: 1.2rem;
+        }
+    }
+</style>
