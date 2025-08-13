@@ -872,9 +872,12 @@
         font-size: 12vw; /* タイトルを画面幅に応じて調整 */
     }
     
-    .main-visual-title::before,
+    .main-visual-title::before {
+        left: -1.5rem; /* 左側のドットを少し近づける */
+    }
+
     .main-visual-title::after {
-        content: none;
+        right: -1.5rem; /* 右側のドットを少し近づける */
     }
     
     .main-visual-content {
@@ -902,7 +905,7 @@
     }
     
     .scroll-indicator {
-        bottom: 20px;
+        margin-top: 40px;
     }
 }
 
@@ -941,7 +944,7 @@
 
     .update-content {
         /* スマホでは3件表示時の高さを微調整 */
-        max-height: 95px;
+        max-height: 180px;
     }
 }
 
@@ -999,7 +1002,7 @@
 .carousel-viewport {
     overflow: hidden;
     width: 100%;
-    border-radius: 12px; /* 少し丸みを強くして柔らかい印象に */
+    border-radius: 4px; /* 少し丸みを強くして柔らかい印象に */
     background-color: rgba(0, 0, 0, 0.02);
     aspect-ratio: 16 / 9; /* アスペクト比を16:9に設定 */
 }
@@ -1148,7 +1151,7 @@
     background-color: #b8b8b8;
 }
 .indicator-bar.active {
-    background-color: var(--color-text-secondary);
+    background-color: #333132;
 }
 
 /* --- ナビゲーション矢印 --- */
@@ -1201,7 +1204,7 @@
         padding: 1.5rem 1rem;
     }
     .info-title { 
-        font-size: 1.1rem; 
+        font-size: 1rem; 
     }
     .carousel-indicators { 
         bottom: -40px; 
@@ -1216,8 +1219,7 @@
 
 .posts-section {
     padding: 50px 0;
-    /* 他のセクションとの区切りを明確にする */
-    background-color: #FFFEF9; /* 明るい背景色 */
+    background-color: transparent; 
 }
 
 /* .section-title は既存のスタイルを再利用します */
@@ -1259,7 +1261,7 @@
     aspect-ratio: 16 / 9;
     object-fit: cover;
     /* 画像の角を丸める */
-    border-radius: 8px;
+    border-radius: 4px;
     margin-bottom: 15px; /* 画像とタイトルの間に余白 */
 }
 
@@ -1458,10 +1460,13 @@
 }
 
 .subsection-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
     margin-bottom: 20px;
     border-bottom: 2px solid #eee;
     padding-bottom: 10px;
+    font-family: 'DotGothic16', monospace;
 }
 
 /* --- 進行中の小説 (novel-card) --- */
@@ -1498,7 +1503,6 @@
     width: 160px;
     position: relative;
     overflow: hidden;
-    border-radius: 8px;
 }
 
 /* 画像のホバー用オーバーレイ */
@@ -1551,7 +1555,7 @@
     height: auto;
     aspect-ratio: 3 / 4; /* 縦長の比率 */
     object-fit: cover;
-    border-radius: 8px; /* 角丸 */
+    border-radius: 4px; /* 角丸 */
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     transition: transform 0.4s ease;
     position: relative;
@@ -1644,7 +1648,8 @@
 }
 
 .novel-card:hover .novel-card-title {
-    color: #5856d6;
+    color: #250D00;
+    font-weight: 700; /* ホバー時に色と太さを変更 */
 }
 
 .novel-card-excerpt {
@@ -1768,7 +1773,7 @@
     height: 180px; /* より横長のバナーに */
     position: relative;
     display: block;
-    border-radius: 16px;
+    border-radius: 4px;
     overflow: hidden;
     color: #fff;
     text-decoration: none;
@@ -1929,73 +1934,57 @@
 
 
 
+/* ==========================================================================
+   Shorts Section - 短編集セクション (最終版)
+   ========================================================================== */
+
 /* --- 短編集 (shorts-list) --- */
 .shorts-list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: grid;
-    /* PCでは6列に変更（より見やすく） */
     grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
+    gap: 15px; /* 少し詰めて繊細な印象に */
 }
 
 .shorts-item {
     position: relative;
-    transition: transform 0.2s ease;
-}
-
-.shorts-item:hover {
-    transform: translateY(-2px);
 }
 
 .shorts-item a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 20px;
+    padding: 15px;
     min-height: 120px;
-    border-radius: 12px;
-    color: #333;
+    border-radius: 4px; /* 角丸は維持 */
+    color: var(--color-text-secondary);
     text-decoration: none;
-    background: #fff;
-    border: 1px solid #f0f0f0;
+    /* 背景、枠線、影をすべて削除 */
+    background: transparent;
+    border: 1px solid transparent; /* ホバー時のレイアウト崩れを防ぐための透明な線 */
     transition: all 0.3s ease;
     position: relative;
-    overflow: hidden;
 }
 
-/* ホバー時のグラデーション効果 */
-.shorts-item a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, transparent 0%, rgba(88, 86, 214, 0.05) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-}
-
+/* 提案: ホバー時に背景が優しく浮かび上がる効果 */
 .shorts-item a:hover {
-    border-color: #5856d6;
-    box-shadow: 0 4px 12px rgba(88, 86, 214, 0.15);
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.04);
 }
 
-.shorts-item a:hover::before {
-    opacity: 1;
-}
+/* 古いグラデーション効果は削除 */
+/* .shorts-item a::before { ... } */
 
 .shorts-title {
     font-weight: 600;
     line-height: 1.4;
     margin: 0 0 auto 0;
-    font-size: 0.95rem;
-    color: #2c3e50;
-    transition: color 0.2s ease;
-    /* タイトルが長い場合の処理 */
+    font-size: 0.9rem;
+    color: var(--color-text); /* 変数で色を統一 */
+    position: relative;
+    text-decoration: none;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -2003,63 +1992,46 @@
     text-overflow: ellipsis;
 }
 
-.shorts-item a:hover .shorts-title {
-    color: #5856d6;
+/* 提案: タイトルホバー時の下線効果 */
+.shorts-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-text-secondary);
+    transition: width 0.3s ease;
+}
+.shorts-item a:hover .shorts-title::after {
+    width: 100%;
 }
 
 .shorts-date {
     font-size: 0.75rem;
-    color: #999;
+    color: var(--color-text-tertiary, #aaa); /* 変数で色を統一 */
     margin-top: 12px;
     font-weight: 400;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
 }
 
+/* 不要な強調スタイルを削除 */
+/* .shorts-item:nth-child(6n+1) a { ... } */
 
-
-/* 各行の最初のアイテムに微妙な強調 */
-.shorts-item:nth-child(6n+1) a {
-    background: linear-gradient(135deg, #fafafa 0%, #fff 100%);
-}
-
-/* ダークモード対応 */
-.dark-mode .shorts-item a {
-    background: #1a1a1a;
-    border-color: #2a2a2a;
-    color: #e0e0e0;
-}
-
+/* --- ダークモード対応 --- */
 .dark-mode .shorts-item a:hover {
-    border-color: #5856d6;
-    background: #222;
-}
-
-.dark-mode .shorts-title {
-    color: #e0e0e0;
-}
-
-.dark-mode .shorts-item a:hover .shorts-title {
-    color: #7c7adb;
-}
-
-.dark-mode .shorts-date {
-    color: #666;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 /* --- 短編集レスポンシブ対応 --- */
 @media (max-width: 1200px) {
     .shorts-list {
-        /* 中型画面では4列 */
         grid-template-columns: repeat(4, 1fr);
     }
 }
 
 @media (max-width: 992px) {
     .shorts-list {
-        /* タブレットでは3列 */
         grid-template-columns: repeat(3, 1fr);
         gap: 15px;
     }
@@ -2071,7 +2043,6 @@
 
 @media (max-width: 767px) {
     .shorts-list {
-        /* スマホでは2列 */
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
@@ -2088,14 +2059,14 @@
     }
 }
 
+
 /* ==========================================================================
    Critique Section - 批評・レビューセクション
    ========================================================================== */
 
 .critique-section {
     padding: 50px 0;
-    /* 他のセクションとの区切りを明確にする */
-    background-color: #FFFEF9; /* 明るい背景色 */
+    background-color: transparent;
 }
 
 /* .section-title は既存のスタイルを再利用します */
@@ -2139,7 +2110,7 @@
     aspect-ratio: 16 / 9;
     object-fit: cover;
     /* 画像の角を丸める */
-    border-radius: 8px;
+    border-radius: 4px;
     margin-bottom: 15px; /* 画像とタイトルの間に余白 */
     position: relative;
     z-index: 1;
@@ -2298,13 +2269,14 @@
 }
 
 /* ==========================================================================
-   Enhanced Subscription CTA Section - 強化版購読促進CTAセクション
+   Subscription CTA Section - 購読促進CTAセクション (最終版・改)
    ========================================================================== */
+
 .subscription-cta-section {
-    padding: 80px 20px;
+    padding: 100px 20px; /* 上下の余白を広げ、セクションの存在感を出す */
     position: relative;
     overflow: hidden;
-    background-color: #FFFEF9; 
+    background-color: transparent; 
 }
 
 .cta-container {
@@ -2313,54 +2285,53 @@
     position: relative;
 }
 
+/* 「招待状」のように、領域を優しく定義 */
 .cta-content {
     max-width: 680px;
     margin: 0 auto;
     text-align: center;
     padding: 60px 40px;
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-    position: relative;
+    /* ごく僅かな背景色と境界線を追加 */
+    background: var(--color-bg-cta, rgba(255, 255, 255, 0.5));
+    border: 1px solid var(--color-border-cta, rgba(0, 0, 0, 0.05));
+    border-radius: 16px; /* 少し角を丸める */
+    transition: all 0.3s ease;
 }
 
-/* 装飾的な背景パターン（控えめ） */
-.cta-content::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    pointer-events: none;
+.cta-content:hover {
+    /* ホバー時に僅かに浮き上がる効果 */
+    border-color: var(--color-border-cta-hover, rgba(0, 0, 0, 0.08));
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
 }
+
 
 .cta-badge {
     display: inline-block;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #5856d6;
-    background: rgba(88, 86, 214, 0.1);
+    color: var(--color-text-secondary);
+    background: none;
+    margin-bottom: 20px;
+    border: 1px solid var(--color-border, #eee);
     padding: 6px 16px;
     border-radius: 20px;
-    margin-bottom: 20px;
 }
 
 .cta-title {
-    font-size: 2.2rem;
-    font-weight: 700;
+    font-family: 'DotGothic16', monospace;
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    font-weight: 400;
     margin: 0 0 20px;
-    color: #1a1a1a;
-    line-height: 1.3;
-    letter-spacing: -0.02em;
+    color: var(--color-text);
+    line-height: 1.4;
+    letter-spacing: 0.05em;
 }
 
 .cta-description {
-    font-size: 1.1rem;
-    color: #4a4a4a;
+    font-size: clamp(0.95rem, 2vw, 1rem);
+    color: var(--color-text-secondary);
     margin: 0 auto 40px;
     line-height: 1.8;
     max-width: 520px;
@@ -2372,37 +2343,38 @@
     flex-direction: column;
     gap: 16px;
     margin: 0 auto 40px;
-    max-width: 340px; /* コンパクトなテキストに合わせて幅を調整 */
+    max-width: 340px;
     text-align: left;
 }
 
 .benefit-item {
     display: flex;
-    align-items: flex-start; /* 上揃えに変更 */
+    align-items: flex-start;
     gap: 12px;
 }
 
+/* アイコンにサイトのキーカラーとなる「澄んだ青」を静かに添える */
 .benefit-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 24px;
     height: 24px;
-    background: linear-gradient(135deg, #5856d6 0%, #7c7aff 100%);
-    color: white;
+    /* 提案: サイトのキーカラーをここに集約 */
+    background: var(--color-key-bg, #eef5f9);
+    color: var(--color-key-text, #6a8bab);
+    border: none;
     border-radius: 50%;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: bold;
     flex-shrink: 0;
-    margin-top: 2px; /* テキストの行高さに合わせて微調整 */
+    margin-top: 2px;
 }
 
 .benefit-text {
     font-size: 0.95rem;
-    color: #333;
+    color: var(--color-text-secondary);
     line-height: 1.6;
-    flex: 1; /* 残りのスペースを使用 */
-    min-width: 0; /* 長いテキストの折り返しを確実にする */
 }
 
 /* CTA アクション部分 */
@@ -2410,201 +2382,95 @@
     margin-top: 40px;
 }
 
+/* ボタンに特別な存在感を与える */
 .btn-cta-subscribe {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    background: linear-gradient(135deg, #5856d6 0%, #6b69e0 100%);
-    color: #fff;
-    padding: 16px 40px;
+    gap: 12px;
+    background: var(--color-text);
+    color: var(--color-bg);
+    padding: 14px 32px;
     border-radius: 30px;
     text-decoration: none;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 8px 30px rgba(88, 86, 214, 0.35);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-cta-subscribe::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #6b69e0 0%, #7c7aff 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.btn-text,
-.btn-arrow {
-    position: relative;
-    z-index: 1;
-}
-
-.btn-arrow {
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    /* 提案: 僅かな光彩（グロー）で存在感を示す */
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
 }
 
 .btn-cta-subscribe:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(88, 86, 214, 0.45);
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-color: var(--color-border-hover, #ccc);
+    transform: translateY(-2px); /* 少し浮き上がる効果 */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.09); /* 影を少し強く */
 }
 
-.btn-cta-subscribe:hover::before {
-    opacity: 1;
+.btn-arrow {
+    transition: transform 0.3s ease;
 }
-
 .btn-cta-subscribe:hover .btn-arrow {
     transform: translateX(4px);
 }
 
 .cta-note {
-    margin-top: 16px;
+    margin-top: 20px;
     font-size: 0.85rem;
-    color: #888;
-    font-weight: 400;
+    color: var(--color-text-tertiary, #aaa);
 }
 
-/* 改行制御用クラス */
-.pc-only {
-    display: inline;
-}
 
-/* --- レスポンシブ対応 --- */
+/* --- レスポンシブ対応 (一部調整) --- */
 @media (max-width: 768px) {
     .subscription-cta-section {
         padding: 60px 15px;
     }
-
     .cta-content {
         padding: 40px 25px;
     }
-
     .cta-title {
         font-size: 1.8rem;
-    }
-
-    .cta-description {
-        font-size: 1rem;
-        margin-bottom: 30px;
-        line-height: 1.7;
-    }
-
-    .pc-only {
-        display: none; /* モバイルでは改行を削除 */
-    }
-
-    .cta-benefits {
-        gap: 20px; /* スマホでは行間を少し広げる */
-        max-width: 280px;
-        margin: 0 auto 40px; /* 中央揃え */ 
-    }
-
-    .benefit-item {
-        gap: 14px; /* アイコンとテキストの間隔を広げる */
-    }
-
-    .benefit-text {
-        font-size: 0.9rem;
-        line-height: 1.5;
-    }
-
-    .btn-cta-subscribe {
-        padding: 14px 32px;
-        font-size: 1rem;
-    }
-
-    .cta-note {
-        font-size: 0.8rem;
     }
 }
 
 @media (max-width: 480px) {
-    .cta-content {
-        padding: 35px 20px;
-    }
-
     .cta-title {
-        font-size: 1.5rem;
-        line-height: 1.4;
+        font-size: 1.6rem;
     }
-
-    .cta-description {
-        font-size: 0.95rem;
-        line-height: 1.6;
-    }
-
-    .cta-benefits {
-        gap: 18px;
-        max-width: 260px;
-        margin: 0 auto 40px; /* 幅制限を解除 */
-    }
-
-    .benefit-text {
-        font-size: 0.85rem;
-        line-height: 1.45;
-    }
-
     .btn-cta-subscribe {
         width: 100%;
-        padding: 14px 24px;
     }
 }
 
-/* ダークモード対応 */
-.dark-mode .subscription-cta-section {
-    background: transparent;
-}
-
+/* --- ダークモード対応 (シンプル化) --- */
 .dark-mode .cta-content {
-    background: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    background: var(--color-bg-cta-dark, rgba(0, 0, 0, 0.1));
+    border-color: var(--color-border-cta-dark, rgba(255, 255, 255, 0.08));
 }
-
-
-.dark-mode .cta-badge {
-    color: #8a88ff;
-    background: rgba(138, 136, 255, 0.15);
+.dark-mode .cta-content:hover {
+    border-color: var(--color-border-cta-dark-hover, rgba(255, 255, 255, 0.12));
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
-
-.dark-mode .cta-title {
-    color: #e0e0e0;
-}
-
-.dark-mode .cta-description {
-    color: #a8a8a8;
-}
-
 .dark-mode .benefit-icon {
-    background: linear-gradient(135deg, #6b69e0 0%, #8583ff 100%);
+    background: var(--color-key-bg-dark, rgba(106, 139, 171, 0.1));
+    color: var(--color-key-text-dark, #8cb3d4);
 }
-
-.dark-mode .benefit-text {
-    color: #c0c0c0;
-}
-
 .dark-mode .btn-cta-subscribe {
-    background: linear-gradient(135deg, #6b69e0 0%, #8583ff 100%);
-    box-shadow: 0 8px 30px rgba(107, 105, 224, 0.25);
+    background: var(--color-text);
+    color: var(--color-bg);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
 }
-
 .dark-mode .btn-cta-subscribe:hover {
-    box-shadow: 0 12px 40px rgba(107, 105, 224, 0.35);
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-color: var(--color-border-hover, #444);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 }
 
-.dark-mode .btn-cta-subscribe:hover::before {
-    background: linear-gradient(135deg, #7c7aff 0%, #9593ff 100%);
-}
 
-.dark-mode .cta-note {
-    color: #666;
-}
 
 
 
@@ -2622,43 +2488,61 @@
     margin-bottom: 40px; /* 少し余白を広げる */
 }
 
-.section-title {
-    font-size: 2.5rem; /* タイトルを少し大きく */
-    margin-bottom: 20px;
-}
+
 
 .filter-button-group {
-    display: inline-flex;
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    background-color: #f0f2f5;
-    padding: 6px;
-    border-radius: 50px; /* 角をより丸く */
+    gap: 40px;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
 }
 
 .filter-button {
     background: none;
     border: none;
-    padding: 10px 25px; /* パディングを調整 */
-    border-radius: 30px; /* 角をより丸く */
+    padding: 0;
+    border-radius: 0;
     font-size: 0.9rem;
-    font-weight: 600; /* 少し太く */
+    font-weight: 400;
     cursor: pointer;
-    color: #555;
-    transition: all 0.3s ease-in-out;
+    color: var(--color-text-secondary);
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+/* ★★★ 下線アニメーションのための共通スタイルを追加 ★★★ */
+.filter-button::after {
+    content: '';
+    position: absolute;
+    left: 50%; /* 中央から広がるように */
+    transform: translateX(-50%); /* 中央揃え */
+    bottom: -4px;
+    width: 0; /* 初期状態では幅0 */
+    height: 1px;
+    background-color: var(--color-text);
+    transition: width 0.3s ease; /* 幅の変化をアニメーションさせる */
 }
 
 .filter-button:hover:not(.is-checked) {
-    background-color: #e9e9e9; /* ホバー時の背景色を追加 */
+    color: var(--color-text);
 }
 
 .filter-button.is-checked {
-    background-color: #fff;
-    color: #5856d6;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 影を少しリッチに */
-    transform: translateY(-2px);
+    background-color: transparent;
+    color: #180614;
+    font-weight: 600;
+    box-shadow: none;
+    transform: none;
 }
+
+/* ★★★ is-checked状態では下線の幅を100%にする ★★★ */
+.filter-button.is-checked::after {
+    width: 100%;
+}
+
 
 .gallery-grid {
     /* --- ここからがメイソンリーレイアウトの核 --- */
@@ -2675,7 +2559,7 @@
     /* --- デザインのためのスタイル --- */
     display: inline-block;    /* break-insideを正しく機能させる */
     box-sizing: border-box;
-    border-radius: 12px;
+    border-radius: 4px;
     overflow: hidden;         /* 画像の角丸を適用するため */
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -2705,20 +2589,24 @@
 
 .btn-see-more {
     display: inline-block;
-    background-color: #5856d6;
-    color: #fff;
-    padding: 14px 40px;
-    border-radius: 50px;
+    background: transparent;
+    color: var(--color-text);
+    padding: 12px 32px;
+    border-radius: 30px;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 15px rgba(88, 86, 214, 0.3);
+    border: 1px solid var(--color-border-hover, #ccc);
+    transition: all 0.3s ease;
+    box-shadow: none;
 }
 
 .btn-see-more:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 7px 20px rgba(88, 86, 214, 0.4);
+    background: var(--color-text);
+    color: var(--color-bg);
+    border-color: var(--color-text);
+    transform: none;
+    box-shadow: none;
 }
 
 /* --- レスポンシブ対応 --- */
@@ -2739,6 +2627,10 @@
 @media (max-width: 767px) {
     .section-title {
         font-size: 2rem;
+    }
+
+    .filter-button-group {
+        gap: 15px;
     }
 
     .filter-button {
