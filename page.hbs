@@ -1,0 +1,28 @@
+{{!< default}}
+
+<main id="site-main" class="site-main">
+    <article class="{{post_class}}">
+
+        {{#post}}
+
+            {{! ▼▼▼ この if ブロックを追加 ▼▼▼ }}
+            {{#if @page.show_title_and_feature_image}}
+            <header class="article-header gh-canvas">
+                {{#if feature_image}}
+                    <figure class="article-feature-image">
+                        <img src="{{feature_image}}" alt="{{title}}" />
+                    </figure>
+                {{/if}}
+                <h1 class="article-title">{{title}}</h1>
+            </header>
+            {{/if}}
+            {{! ▲▲▲ ここまで ▲▲▲ }}
+
+            <section class="gh-content gh-canvas">
+                {{content}}
+            </section>
+
+        {{/post}}
+
+    </article>
+</main>

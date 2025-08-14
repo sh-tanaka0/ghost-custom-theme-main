@@ -26,9 +26,7 @@
                         <div class="related-tags">
                             {{#get "tags" filter="visibility:public" limit="8"}}
                                 {{#foreach tags}}
-                                    {{#unless (eq id ../../../tag.id)}}
                                         <a href="{{url}}" class="tag-pill">{{name}}</a>
-                                    {{/unless}}
                                 {{/foreach}}
                             {{/get}}
                         </div>
