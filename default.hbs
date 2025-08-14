@@ -38,41 +38,72 @@
     <div class="fullscreen-nav-container">
         <nav class="fullscreen-nav">
             <div class="nav-column">
-                <h2>All articles</h2>
-                <p>すべての記事</p>
+                {{!-- URLは実際のリンク先に変更してください --}}
+                <a href="/" class="nav-link">
+                    <h2>Home</h2>
+                    <p>静かな庭へようこそ</p>
+                </a>
+
+                <a href="/tag/rambles/" class="nav-link">
+                    <h2>Journal</h2>
+                    <p>日々の記録</p>
+                </a>
                 
-                <h2>All series</h2>
-                <p>すべての連載</p>
+                <a href="/tag/writings/" class="nav-link">
+                    <h2>Writings</h2>
+                    <p>紡いだ言葉</p>
+                </a>
                 
-                <h2>Books</h2>
-                <p>ここに文庫</p>
-                
-                <h2>Products</h2>
-                <p>ここなイッピン</p>
+                <a href="/tag/dot-art/" class="nav-link">
+                    <h2>Gallery</h2>
+                    <p>ピクセル画廊</p>
+                </a>
             </div>
             
             <div class="nav-column">
-                <h2>News & topics</h2>
-                <p>ニュース＆トピックス</p>
+                {{!-- URLは実際のリンク先に変更してください --}}
+                <a href="/tag/review/" class="nav-link">
+                    <h2>Perspective</h2>
+                    <p>社会へのまなざし</p>
+                </a>
                 
-                <h2>From editor</h2>
-                <p>ここに編集部より</p>
+                <a href="/archives/" class="nav-link">
+                    <h2>Archives</h2>
+                    <p>すべての記事</p>
+                </a>
+
+                <a href="/tag/creations/" class="nav-link">
+                    <h2>Creations</h2>
+                    <p>形あるもの</p>
+                </a>
                 
-                <h2>Index</h2>
-                <p>インデックス</p>
+                <a href="/about/" class="nav-link">
+                    <h2>About this place</h2>
+                    <p>この場所について</p>
+                </a>
             </div>
             
             <div class="nav-column nav-column-right">
                 <div class="nav-footer">
-                    <p>ここについて</p>
-                    <p>お問い合わせ</p>
+                    <!-- 1. サイトのコンセプト -->
+                    <p class="site-concept">言葉と光が交差する、静かな庭。</p>
+                    <p class="site-description">HANAGORIは、日々の思索と創作を通じて、心の静けさと美しさを追求する場所です。</p>
+
+                    <!-- 2. 補足情報へのリンク -->
+                    <div class="footer-links">
+                        <a href="/contact/">お問い合わせ</a>
+                        <a href="/privacy/">プライバシーポリシー</a>
+                    </div>
                     
+                    <!-- 3. ソーシャルリンク -->
                     <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
                         <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                         <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="Line"><i class="fab fa-line"></i></a>
+                        {{!-- 他のSNSがあれば追加 --}}
                     </div>
+
+                    <!-- 4. コピーライト -->
+                    <p class="copyright">&copy; 2025 HANAGORI.</p>                   
                 </div>
             </div>
         </nav>
