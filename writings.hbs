@@ -1,0 +1,166 @@
+{{!< default}}
+
+{{!-- このファイルはHTMLとCSSを1つにまとめていますが、実際には .hbs と .css ファイルに分けてください --}}
+<style>
+    /* ==========================================================================
+       Variables (実際のサイトの変数に合わせてください)
+       ========================================================================== */
+    :root {
+        --color-text: #2a3f4a;
+        --color-text-secondary: #5a6f7a;
+        --color-bg: #f8fcfb;
+    }
+    .dark-mode {
+        --color-text: #d0dfe5;
+        --color-text-secondary: #9aacb5;
+        --color-bg: #1a2428;
+    }
+    body {
+        background-color: var(--color-bg);
+        color: var(--color-text);
+    }
+    @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600&display=swap');
+
+    /* ==================================
+       Writings Page Header
+       ================================== */
+    .page-header {
+        padding: 100px 40px 60px;
+        text-align: center;
+    }
+    .page-header-inner {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .page-title {
+        font-family: 'DotGothic16', monospace;
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: var(--color-text);
+        letter-spacing: 0.1em;
+        margin: 0 0 10px;
+    }
+    .page-subtitle {
+        font-size: 1rem;
+        color: var(--color-text-secondary);
+        letter-spacing: 0.2em;
+        margin: 0 0 24px;
+    }
+    .page-description {
+        font-size: 1rem;
+        line-height: 1.8;
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* 既存の .serialized-works-section のスタイルは screen.css にあると仮定 */
+
+</style>
+
+<div class="writings-template">
+
+    {{!-- ページ専用のヘッダー --}}
+    <header class="page-header">
+        <div class="page-header-inner">
+            <h1 class="page-title">Writings</h1>
+            <p class="page-subtitle">紡いだ言葉</p>
+            <p class="page-description">
+                これまでに紡いできた、すべての物語の記録です。<br>
+                進行中のものから、既に幕を閉じた物語まで、ごゆっくりお楽しみください。
+            </p>
+        </div>
+    </header>
+
+    {{!-- ホーム画面の連載作品セクションをベースにする --}}
+    <section class="serialized-works-section">
+
+        {{! --- 進行中の小説 --- }}
+        <div class="subsection">
+            <h3 class="subsection-title">進行中の小説</h3>
+            <div class="ongoing-list">
+                {{!-- limit="all" ですべての作品を表示 --}}
+                {{#get "pages" filter="tag:serial-hub" limit="all" include="tags"}}
+                    {{#foreach pages}}
+                        <a href="{{url}}" class="novel-card" data-novel-id="{{id}}">
+                            <div class="novel-card-image-wrapper">
+                                {{#if feature_image}}
+                                    <img src="{{feature_image}}" alt="{{title}}" class="novel-card-image">
+                                {{else}}
+                                    <div class="novel-card-placeholder"><span>{{title}}</span></div>
+                                {{/if}}
+                            </div>
+                            <div class="novel-card-content">
+                                <div class="novel-card-info">
+                                    <h4 class="novel-card-title">{{title}}</h4>
+                                    <p class="novel-card-excerpt">{{excerpt}}</p>
+                                </div>
+                                <div class="novel-card-meta">
+                                    <span class="novel-chapter-count">
+                                        <i class="icon-book"></i> 読み込み中...
+                                    </span>
+                                    <span class="novel-last-updated" data-tag-slug="{{tags.[0].slug}}">
+                                        <i class="icon-clock"></i> 読み込み中...
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    {{/foreach}}
+                {{/get}}
+            </div>
+        </div>
+
+        {{! --- 中編・完結作品 --- }}
+        <div class="subsection">
+            <h3 class="subsection-title">中編・完結作品</h3>
+            <div class="completed-list">
+                {{!-- limit="all" ですべての作品を表示 --}}
+                {{#get "pages" filter="tags:complete" limit="all" include="tags"}}
+                    {{#foreach pages}}
+                        <a href="{{url}}" class="banner-card">
+                            <div class="banner-card-image-wrapper">
+                                {{#if feature_image}}
+                                    <img src="{{feature_image}}" alt="{{title}}" class="banner-card-image">
+                                {{else}}
+                                    <div class="banner-card-placeholder"><span>{{title}}</span></div>
+                                {{/if}}
+                            </div>
+                            <div class="banner-card-overlay">
+                                <div class="banner-card-content">
+                                    <div class="banner-card-tags">
+                                        <span class="banner-card-status">完結</span>
+                                        {{#foreach tags from="1"}}
+                                            <span class="genre-tag">{{name}}</span>
+                                        {{/foreach}}
+                                    </div>
+                                    <h4 class="banner-card-title">{{title}}</h4>
+                                    <p class="banner-card-meta" data-tags="{{#foreach tags}}{{slug}}{{#unless @last}},{{/unless}}{{/foreach}}">読み込み中...</p>
+                                </div>
+                            </div>
+                        </a>
+                    {{/foreach}}
+                {{/get}}
+            </div>
+        </div>
+
+        {{! --- 短編集 --- }}
+        <div class="subsection">
+            <h3 class="subsection-title">短編集</h3>
+            <ul class="shorts-list">
+                {{!-- limit="all" ですべての作品を表示 --}}
+                {{#get "posts" filter="tag:short" limit="all"}}
+                    {{#foreach posts}}
+                        <li class="shorts-item">
+                            <a href="{{url}}">
+                                <h5 class="shorts-title">{{title}}</h5>
+                                <time class="shorts-date">{{date format="YYYY.MM.DD"}}</time>
+                            </a>
+                        </li>
+                    {{/foreach}}
+                {{/get}}
+            </ul>
+        </div>
+    </section>
+
+</div>
