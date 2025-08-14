@@ -1,20 +1,501 @@
 {{!< default}}
-{{! default.hbsを土台として読み込む指示 }}
 
-<main>
-    {{! メインビジュアル部分はここに配置 }}
+<div class="tag-template">
+    {{! --- タグヘッダーセクション --- }}
+    <section class="tag-header">
+        <div class="tag-header-inner">
+            {{#tag}}
+                <div class="tag-header-content">
+                    {{#if feature_image}}
+                        <div class="tag-feature-image">
+                            <img src="{{feature_image}}" alt="{{name}}" />
+                        </div>
+                    {{/if}}
+                    
+                    <div class="tag-info">
+                        <div class="tag-title-row">
+                            <h1 class="tag-name">{{name}}</h1>
+                            <span class="post-count">/ {{plural ../pagination.total empty='0 posts' singular='% post' plural='% posts'}}</span>
+                        </div>
+                        
+                        {{#if description}}
+                            <p class="tag-description">{{description}}</p>
+                        {{/if}}
+                        
+                        {{! --- 関連タグ --- }}
+                        <div class="related-tags">
+                            {{#get "tags" filter="visibility:public" limit="8"}}
+                                {{#foreach tags}}
+                                    {{#unless (eq id ../../../tag.id)}}
+                                        <a href="{{url}}" class="tag-pill">{{name}}</a>
+                                    {{/unless}}
+                                {{/foreach}}
+                            {{/get}}
+                        </div>
+                    </div>
+                </div>
+            {{/tag}}
+        </div>
+    </section>
 
-    {{! ピックアップセクションはここに配置 }}
+    {{! --- 投稿一覧セクション（提供されたカードデザインをそのまま使用） --- }}
+    <section class="posts-section">
+        <div class="tag-post-feed">
+            {{#foreach posts}}
+                <a href="{{url}}" class="post-card">
+                    {{#if feature_image}}
+                        <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" />
+                    {{/if}}
+                    <div class="post-card-content">
+                        <h2 class="post-card-title">{{title}}</h2>
+                        <p class="post-card-excerpt">{{excerpt}}</p>
+                        <footer class="post-card-meta">
+                            <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY.MM.DD"}}</time>
+                            <span> | {{reading_time}}</span>
+                        </footer>
+                    </div>
+                </a>
+            {{/foreach}}
+        </div>
+        
+        {{! --- ページネーション --- }}
+        {{#if pagination}}
+            <nav class="pagination">
+                {{#if prev}}
+                    <a class="pagination-prev" href="{{page_url prev}}">
+                        ← Previous
+                    </a>
+                {{/if}}
+                
+                <span class="pagination-info">
+                    {{page}} / {{pages}}
+                </span>
+                
+                {{#if next}}
+                    <a class="pagination-next" href="{{page_url next}}">
+                        Next →
+                    </a>
+                {{/if}}
+            </nav>
+        {{/if}}
+    </section>
+</div>
 
-    {{! 思考・エッセイセクションはここに配置 }}
+<style>
 
-    {{! 連載作品セクションはここに配置 }}
+/* ==================================
+    メインテンプレート
+   ================================== */
+.tag-template {
+    min-height: 100vh;
+    background: #f8fcfb; /* ごく淡いミントグリーン（青磁色） */
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+/* ==================================
+    タグヘッダー - 大胆な余白
+   ================================== */
+.tag-header {
+    padding: 100px 40px 80px;
+}
+
+.tag-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tag-header-content {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+/* タグ画像 */
+.tag-feature-image {
+    flex-shrink: 0;
+    width: 360px;
+    aspect-ratio: 2 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.tag-feature-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* タグ情報 */
+.tag-info {
+    flex: 1;
+    padding-top: 8px;
+}
+
+.tag-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.tag-name {
+    font-family: 'DotGothic16', monospace;
+    font-size: 3rem;
+    font-weight: 400;
+    color: #3a4f5a;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+}
+
+.post-count {
+    font-size: 1.1rem;
+    color: #8a9aa5;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+}
+
+.tag-description {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #5a6f7a;
+    margin-bottom: 36px;
+    max-width: 700px;
+    letter-spacing: 0.01em;
+}
+
+/* 関連タグ */
+.related-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag-pill {
+    display: inline-block;
+    padding: 8px 18px;
+    background: transparent;
+    border: 1px solid #d0dfe5;
+    border-radius: 20px;
+    color: #5a6f7a;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    letter-spacing: 0.01em;
+}
+
+.tag-pill:hover {
+    background: white;
+    border-color: #b0c5d0;
+    transform: translateY(-1px);
+}
+
+/* ==================================
+    投稿一覧 - 提供されたカードデザイン
+   ================================== */
+.posts-section {
+    padding: 0 40px 100px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tag-post-feed {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 80px;
+    padding: 0px;
+}
+
+/* カード - 枠なし、シンプルなデザイン */
+.post-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    isolation: isolate;
+}
+
+/* 画像 */
+.post-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* カードコンテンツ */
+.post-card-content {
+    padding: 20px 0;
+}
+
+.post-card-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2a3f4a;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    letter-spacing: 0.01em;
+}
+
+.post-card-excerpt {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #5a6f7a;
+    margin-bottom: 12px;
+}
+
+.post-card-meta {
+    font-size: 0.85rem;
+    color: #8a9aa5;
+    display: flex;
+    align-items: center;
+}
+
+.post-card-meta time {
+    letter-spacing: 0.02em;
+}
+
+/* ==================================
+    ホバー効果（提供されたスタイルをそのまま適用）
+   ================================== */
+
+/* ホバー時のオーバーレイ */
+.posts-section .post-card::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* "Read More" テキスト */
+.posts-section .post-card::after {
+    content: "Read More";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+                letter-spacing 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* ホバー時の効果 */
+.posts-section .post-card:hover::before,
+.posts-section .post-card:hover::after {
+    opacity: 1;
+}
+
+.posts-section .post-card:hover::after {
+    letter-spacing: 0.1em;
+}
+
+.posts-section .post-card:hover {
+    opacity: 1;
+}
+
+/* 画像の微細なスケール効果 */
+.posts-section .post-card:hover .post-card-image {
+    transform: scale(0.98);
+}
+
+/* ==================================
+    ページネーション
+   ================================== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-top: 60px;
+    font-size: 0.95rem;
+}
+
+.pagination-prev,
+.pagination-next {
+    color: #5a6f7a;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.02em;
+}
+
+.pagination-prev:hover,
+.pagination-next:hover {
+    color: #2a3f4a;
+}
+
+.pagination-info {
+    color: #8a9aa5;
+    letter-spacing: 0.05em;
+}
+
+/* ==================================
+    レスポンシブデザイン
+   ================================== */
+@media (max-width: 1024px) {
+    .tag-post-feed {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+    }
     
-    {{! 批評・レビューセクションはここに配置 }}
+    .tag-header {
+        padding: 80px 32px 60px;
+    }
     
-    {{! サブスクリプション促進要素はここに配置 }}
+    .posts-section {
+        padding: 0 32px 80px;
+    }
+}
 
-    {{! ドット絵ギャラリーセクションはここに配置 }}
+@media (max-width: 768px) {
+    .tag-header-content {
+        flex-direction: column;
+        gap: 32px;
+    }
     
-    {{! ランダム記事セクションはここに配置 }}
-</main>
+    .tag-feature-image {
+        width: 100%;
+        max-width: 500px;
+    }
+    
+    .tag-name {
+        font-size: 2.2rem;
+    }
+
+    .tag-post-feed {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+    }
+    
+    .tag-header {
+        padding: 60px 24px 40px;
+    }
+    
+    .posts-section {
+        padding: 0 24px 60px;
+    }
+}
+
+@media (max-width: 767px) {
+    .posts-section .post-card::after {
+        font-size: 1rem;
+    }
+    
+    /* タッチデバイスでは控えめな効果 */
+    @media (hover: none) {
+        .posts-section .post-card::before {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* タップ時の視覚フィードバック */
+        .posts-section .post-card:active::before,
+        .posts-section .post-card:active::after {
+            opacity: 1;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .tag-name {
+        font-size: 1.8rem;
+    }
+    
+    .tag-description {
+        font-size: 1rem;
+    }
+    
+    .related-tags {
+        gap: 8px;
+    }
+    
+    .tag-pill {
+        padding: 6px 14px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ==================================
+    ダークモード対応
+   ================================== */
+.dark-mode .tag-template {
+    background: #1a2428;
+}
+
+.dark-mode .tag-name {
+    color: #d0dfe5;
+}
+
+.dark-mode .post-count {
+    color: #7a8f9a;
+}
+
+.dark-mode .tag-description {
+    color: #9aacb5;
+}
+
+.dark-mode .tag-pill {
+    border-color: #3a4f5a;
+    color: #9aacb5;
+}
+
+.dark-mode .tag-pill:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #5a6f7a;
+}
+
+.dark-mode .post-card-title {
+    color: #d0dfe5;
+}
+
+.dark-mode .post-card-excerpt {
+    color: #9aacb5;
+}
+
+.dark-mode .post-card-meta {
+    color: #7a8f9a;
+}
+
+.dark-mode .posts-section .post-card::before {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .posts-section .post-card::after {
+    color: #fff;
+}
+
+.dark-mode .pagination-prev,
+.dark-mode .pagination-next {
+    color: #9aacb5;
+}
+
+.dark-mode .pagination-prev:hover,
+.dark-mode .pagination-next:hover {
+    color: #d0dfe5;
+}
+
+.dark-mode .pagination-info {
+    color: #7a8f9a;
+}
+</style>
