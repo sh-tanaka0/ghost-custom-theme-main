@@ -287,6 +287,10 @@
     font-weight: 600;
 }
 
+.post-full-content hr {
+    margin: 20px 0;
+}
+
 /* 本文中のリンク */
 .post-full-content  a {
     color: 	#333132; /* リンク色 */
@@ -736,4 +740,102 @@ body[data-font="rounded-mplus"] .post-full-content {
     body[data-size="large"] .post-full-content {
         font-size: 18px;
     }
+}
+
+/* ==========================================================================
+   Component: Product Card (.kg-product-card)
+   ========================================================================== */
+
+.kg-product-card {
+    width: 100%;
+    max-width: 550px; /* カードの最大幅 */
+    margin: 1.5em auto; /* 上下の余白と中央揃え */
+}
+
+.kg-product-card-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 12px; /* 角を少し丸める */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.kg-product-card-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+}
+
+.kg-product-card-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.kg-product-card-title-container,
+.kg-product-card-description,
+.kg-product-card-button {
+    padding: 0 25px; /* 左右の余白を統一 */
+}
+
+.kg-product-card-title {
+    font-family: var(--gh-font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 20px 0 10px;
+}
+
+.kg-product-card-description {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: 25px;
+}
+
+/* description内のpタグの余白をリセット */
+.kg-product-card-description p {
+    margin: 0;
+}
+
+.kg-product-card-button {
+    display: inline-block;
+    width: auto;
+    margin-bottom: 25px; /* 下部の余白 */
+    padding: 12px 28px;
+    background: var(--color-text);
+    color: #333132;
+    border-radius: 30px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.kg-product-card-button:hover {
+    background: var(--color-text-secondary);
+    color: var(--color-bg);
+}
+
+.kg-product-card a.kg-product-card-btn-accent {
+    background: #333132;
+    color: #fff;
+}
+
+/* --- ダークモード対応 --- */
+.dark-mode .kg-product-card-container:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.dark-mode .kg-product-card-title,
+.dark-mode .kg-product-card-description{
+    color: #fff;
+}
+
+
+.dark-mode .kg-product-card a.kg-product-card-btn-accent {
+    background: #fff;
+    color: #333132;
 }

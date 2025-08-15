@@ -1,28 +1,38 @@
 {{!< default}}
 
-<main id="site-main" class="site-main">
-    <article class="{{post_class}}">
+<main class="site-main">
+    {{#post}}
+        {{! post.cssのクラス構造に合わせて変更 }}
+        <article class="post-full {{post_class}}">
 
-        {{#post}}
-
-            {{! ▼▼▼ この if ブロックを追加 ▼▼▼ }}
             {{#if @page.show_title_and_feature_image}}
-            <header class="article-header gh-canvas">
+            <header class="post-full-header">
                 {{#if feature_image}}
-                    <figure class="article-feature-image">
-                        <img src="{{feature_image}}" alt="{{title}}" />
-                    </figure>
+                    <div class="post-feature-image-wrapper">
+                        <img class="post-full-image" src="{{feature_image}}" alt="{{title}}" />
+                    </div>
                 {{/if}}
-                <h1 class="article-title">{{title}}</h1>
             </header>
             {{/if}}
-            {{! ▲▲▲ ここまで ▲▲▲ }}
 
-            <section class="gh-content gh-canvas">
-                {{content}}
-            </section>
+            <div class="main-content-wrapper">
+                <div class="post-header-and-content">
 
-        {{/post}}
+                    {{#if @page.show_title_and_feature_image}}
+                    <div class="post-header-content">
+                        <h1 class="post-full-title">{{title}}</h1>
+                    </div>
+                    {{/if}}
 
-    </article>
+                    {{! 本文エリア }}
+                    <section class="post-full-content gh-content">
+                        {{{content}}}
+                    </section>
+
+                </div>
+            </div>
+
+        </article>
+    {{/post}}
 </main>
+

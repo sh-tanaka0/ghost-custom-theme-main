@@ -158,6 +158,10 @@
                 {{/foreach}}
             {{/get}}
         </div>
+
+        <div class="section-footer">
+            <a href="/tag/rambles/" class="btn-see-more">すべての思考・エッセイを読む</a>
+        </div>
     </section>
 
     {{! --- 連載作品セクション --- }}
@@ -260,7 +264,7 @@
 
     {{! --- 批評・レビューセクション --- }}
     <section class="critique-section">
-        <h2 class="section-title">批評・レビュー</h2>
+        <h2 class="section-title">社会へのまなざし</h2>
         <div class="post-feed">
             {{#get "posts" filter="tag:review" limit="3"}}
                 {{#foreach posts}}
@@ -280,6 +284,10 @@
                     </a>
                 {{/foreach}}
             {{/get}}
+        </div>
+
+        <div class="section-footer">
+            <a href="/tag/review/" class="btn-see-more">これまでのまなざしを見る</a>
         </div>
     </section>
 
