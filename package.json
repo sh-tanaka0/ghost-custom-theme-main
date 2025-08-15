@@ -1,18 +1,19 @@
 {
   "name": "icily-theme",
   "description": "多様な創作物を紹介するメディアサイト向けのテーマです。",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "ghost": ">=5.0.0"
   },
   "license": "MIT",
   "author": {
     "name": "STUDIO ICILY",
+    "email": "your-email@example.com"
   },
+  "keywords": [
+    "ghost-theme"
+  ],
   "config": {
-    "posts_per_page": 12,
-    "custom": {
-      
-    }
+    "posts_per_page": 12
   }
 }
