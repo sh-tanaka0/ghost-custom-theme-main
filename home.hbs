@@ -376,7 +376,17 @@
     </section>
 
 
-
+    {{!-- 既存のコンテンツの後に追加 --}}
+    {{#match @site.recommendations_enabled}}
+    <section class="recommendations-section">
+        <h3 class="recommendations-heading">Recommended</h3>
+        <p class="recommendations-intro">いつも訪れている、大切なサイトたちです</p>
+        {{recommendations limit="3"}}
+        <div class="view-all-recommendations">
+            <button data-portal="recommendations">すべて見る →</button>
+        </div>
+    </section>
+    {{/match}}
 
 
 </div>
@@ -406,3 +416,8 @@ $(document).ready(function(){
   });
 });
 </script>
+
+<!-- Ghostのテーマファイルに追加するCSS -->
+<style>
+
+</style>
