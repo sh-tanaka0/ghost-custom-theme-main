@@ -372,6 +372,7 @@
         width: 32px;
         height: 32px;
         font-size: 1rem;
+        text-decoration: none;
     }
     
     .nav-is-open .menu-toggle-button {
@@ -525,6 +526,7 @@
     text-decoration: none;
     font-size: 1.1rem;
     transition: background-color 0.2s;
+    text-decoration: none;
 }
 .footer-column .social-links a:hover {
     background-color: #5856d6;
