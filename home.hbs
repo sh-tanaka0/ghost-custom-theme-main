@@ -404,12 +404,12 @@
 <script>
 $(document).ready(function(){
   // 雪を降らせたい要素をクラス名で指定します
-  $('.main-visual').snowfall({
-    flakeCount : 35,
+  $('.main-visual-bg').snowfall({
+    flakeCount : 17,
     minSize : 5,
     maxSize : 40,
-    minSpeed : 1,
-    maxSpeed : 3,
+    minSpeed : 0.3,
+    maxSpeed : 1.5,
     round : true,
     // 雪の結晶画像のパスをassetヘルパーで指定します
     image: "{{asset "images/flake_02_by_icooonmono.png"}}"
