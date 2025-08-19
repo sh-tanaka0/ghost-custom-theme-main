@@ -1,7 +1,6 @@
 {{!< default}}
 
 <div class="tag-template">
-    {{! --- タグヘッダーセクション --- }}
     <section class="tag-header">
         <div class="tag-header-inner">
             {{#tag}}
@@ -22,13 +21,15 @@
                             <p class="tag-description">{{description}}</p>
                         {{/if}}
                         
-                        {{! --- 関連タグ --- }}
-                        <div class="related-tags">
-                            {{#get "tags" filter="visibility:public" limit="8"}}
-                                {{#foreach tags}}
-                                        <a href="{{url}}" class="tag-pill">{{name}}</a>
-                                {{/foreach}}
-                            {{/get}}
+                        {{! --- 現在のタグのslugを保存 --- }}
+                        <div id="current-tag-slug" data-slug="{{slug}}" style="display: none;"></div>
+                        
+                        {{! --- 関連タグ用のコンテナ --- }}
+                        <div class="related-tags-section">
+                            <h3 class="related-tags-title">関連タグ</h3>
+                            <div class="related-tags" id="related-tags-container">
+                                {{! --- JavaScriptで動的に挿入 --- }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -36,7 +37,19 @@
         </div>
     </section>
 
-    {{! --- 投稿一覧セクション（提供されたカードデザインをそのまま使用） --- }}
+    {{! --- タグ情報を収集 - tagコンテキストの外で実行 --- }}
+    {{#tag}}
+        {{#get "posts" filter="tag:{{slug}}" limit="all" include="tags"}}
+            <div style="display: none;" id="tag-collector">
+                {{#foreach posts}}
+                    {{#foreach tags visibility="public"}}
+                        <span class="collected-tag" data-slug="{{slug}}" data-name="{{name}}" data-url="{{url}}"></span>
+                    {{/foreach}}
+                {{/foreach}}
+            </div>
+        {{/get}}
+    {{/tag}}
+
     <section class="posts-section">
         <div class="tag-post-feed">
             {{#foreach posts}}
@@ -56,7 +69,6 @@
             {{/foreach}}
         </div>
         
-        {{! --- ページネーション --- }}
         {{#if pagination}}
             <nav class="pagination">
                 {{#if prev}}
@@ -78,6 +90,59 @@
         {{/if}}
     </section>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // デバッグ: DOM要素の確認
+    const tagCollector = document.getElementById('tag-collector');
+    
+    // 収集したタグ要素を取得
+    const collectedTags = document.querySelectorAll('.collected-tag');
+    
+    // 現在のタグのslugを取得（data属性から）
+    const currentTagElement = document.getElementById('current-tag-slug');
+    const currentTagSlug = currentTagElement ? currentTagElement.dataset.slug : null;
+    
+
+    
+    const tagMap = new Map();
+    
+    // ユニークなタグを収集（現在のタグは除外）
+    collectedTags.forEach(function(tag) {
+        const slug = tag.dataset.slug;
+        const name = tag.dataset.name;
+        const url = tag.dataset.url;
+        
+        if (slug && slug !== currentTagSlug && !tagMap.has(slug)) {
+            tagMap.set(slug, { name: name, url: url });
+        }
+    });
+    
+    // タグをHTMLとして構築
+    const container = document.getElementById('related-tags-container');
+    if (container) {
+        let count = 0;
+        const maxTags = 8;
+        
+        tagMap.forEach(function(tag, slug) {
+            if (count < maxTags) {
+                const link = document.createElement('a');
+                link.href = tag.url;
+                link.className = 'tag-pill';
+                link.textContent = tag.name;
+                container.appendChild(link);
+                count++;
+            }
+        });
+    }
+    
+    // 隠しエリアを削除
+    if (tagCollector) {
+        tagCollector.remove();
+    }
+});
+</script>
+
 
 <style>
 
@@ -187,6 +252,27 @@
     border-color: #b0c5d0;
     transform: translateY(-1px);
 }
+
+/* 関連タグセクション */
+.related-tags-section {
+    margin-top: 36px;
+}
+
+.related-tags-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #8a9aa5;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+}
+
+.no-related-tags {
+    font-size: 0.9rem;
+    color: #8a9aa5;
+    font-style: italic;
+}
+
 
 /* ==================================
     投稿一覧 - 提供されたカードデザイン
@@ -494,6 +580,14 @@
 }
 
 .dark-mode .pagination-info {
+    color: #7a8f9a;
+}
+
+.dark-mode .related-tags-title {
+    color: #7a8f9a;
+}
+
+.dark-mode .no-related-tags {
     color: #7a8f9a;
 }
 </style>
