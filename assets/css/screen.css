@@ -372,6 +372,7 @@
         width: 32px;
         height: 32px;
         font-size: 1rem;
+        text-decoration: none;
     }
     
     .nav-is-open .menu-toggle-button {
@@ -525,6 +526,7 @@
     text-decoration: none;
     font-size: 1.1rem;
     transition: background-color 0.2s;
+    text-decoration: none;
 }
 .footer-column .social-links a:hover {
     background-color: #5856d6;
@@ -3014,6 +3016,319 @@
 .random-post-item:nth-child(3) { animation-delay: 0.15s; }
 .random-post-item:nth-child(4) { animation-delay: 0.2s; }
 .random-post-item:nth-child(5) { animation-delay: 0.25s; }
+
+
+
+
+
+/* ==========================================================================
+   Recommendations Section - 推奨セクション
+   ========================================================================== */
+.recommendations-section {
+    padding: 120px 20px 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 背景の雪の結晶効果（オプション） */
+.recommendations-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, 
+        rgba(147, 197, 253, 0.05) 0%, 
+        transparent 50%);
+    pointer-events: none;
+}
+
+/* セクションタイトル（必要な場合） */
+.recommendations-heading {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: #9ca3af;
+    font-weight: 400;
+    margin-bottom: 60px;
+    font-family: 'DotGothic16', monospace;
+    text-transform: uppercase;
+}
+
+/* セクション説明文 */
+.recommendations-intro {
+    text-align: center;
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.6;
+    margin: -40px auto 50px;
+    max-width: 500px;
+    opacity: 0.7;
+}
+
+/* ダークモード対応 */
+.dark-mode .recommendations-intro {
+    color: #6b7280;
+    opacity: 0.6;
+}
+
+/* Ghost生成のリスト */
+ul.recommendations {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 各推奨アイテム */
+.recommendation {
+    opacity: 0;
+    animation: softFadeIn 0.8s ease forwards;
+}
+
+.recommendation:nth-child(1) { animation-delay: 0.1s; }
+.recommendation:nth-child(2) { animation-delay: 0.2s; }
+.recommendation:nth-child(3) { animation-delay: 0.3s; }
+.recommendation:nth-child(4) { animation-delay: 0.4s; }
+.recommendation:nth-child(5) { animation-delay: 0.5s; }
+
+.recommendation a {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(224, 242, 241, 0.5);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ホバー効果 */
+.recommendation a:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateX(4px);
+    border-color: rgba(196, 181, 253, 0.3);
+}
+
+.recommendation a::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -100px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, 
+        rgba(147, 197, 253, 0.1) 0%, 
+        transparent 70%);
+    transform: translateY(-50%);
+    transition: right 0.4s ease;
+}
+
+.recommendation a:hover::after {
+    right: -50px;
+}
+
+/* ファビコンコンテナ */
+.recommendation-favicon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: linear-gradient(135deg, 
+        rgba(224, 242, 241, 0.3) 0%, 
+        rgba(196, 181, 253, 0.1) 100%);
+    position: relative;
+}
+
+/* ファビコン画像 */
+.recommendation-favicon img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: grayscale(20%) opacity(0.8);
+    transition: filter 0.3s ease;
+}
+
+.recommendation a:hover .recommendation-favicon img {
+    filter: grayscale(0%) opacity(1);
+}
+
+/* ファビコンがない場合のデフォルト表示 */
+.recommendation-favicon:empty::before,
+.recommendation-favicon:has(img[style*="display: none"])::before {
+    content: "❋";
+    font-size: 18px;
+    color: #c4b5fd;
+    opacity: 0.6;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* テキストコンテナ */
+.recommendation-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* タイトル */
+.recommendation-title {
+    font-size: 15px;
+    color: #4b5563;
+    font-weight: 500;
+    margin: 0 0 4px 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* URL */
+.recommendation-url {
+    font-size: 12px;
+    color: #9ca3af;
+    opacity: 0.8;
+    font-family: 'DotGothic16', monospace;
+    letter-spacing: 0.05em;
+}
+
+/* 説明文（非表示でミニマルに） */
+.recommendation-description {
+    display: none;
+}
+
+/* アニメーション */
+@keyframes softFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* "すべて見る"リンク（オプション） */
+.view-all-recommendations {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.view-all-recommendations a,
+button[data-portal="recommendations"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    background: transparent;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    border-radius: 20px;
+    color: #9ca3af;
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.view-all-recommendations a:hover,
+button[data-portal="recommendations"]:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(196, 181, 253, 0.3);
+    color: #6b7280;
+}
+
+/* モバイル対応 */
+@media (max-width: 640px) {
+    .recommendations-section {
+        padding: 80px 15px 60px;
+    }
+    
+    ul.recommendations {
+        gap: 12px;
+    }
+    
+    .recommendation a {
+        padding: 16px 20px;
+        gap: 14px;
+    }
+    
+    .recommendation-favicon {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .recommendation-title {
+        font-size: 14px;
+    }
+    
+    .recommendation-url {
+        font-size: 11px;
+    }
+}
+
+/* ダークモード対応 */
+.dark-mode .recommendations-section {
+    background: transparent;
+}
+
+.dark-mode .recommendations-heading {
+    color: #6b7280;
+}
+
+.dark-mode .recommendation a {
+    background: rgba(30, 30, 30, 0.4);
+    border-color: rgba(68, 68, 68, 0.5);
+}
+
+.dark-mode .recommendation a:hover {
+    background: rgba(40, 40, 40, 0.5);
+    border-color: rgba(147, 197, 253, 0.2);
+}
+
+.dark-mode .recommendation-favicon {
+    background: linear-gradient(135deg, 
+        rgba(68, 68, 68, 0.3) 0%, 
+        rgba(147, 197, 253, 0.1) 100%);
+}
+
+.dark-mode .recommendation-title {
+    color: #f0f0f0;
+}
+
+.dark-mode .recommendation-url {
+    color: #aaa;
+}
+
+.dark-mode .recommendation-description {
+    color: #aaa;
+    opacity: 0.6;
+}
+
+.dark-mode button[data-portal="recommendations"] {
+    border-color: #444;
+    color: #aaa;
+}
+
+.dark-mode button[data-portal="recommendations"]:hover {
+    background: rgba(68, 68, 68, 0.3);
+    border-color: rgba(147, 197, 253, 0.3);
+    color: #f0f0f0;
+}
 
 /* ==========================================================================
    Dark Mode Styles - ダークモード

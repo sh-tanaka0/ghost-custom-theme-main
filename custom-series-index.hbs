@@ -63,7 +63,7 @@
                                 <div class="episode-date">
                                     <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="YYYY.MM.DD"}}</time>
                                 </div>
-                                <p class="episode-excerpt">{{excerpt characters="300"}}...</p>
+                                <p class="episode-excerpt">{{excerpt characters="180"}}...</p>
                             </div>
                         </a>
                     {{/foreach}}
@@ -111,10 +111,12 @@
 
     /* ① 作品キービジュアル */
     .sakuhin-feature-image {
+        max-width: 600px;
+        min-width: 200px;
         margin: 0 auto 40px;
     }
     .sakuhin-feature-image img {
-        max-width: 400px;
+        width: 100%;
         height: auto;
     }
 
@@ -226,6 +228,12 @@
         color: var(--color-text-dark);
     }
 
+    .dark-mode .sakuhin-title,
+    .dark-mode .episode-excerpt,
+    .dark-mode .episode-title {
+        color: var(--color-text-light);
+    }
+
     /* レスポンシブ対応 */
     @media (max-width: 767px) {
         .sakuhin-title {
@@ -234,5 +242,10 @@
         .episode-title {
             font-size: 1.2rem;
         }
+    }
+
+    // フッターを非表示にする
+    .site-footer {
+        display: none;
     }
 </style>
