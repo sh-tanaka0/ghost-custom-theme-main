@@ -143,16 +143,16 @@
                     </div>
                     <div class="episode-nav-row episodes-row">
                         <div class="episode-nav-item prev">
-                            <span class="nav-label">前の話</span>
+                            <span class="serise-nav-label">前の話</span>
                             {{#prev_post in="primary_tag"}}
-                                <a href="{{url}}" class="nav-link">
+                                <a href="{{url}}" class="serise-nav-link">
                                     <svg class="nav-arrow left" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                                     </svg>
                                     <span class="nav-title">{{title}}</span>
                                 </a>
                                 <div class="episode-teaser prev-teaser">
-                                    <p class="teaser-text">{{excerpt characters="250"}}...</p>
+                                    <p class="teaser-text">{{excerpt characters="140"}}...</p>
                                     <span class="continue-reading">← 前の話を読む</span>
                                 </div>
                             {{else}}
@@ -165,16 +165,16 @@
                             {{/prev_post}}
                         </div>      
                         <div class="episode-nav-item next">
-                            <span class="nav-label">次の話</span>
+                            <span class="serise-nav-label">次の話</span>
                             {{#next_post in="primary_tag"}}
-                                <a href="{{url}}" class="nav-link">
+                                <a href="{{url}}" class="serise-nav-link">
                                     <span class="nav-title">{{title}}</span>
                                     <svg class="nav-arrow right" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                                     </svg>
                                 </a>
                                 <div class="episode-teaser next-teaser">
-                                    <p class="teaser-text">{{excerpt characters="250"}}...</p>
+                                    <p class="teaser-text">{{excerpt characters="140"}}...</p>
                                     <span class="continue-reading">続きを読む →</span>
                                 </div>
                             {{else}}
@@ -192,19 +192,40 @@
 
             {{!-- サポートセクション（シンプルに） --}}
             <section class="novel-support">
-                <p class="support-text">この作品を応援する</p>
-                <a href="/#/portal/support" class="support-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                    </svg>
-                </a>
+                <p class="support-main-text">この物語を応援する</p>
+                <p class="support-description">
+                    もしこの作品があなたの心に触れたなら<br>
+                    創作を続ける力をいただけませんか<br>
+                    <span class="amount">$1から応援できます</span>
+                </p>
+                <div class="support-btn-wrapper">
+                    <a href="/#/portal/support" class="support-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                        </svg>
+                    </a>
+                    <span class="support-tooltip">サポートページへ</span>
+                </div>
             </section>
 
-            {{!-- コメント欄 --}}
+            {{!-- コメントセクション - Handlebarsテンプレート --}}
             {{#if comments}}
                 <section class="novel-comments">
-                    <h2 class="comments-title">感想・コメント</h2>
-                    {{comments title="" count=false}}
+                    <h2 class="comments-title">みんなの声</h2>
+                    
+                    {{!-- コメント数を別表示 --}}
+                    <div class="comment-count-wrapper">
+                        {{comment_count singular="つの感想" plural="つの感想" empty="みんなの声を待っています" class="comment-count"}}
+                    </div>
+                    
+                    {{!-- Ghostコメント --}}
+                    <div class="ghost-comments-wrapper">
+                        {{comments title="" count=false mode="light" saturation=30}}
+                    </div>
+                    
+                    <div class="comments-guidelines">
+                        <a href="/guidelines">コミュニティガイドライン</a>
+                    </div>
                 </section>
             {{/if}}
 
@@ -230,7 +251,7 @@
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=M+PLUS+Rounded+1c:wght@400;500&family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=M+PLUS+Rounded+1c:wght@400;500');
 
 // custom-novel-series.hbsのスタイル
 /* ==========================================================================
@@ -247,6 +268,19 @@
     --novel-shadow: rgba(0, 0, 0, 0.05);
 }
 
+/* デフォルトテーマ */
+body[data-theme="default"] {
+    --novel-bg: #f0f7f4;
+    --novel-text: #2d3748;
+    --novel-text-secondary: #718096;
+    --novel-border: rgba(0, 0, 0, 0.08);
+    --novel-accent: #4a5568;
+    --novel-hover: #2d3748;
+    --novel-shadow: rgba(0, 0, 0, 0.05);
+}
+
+
+
 /* セピアテーマ */
 body[data-theme="sepia"] {
     --novel-bg: #f7f3ed;
@@ -255,6 +289,7 @@ body[data-theme="sepia"] {
     --novel-border: rgba(62, 39, 35, 0.1);
     --novel-accent: #5d4037;
     --novel-hover: #3e2723;
+    --novel-shadow: rgba(0, 0, 0, 0.05);
 }
 
 /* ナイトテーマ */
@@ -265,6 +300,7 @@ body[data-theme="night"] {
     --novel-border: rgba(255, 255, 255, 0.1);
     --novel-accent: #cbd5e0;
     --novel-hover: #e2e8f0;
+    --novel-shadow: rgba(0, 0, 0, 0.05);
 }
 
 /* ==========================================================================
@@ -722,7 +758,7 @@ body[data-theme="night"] {
     gap: 12px;
 }
 
-.nav-label {
+.serise-nav-label {
     font-size: 0.75rem;
     color: var(--novel-text-secondary);
     text-transform: uppercase;
@@ -730,7 +766,7 @@ body[data-theme="night"] {
     opacity: 0.7;
 }
 
-.nav-link {
+.serise-nav-link {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -739,7 +775,7 @@ body[data-theme="night"] {
     transition: all 0.3s ease;
 }
 
-.nav-link:hover {
+.serise-nav-link:hover {
     color: var(--novel-accent);
 }
 
@@ -762,7 +798,7 @@ body[data-theme="night"] {
     text-align: right;
 }
 
-.episode-nav-item.next .nav-link {
+.episode-nav-item.next .serise-nav-link {
     justify-content: flex-end;
 }
 
@@ -859,61 +895,248 @@ body[data-theme="night"] {
 }
 
 /* ==========================================================================
-   Support Section
-   ========================================================================== */
+    改良版 Support Section
+　　========================================================================== */
 .novel-support {
     text-align: center;
-    padding: 60px 0;
+    padding: 80px 20px;
     border-top: 1px solid var(--novel-border);
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
 }
 
-.support-text {
-    font-family: 'DotGothic16', monospace;
-    font-size: 0.875rem;
-    letter-spacing: 0.1em;
+.support-main-text {
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    color: var(--novel-text);
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.support-description {
+    font-size: 16px;
+    line-height: 1.8;
+    letter-spacing: 0.08em;
     color: var(--novel-text-secondary);
-    margin-bottom: 20px;
+    margin-bottom: 32px;
+}
+
+.support-description .amount {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+}
+
+.support-btn-wrapper {
+    position: relative;
+    display: inline-block;
 }
 
 .support-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     border: 1px solid var(--novel-border);
     color: var(--novel-text-secondary);
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+}
+
+.support-btn::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
 }
 
 .support-btn svg {
     width: 24px;
     height: 24px;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
 }
 
 .support-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
     border-color: var(--novel-accent);
     color: var(--novel-accent);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.support-btn:hover::before {
+    opacity: 1;
+}
+
+.support-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* ホバー時のツールチップ風テキスト */
+.support-tooltip {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--novel-text-secondary);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.support-btn-wrapper:hover .support-tooltip {
+    opacity: 1;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 640px) {
+    .novel-support {
+        padding: 60px 20px;
+    }
+    
+    .support-description {
+        font-size: 0.75rem;
+    }
 }
 
 /* ==========================================================================
-   Comments
+   Novel Comments Section 
    ========================================================================== */
 .novel-comments {
-    margin-top: 80px;
-    padding-top: 40px;
-    border-top: 1px solid var(--novel-border);
+    margin-top: 100px;
+    padding: 0 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
 }
 
+/* セクションタイトル */
 .comments-title {
-    font-family: 'DotGothic16', monospace;
-    font-size: 1.25rem;
-    letter-spacing: 0.15em;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    color: var(--novel-text-secondary);
+    margin-bottom: 30px;
+    position: relative;
+    font-weight: 400;
+}
+
+/* タイトルの装飾線 */
+.comments-title::before,
+.comments-title::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--novel-border), transparent);
+}
+
+.comments-title::before {
+    left: 50%;
+    transform: translateX(-180px) translateY(-50%);
+}
+
+.comments-title::after {
+    right: 50%;
+    transform: translateX(180px) translateY(-50%);
+}
+
+
+/* コメント数の表示 */
+.comment-count-wrapper {
     text-align: center;
     margin-bottom: 40px;
-    color: var(--novel-text);
+}
+
+.comment-count {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--novel-text-secondary);
+    padding: 8px 20px;
+    border: 1px solid var(--novel-border);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Ghostのiframeラッパー */
+.ghost-comments-wrapper {
+    position: relative;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    border: 1px solid var(--novel-border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* iframe自体のスタイリング */
+.ghost-comments-wrapper iframe {
+    width: 100%;
+    border: none;
+    background: transparent;
+}
+
+/* ガイドラインリンク */
+.comments-guidelines {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.comments-guidelines a {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--novel-text-secondary);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.comments-guidelines a:hover {
+    opacity: 0.6;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 640px) {
+    .novel-comments {
+        margin-top: 80px;
+    }
+    
+    .comments-title::before,
+    .comments-title::after {
+        width: 50px;
+    }
+    
+    .comments-title::before {
+        transform: translateX(-120px) translateY(-50%);
+    }
+    
+    .comments-title::after {
+        transform: translateX(120px) translateY(-50%);
+    }
+    
+    .ghost-comments-wrapper {
+        padding: 20px;
+    }
+    
+    .comment-count-wrapper {
+        margin-bottom: 30px;
+    }
 }
 
 /* ==========================================================================
