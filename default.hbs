@@ -26,6 +26,21 @@
                 <button class="action-button circle-button theme-toggle-button" aria-label="テーマ切り替え">
                     <i class="fas fa-moon"></i>
                 </button>
+
+                {{! --- ▼ここから会員機能のコードを追加 --- }}
+                {{#if @member}}
+                    {{! ログインしている場合の表示（アカウントボタンのみ） }}
+                    <a href="#/portal/account" class="action-button circle-button" aria-label="アカウント情報">
+                        <i class="fas fa-user-circle"></i>
+                    </a>
+                {{else}}
+                    {{! ログインしていない場合の表示（サインインへ変更） }}
+                    <a href="#/portal/signin" class="action-button circle-button" aria-label="ログイン">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </a>
+                {{/if}}
+                {{! --- ▲ここまで --- }}
+
                 <button class="action-button circle-button menu-toggle-button" aria-label="メニューを開く">
                     <span class="menu-text">MENU</span>
                     <span class="close-icon">×</span>
@@ -188,6 +203,314 @@
     {{! (既存のスクリプト) }}
     
     <script src="{{asset "js/main.js"}}"></script>
+
+    {{! --- カスタムCTA置換スクリプト --- }}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ghost デフォルトCTAを検索して置換
+        function replaceDefaultCTA() {
+            const defaultCTA = document.querySelector('.gh-post-upgrade-cta');
+            if (defaultCTA && !defaultCTA.classList.contains('custom-cta')) {
+                
+                // メンバーシップ状態を判定（bodyクラスや既存の要素から）
+                const isMember = document.body.classList.contains('is-member') || 
+                                document.querySelector('[data-portal="account"]') !== null;
+                const isPaidMember = document.body.classList.contains('is-paid-member');
+                
+                // カスタムCTAのHTML生成
+                let buttonsHTML = '';
+                if (isMember) {
+                    if (isPaidMember) {
+                        buttonsHTML = '<p class="cta-notice">既にプレミアムメンバーとしてアクセスいただいています。</p>';
+                    } else {
+                        buttonsHTML = `
+                            <a href="#/portal/account/plans" class="cta-button" data-portal="account/plans">
+                                アップグレードして続きを読む
+                            </a>
+                            <p class="cta-signin">別のアカウントでログインしますか？ <a href="#/portal/signin" data-portal="signin">ログイン</a></p>
+                        `;
+                    }
+                } else {
+                    buttonsHTML = `
+                        <a href="#/portal/signup" class="cta-button" data-portal="signup">
+                            メンバーシップに参加する
+                        </a>
+                        <p class="cta-signin">すでにメンバーですか？ <a href="#/portal/signin" data-portal="signin">ログイン</a></p>
+                    `;
+                }
+                
+                const customCTAHTML = `
+                    <aside class="gh-post-upgrade-cta custom-cta">
+                        <div class="cta-content-wrapper">
+                            <h2 class="cta-title">この先は、静かな庭の奥へ。</h2>
+                            <p class="cta-description">
+                                この続きは、創作の庭を共に育むメンバーだけが立ち入れる特別な場所です。<br>
+                                HANAGORIの世界をより深く体験してみませんか。
+                            </p>
+                            <div class="cta-buttons">
+                                ${buttonsHTML}
+                            </div>
+                        </div>
+                    </aside>`;
+                
+                // デフォルトCTAをカスタムCTAに置換
+                defaultCTA.outerHTML = customCTAHTML;
+                console.log('カスタムCTAに置換しました');
+            }
+        }
+        
+        // ページ読み込み完了後とちょっと遅延して実行
+        replaceDefaultCTA();
+        setTimeout(replaceDefaultCTA, 100);
+        setTimeout(replaceDefaultCTA, 500);
+        
+        // MutationObserverでDOM変化を監視（Ghostの動的読み込み対応）
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    replaceDefaultCTA();
+                    addPreviewEffects();
+                }
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+        // プレビューエリアに高度なフェード・ブラー効果を追加
+        function addPreviewEffects() {
+            const ctaElements = document.querySelectorAll('.gh-post-upgrade-cta');
+            
+            ctaElements.forEach(cta => {
+                if (cta.classList.contains('effect-applied')) return;
+                
+                // CTA前の数段落にグラデーション効果を適用
+                const siblings = [];
+                let currentElement = cta.previousElementSibling;
+                let count = 0;
+                
+                // CTA前の1-2要素を取得（範囲をさらに半分に）
+                while (currentElement && count < 2) {
+                    if (currentElement.tagName && 
+                        ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'DIV', 'BLOCKQUOTE'].includes(currentElement.tagName)) {
+                        siblings.unshift(currentElement);
+                        count++;
+                    }
+                    currentElement = currentElement.previousElementSibling;
+                }
+                
+                // 各要素に段階的なフェード・ブラー効果を適用（濃淡を逆転）
+                siblings.forEach((element, index) => {
+                    const intensity = (index + 1) / siblings.length; // 濃淡を逆転
+                    const blur = Math.min(intensity * 6, 4); // 最大4pxのブラー（強化）
+                    const opacity = Math.max(1 - intensity * 0.4, 0.6); // 最低60%の透明度
+                    
+                    element.style.filter = `blur(${blur}px)`;
+                    element.style.opacity = opacity;
+                    element.style.transition = 'all 0.3s ease';
+
+                    
+                    element.addEventListener('mouseleave', () => {
+                        element.style.filter = `blur(${blur}px)`;
+                        element.style.opacity = opacity;
+                    });
+                });
+                
+                // エフェクト適用済みマーク
+                cta.classList.add('effect-applied');
+                
+                console.log(`プレビュー効果を${siblings.length}要素に適用しました`);
+            });
+        }
+        
+        // 初期実行
+        addPreviewEffects();
+    });
+    </script>
+
+    <style>
+    /* カスタムCTAスタイル */
+    .custom-cta {
+        margin: 80px auto !important;
+        padding: 0 20px;
+        max-width: 720px;
+    }
+
+    .custom-cta .cta-content-wrapper {
+        text-align: center;
+        padding: 60px 40px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        transition: all 0.3s ease;
+    }
+
+    .custom-cta .cta-title {
+        font-family: 'DotGothic16', monospace;
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin: 0 0 20px;
+        letter-spacing: 0.1em;
+    }
+
+    .custom-cta .cta-description {
+        font-size: 1rem;
+        line-height: 1.8;
+        color: #555;
+        margin: 0 auto 32px;
+        max-width: 500px;
+    }
+
+    .custom-cta .cta-button {
+        display: inline-block;
+        background: #2c3e50;
+        color: #ffffff !important;
+        padding: 14px 32px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .custom-cta .cta-button:hover {
+        background: #34495e;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .custom-cta .cta-signin {
+        margin-top: 20px;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .custom-cta .cta-signin a {
+        color: #2c3e50;
+        text-decoration: underline;
+    }
+
+    .custom-cta .cta-notice {
+        font-size: 0.9rem;
+        color: #27ae60;
+        font-weight: 500;
+    }
+
+    /* ダークモード対応 */
+    .dark-mode .custom-cta .cta-content-wrapper,
+    body.dark .custom-cta .cta-content-wrapper {
+        background: rgba(20, 20, 20, 0.95);
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .dark-mode .custom-cta .cta-title,
+    body.dark .custom-cta .cta-title {
+        color: #f0f0f0;
+    }
+
+    .dark-mode .custom-cta .cta-description,
+    body.dark .custom-cta .cta-description {
+        color: #aaa;
+    }
+
+    .dark-mode .custom-cta .cta-button,
+    body.dark .custom-cta .cta-button {
+        background: #f0f0f0;
+        color: #2c3e50 !important;
+    }
+
+    .dark-mode .custom-cta .cta-button:hover,
+    body.dark .custom-cta .cta-button:hover {
+        background: #ffffff;
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 768px) {
+        .custom-cta .cta-content-wrapper {
+            padding: 40px 24px;
+        }
+        .custom-cta .cta-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* ==========================================================================
+       Ghost Public Preview フェード・ブラー効果
+       ========================================================================== */
+    
+    /* プレビューコンテンツにフェード効果を適用 */
+    .gh-content:has(.gh-post-upgrade-cta) {
+        position: relative;
+    }
+
+    /* CTA前の最後のセクションにフェードアウト効果 */
+    .gh-content .gh-post-upgrade-cta {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* フェードアウトオーバーレイ */
+    .gh-content .gh-post-upgrade-cta::before {
+        content: "";
+        position: absolute;
+        top: -30px;
+        left: -40px;
+        right: -40px;
+        height: 30px;
+        background: linear-gradient(
+            to bottom, 
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.3) 30%,
+            rgba(255, 255, 255, 0.7) 60%,
+            rgba(255, 255, 255, 0.95) 90%,
+            rgba(255, 255, 255, 1) 100%
+        );
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    /* ダークモード対応フェード */
+    .dark-mode .gh-content .gh-post-upgrade-cta::before,
+    body.dark .gh-content .gh-post-upgrade-cta::before {
+        background: #1a1a1a;
+    }
+
+    /* CTA前のコンテンツにブラー効果（Optional） */
+    .gh-content .gh-post-upgrade-cta ~ * {
+        display: none; /* CTA後のコンテンツは非表示 */
+    }
+
+    /* プレビューエリアの最後の要素にブラー効果を適用 */
+    .gh-content p:has(+ .gh-post-upgrade-cta),
+    .gh-content h1:has(+ .gh-post-upgrade-cta),
+    .gh-content h2:has(+ .gh-post-upgrade-cta),
+    .gh-content h3:has(+ .gh-post-upgrade-cta),
+    .gh-content div:has(+ .gh-post-upgrade-cta) {
+        position: relative;
+    }
+
+    /* より強力なブラー効果（Alternative approach） */
+    .blur-preview-content {
+        filter: blur(2px);
+        opacity: 0.7;
+        transition: all 0.3s ease;
+    }
+
+    /* モバイルレスポンシブ対応 */
+    @media (max-width: 768px) {
+        .gh-content .gh-post-upgrade-cta::before {
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            height: 20px;
+        }
+    }
+    </style>
 
     {{! --- Ghost必須ヘルパー(Foot) --- }}
     {{ghost_foot}}
