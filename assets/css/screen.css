@@ -3565,6 +3565,68 @@ button[data-portal="recommendations"]:hover {
    Additional Premium Indicators - その他のセクション用プレミアム表示
    ========================================================================== */
 
+/* 記事ページ用プレミアムインジケーター */
+.post-feature-image-wrapper {
+    position: relative;
+}
+
+.post-feature-image-wrapper .premium-indicator {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.85);
+    color: rgba(100, 120, 130, 0.7);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    font-size: 0.9rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(150, 170, 180, 0.15);
+}
+
+.post-feature-image-wrapper .premium-indicator:hover {
+    color: rgba(100, 120, 130, 1);
+    border-color: rgba(150, 170, 180, 0.4);
+    background: rgba(255, 255, 255, 1);
+}
+
+/* タグページ用プレミアムインジケーター */
+.post-card-image-wrapper {
+    position: relative;
+}
+
+.post-card-image-wrapper .premium-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.85);
+    color: rgba(100, 120, 130, 0.7);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    font-size: 0.7rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 4px rgba(150, 170, 180, 0.1);
+}
+
+.post-card-image-wrapper .premium-indicator:hover {
+    color: rgba(100, 120, 130, 1);
+    border-color: rgba(150, 170, 180, 0.4);
+    background: rgba(255, 255, 255, 1);
+}
+
 /* カルーセル（ピックアップセクション）用 */
 .carousel-premium-indicator {
     position: absolute;
