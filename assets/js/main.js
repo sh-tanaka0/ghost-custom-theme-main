@@ -405,15 +405,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 番号は01, 02形式で表示
                 const numberDisplay = String(index + 1).padStart(2, '0');
 
+                // プレミアム記事の判定
+                const isPremium = post.visibility !== 'public';
+                const premiumClass = isPremium ? ' premium-random' : '';
+                const premiumIndicator = isPremium ? '<div class="random-premium-indicator"><i class="fas fa-lock"></i></div>' : '';
+
                 // シンプルなHTML構造
                 const itemHTML = `
-                    <a href="${post.url}" class="random-post-item">
+                    <a href="${post.url}" class="random-post-item${premiumClass}">
                         <span class="random-post-number">${numberDisplay}</span>
                         <div class="random-post-content">
                             <h4 class="random-post-title">${post.title}</h4>
                             <div class="random-post-meta">
                                 ${tagsHTML ? `<div class="random-post-tags">${tagsHTML}</div>` : ''}
-                                ${tagsHTML ? '<span class="meta-separator">·</span>' : ''}
+                                ${premiumIndicator}
+                                ${(tagsHTML || isPremium) ? '<span class="meta-separator">·</span>' : ''}
                                 <time class="random-post-date">${formattedDate}</time>
                             </div>
                         </div>
@@ -473,6 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 初期読み込み
         fetchAllPosts();
     };
+
 
     // --- すべての初期化関数を実行 ---
     initHeader();

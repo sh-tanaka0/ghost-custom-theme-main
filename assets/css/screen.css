@@ -1042,6 +1042,8 @@
     width: 90%;
     max-width: 1280px;
     margin: 0 auto;
+    overflow: visible; /* ツールチップ表示のため */
+    padding: 60px 0; /* 上下にツールチップの余白を確保 */
 }
 
 .carousel-viewport {
@@ -3461,4 +3463,235 @@ button[data-portal="recommendations"]:hover {
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(4px);
     border: 1px solid rgba(100, 100, 100, 0.3);
+}
+
+/* ==========================================================================
+   Premium Post Styles - 有料記事の視覚的工夫（デザインコンセプト準拠）
+   ========================================================================== */
+
+/* プレミアム記事カード - 静謐で繊細な印象 */
+.post-card.premium-post {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.post-card.premium-post:hover {
+    border-color: rgba(150, 170, 180, 0.25);
+    box-shadow: 0 2px 12px rgba(150, 170, 180, 0.08);
+}
+
+/* 画像ラッパー */
+.post-card-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* 繊細な鍵アイコン - 最小限のデザイン */
+.premium-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.85);
+    color: rgba(100, 120, 130, 0.7);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    font-size: 0.7rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 4px rgba(150, 170, 180, 0.1);
+}
+
+.premium-post:hover .premium-indicator {
+    color: rgba(100, 120, 130, 0.9);
+    border-color: rgba(150, 170, 180, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* プレミアム記事の画像に控えめなオーバーレイ */
+.premium-post .post-card-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(250, 252, 253, 0.02) 0%, rgba(240, 245, 248, 0.05) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ダークモード対応 - 静謐な印象を維持 */
+.dark-mode .post-card.premium-post {
+    border-color: rgba(120, 140, 150, 0.15);
+    background: rgba(25, 30, 35, 0.3);
+}
+
+.dark-mode .post-card.premium-post:hover {
+    border-color: rgba(120, 140, 150, 0.25);
+    box-shadow: 0 2px 12px rgba(120, 140, 150, 0.08);
+}
+
+.dark-mode .premium-indicator {
+    background: rgba(40, 45, 50, 0.85);
+    color: rgba(180, 190, 200, 0.7);
+    border-color: rgba(80, 90, 100, 0.4);
+}
+
+.dark-mode .premium-post:hover .premium-indicator {
+    color: rgba(180, 190, 200, 0.9);
+    border-color: rgba(120, 140, 150, 0.3);
+    background: rgba(40, 45, 50, 0.95);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .premium-indicator {
+        width: 20px;
+        height: 20px;
+        top: 6px;
+        right: 6px;
+        font-size: 0.6rem;
+    }
+}
+
+/* ==========================================================================
+   Additional Premium Indicators - その他のセクション用プレミアム表示
+   ========================================================================== */
+
+/* カルーセル（ピックアップセクション）用 */
+.carousel-premium-indicator {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(100, 120, 130, 0.8);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(200, 215, 220, 0.5);
+    font-size: 0.75rem;
+    z-index: 15;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(150, 170, 180, 0.15);
+}
+
+.carousel-premium-indicator:hover {
+    color: rgba(100, 120, 130, 1);
+    border-color: rgba(150, 170, 180, 0.4);
+    background: rgba(255, 255, 255, 1);
+}
+
+
+
+
+/* 短編セクション用 */
+.shorts-item.premium-short {
+    position: relative;
+    border-color: rgba(150, 170, 180, 0.2);
+}
+
+.shorts-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.shorts-premium-indicator {
+    background: rgba(255, 255, 255, 0.8);
+    color: rgba(100, 120, 130, 0.7);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.premium-short:hover .shorts-premium-indicator {
+    color: rgba(100, 120, 130, 0.9);
+    border-color: rgba(150, 170, 180, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* ランダム記事セクション用 */
+.random-premium-indicator {
+    background: rgba(255, 255, 255, 0.85);
+    color: rgba(100, 120, 130, 0.7);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    transition: all 0.3s ease;
+    margin-right: 6px;
+    flex-shrink: 0;
+}
+
+.premium-random:hover .random-premium-indicator {
+    color: rgba(100, 120, 130, 0.9);
+    border-color: rgba(150, 170, 180, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* ダークモード対応 */
+.dark-mode .carousel-premium-indicator {
+    background: rgba(40, 45, 50, 0.9);
+    color: rgba(180, 190, 200, 0.8);
+    border-color: rgba(80, 90, 100, 0.5);
+}
+
+.dark-mode .carousel-premium-indicator:hover {
+    color: rgba(180, 190, 200, 1);
+    border-color: rgba(120, 140, 150, 0.4);
+    background: rgba(40, 45, 50, 1);
+}
+
+
+
+.dark-mode .shorts-item.premium-short {
+    border-color: rgba(120, 140, 150, 0.2);
+}
+
+.dark-mode .shorts-premium-indicator {
+    background: rgba(40, 45, 50, 0.8);
+    color: rgba(180, 190, 200, 0.7);
+    border-color: rgba(80, 90, 100, 0.4);
+}
+
+.dark-mode .premium-short:hover .shorts-premium-indicator {
+    color: rgba(180, 190, 200, 0.9);
+    border-color: rgba(120, 140, 150, 0.3);
+    background: rgba(40, 45, 50, 0.95);
+}
+
+
+.dark-mode .random-premium-indicator {
+    background: rgba(40, 45, 50, 0.85);
+    color: rgba(180, 190, 200, 0.7);
+    border-color: rgba(80, 90, 100, 0.4);
+}
+
+.dark-mode .premium-random:hover .random-premium-indicator {
+    color: rgba(180, 190, 200, 0.9);
+    border-color: rgba(120, 140, 150, 0.3);
+    background: rgba(40, 45, 50, 0.95);
 }
