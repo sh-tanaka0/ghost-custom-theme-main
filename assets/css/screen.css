@@ -63,8 +63,8 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     padding: 0;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .circle-button:hover {
@@ -116,8 +116,8 @@
     width: 100%;
     height: 100%;
     background-color: rgba(220, 240, 230, 0.98);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     z-index: 998;
     
     opacity: 0;
@@ -1042,6 +1042,8 @@
     width: 90%;
     max-width: 1280px;
     margin: 0 auto;
+    overflow: visible; /* ツールチップ表示のため */
+    padding: 60px 0; /* 上下にツールチップの余白を確保 */
 }
 
 .carousel-viewport {
@@ -1088,7 +1090,7 @@
     width: 110%; height: 110%;
     background-size: cover;
     background-position: center;
-    filter: blur(20px) brightness(0.9);
+    filter: blur(10px) brightness(0.9);
 }
 .carousel-item.is-vertical .carousel-item__bg-image {
     display: block;
@@ -1585,9 +1587,9 @@
 }
 
 .novel-card:hover .novel-card-image-wrapper::before {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .novel-card:hover .novel-card-image-wrapper::after {
@@ -1662,9 +1664,9 @@
 }
 
 .novel-card:hover .novel-card-placeholder::before {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .novel-card:hover .novel-card-placeholder::after {
@@ -1727,7 +1729,9 @@
 }
 
 .dark-mode .novel-card:hover .novel-card-image-wrapper::before {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .dark-mode .novel-card-image-wrapper::after,
@@ -1740,7 +1744,9 @@
 }
 
 .dark-mode .novel-card:hover .novel-card-placeholder::before {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 /* --- レスポンシブ対応 --- */
@@ -1785,9 +1791,9 @@
     /* タッチデバイスでは控えめな効果 */
     .novel-card:hover .novel-card-image-wrapper::before,
     .novel-card:hover .novel-card-placeholder::before {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(1px);
-        -webkit-backdrop-filter: blur(1px);
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
     }
     
     /* タップ時の視覚フィードバック */
@@ -1906,7 +1912,13 @@
 .genre-tag {
     background: rgba(255,255,255,0.15);
     color: #fff;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
+}
+
+/* ダークモード時のgenre-tag調整 */
+.dark-mode .genre-tag {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(5px);
 }
 
 .banner-card-status {
@@ -2608,6 +2620,7 @@
     overflow: hidden;         /* 画像の角丸を適用するため */
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
 }
 
 .gallery-item:hover {
@@ -2619,7 +2632,105 @@
     width: 100%;
     height: auto;
     display: block;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.4s ease; /* transformを追加 */
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05); /* ホバー時に画像を少し拡大 */
+}
+
+/* ホバー時の半透明オーバーレイ */
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.gallery-item:hover::before {
+    opacity: 1;
+}
+
+/* ダークモード時のオーバーレイ */
+.dark-mode .gallery-item::before {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* ホバー時に表示する情報のコンテナ */
+.gallery-item-info {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    padding: 20px 15px 15px;
+    color: #fff;
+    z-index: 2;
+    text-align: right;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.gallery-item:hover .gallery-item-info {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ホバー時に表示するタイトル */
+.gallery-item-title {
+    font-family: 'DotGothic16', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0 0 5px;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+/* ホバー時に表示する日付 */
+.gallery-item-date {
+    font-family: sans-serif;
+    font-size: 0.75rem;
+    color: #fff;
+    opacity: 0.8;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+/* --- キラキラエフェクトのスタイル --- */
+.sparkle {
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    /* star-yellow.svgへのパスを修正 */
+    background-image: url('../images/star-yellow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 3;
+    animation: sparkle-effect 1s forwards;
+}
+
+@keyframes sparkle-effect {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 /* --- フィルタリングで非表示にするためのクラス --- */
@@ -2680,6 +2791,11 @@
 
     .filter-button {
         padding: 8px 20px;
+    }
+
+    .sparkle {
+        width: 18px;
+        height: 18px;
     }
 }
 
@@ -3102,7 +3218,7 @@ ul.recommendations {
     gap: 18px;
     padding: 20px 24px;
     background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
     border: 1px solid rgba(224, 242, 241, 0.5);
     border-radius: 10px;
     text-decoration: none;
@@ -3436,6 +3552,333 @@ button[data-portal="recommendations"]:hover {
     color: #aaa;
 }
 .dark-mode .filter-button.is-checked {
-    background-color: #444;
+    background-color: transparent;
     color: #e5e5e5;
+}
+
+/* ダークモード時のその他の要素調整 */
+.dark-mode .fullscreen-nav-container {
+    background-color: rgba(20, 20, 20, 0.98);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.dark-mode .recommendation {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(100, 100, 100, 0.3);
+}
+
+/* ==========================================================================
+   Premium Post Styles - 有料記事の視覚的工夫（デザインコンセプト準拠）
+   ========================================================================== */
+
+/* プレミアム記事カード - 静謐で繊細な印象 */
+.post-card.premium-post {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.post-card.premium-post:hover {
+    border-color: rgba(150, 170, 180, 0.25);
+    box-shadow: 0 2px 12px rgba(150, 170, 180, 0.08);
+}
+
+/* 画像ラッパー */
+.post-card-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* 繊細な鍵アイコン - 最小限のデザイン */
+.premium-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.85);
+    color: rgba(100, 120, 130, 0.7);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    font-size: 0.7rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 4px rgba(150, 170, 180, 0.1);
+}
+
+.premium-post:hover .premium-indicator {
+    color: rgba(100, 120, 130, 0.9);
+    border-color: rgba(150, 170, 180, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* プレミアム記事の画像に控えめなオーバーレイ */
+.premium-post .post-card-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(250, 252, 253, 0.02) 0%, rgba(240, 245, 248, 0.05) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ダークモード対応 - 静謐な印象を維持 */
+.dark-mode .post-card.premium-post {
+    border-color: rgba(120, 140, 150, 0.15);
+    background: rgba(25, 30, 35, 0.3);
+}
+
+.dark-mode .post-card.premium-post:hover {
+    border-color: rgba(120, 140, 150, 0.25);
+    box-shadow: 0 2px 12px rgba(120, 140, 150, 0.08);
+}
+
+.dark-mode .premium-indicator {
+    background: rgba(40, 45, 50, 0.85);
+    color: rgba(180, 190, 200, 0.7);
+    border-color: rgba(80, 90, 100, 0.4);
+}
+
+.dark-mode .premium-post:hover .premium-indicator {
+    color: rgba(180, 190, 200, 0.9);
+    border-color: rgba(120, 140, 150, 0.3);
+    background: rgba(40, 45, 50, 0.95);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .premium-indicator {
+        width: 20px;
+        height: 20px;
+        top: 6px;
+        right: 6px;
+        font-size: 0.6rem;
+    }
+}
+
+/* ==========================================================================
+   Additional Premium Indicators - その他のセクション用プレミアム表示
+   ========================================================================== */
+
+/* 記事ページ用プレミアムインジケーター */
+.post-feature-image-wrapper {
+    position: relative;
+}
+
+.post-feature-image-wrapper .premium-indicator {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.85);
+    color: rgba(100, 120, 130, 0.7);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    font-size: 0.9rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(150, 170, 180, 0.15);
+}
+
+.post-feature-image-wrapper .premium-indicator:hover {
+    color: rgba(100, 120, 130, 1);
+    border-color: rgba(150, 170, 180, 0.4);
+    background: rgba(255, 255, 255, 1);
+}
+
+/* タグページ用プレミアムインジケーター */
+.post-card-image-wrapper {
+    position: relative;
+}
+
+.post-card-image-wrapper .premium-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.85);
+    color: rgba(100, 120, 130, 0.7);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    font-size: 0.7rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 4px rgba(150, 170, 180, 0.1);
+}
+
+.post-card-image-wrapper .premium-indicator:hover {
+    color: rgba(100, 120, 130, 1);
+    border-color: rgba(150, 170, 180, 0.4);
+    background: rgba(255, 255, 255, 1);
+}
+
+/* カルーセル（ピックアップセクション）用 */
+.carousel-premium-indicator {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(100, 120, 130, 0.8);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(200, 215, 220, 0.5);
+    font-size: 0.75rem;
+    z-index: 15;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(150, 170, 180, 0.15);
+}
+
+/* ==========================================================================
+   Ghost Announcement Bar - 最低限の修正
+   ========================================================================== */
+
+/* バーの色をダークグレーに変更 */
+.gh-announcement-bar {
+    background: #333333 !important;
+}
+
+/* バツボタンを確実に押せるようにする */
+.gh-announcement-bar button {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* アナウンスバーに中身がある時はヘッダーを下げる */
+body:has(#announcement-bar-root .gh-announcement-bar) .site-header {
+    top: 40px !important;
+    transition: top 0.3s ease !important;
+}
+
+/* アナウンスバーが空になった後はヘッダーを元に戻す */
+body:not(:has(#announcement-bar-root .gh-announcement-bar)) .site-header {
+    top: 0 !important;
+    transition: top 0.3s ease !important;
+}
+
+
+
+
+/* 短編セクション用 */
+.shorts-item.premium-short {
+    position: relative;
+    border-color: rgba(150, 170, 180, 0.2);
+}
+
+.shorts-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.shorts-premium-indicator {
+    background: rgba(255, 255, 255, 0.8);
+    color: rgba(100, 120, 130, 0.7);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.premium-short:hover .shorts-premium-indicator {
+    color: rgba(100, 120, 130, 0.9);
+    border-color: rgba(150, 170, 180, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* ランダム記事セクション用 */
+.random-premium-indicator {
+    background: rgba(255, 255, 255, 0.85);
+    color: rgba(100, 120, 130, 0.7);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    border: 1px solid rgba(200, 215, 220, 0.4);
+    transition: all 0.3s ease;
+    margin-right: 6px;
+    flex-shrink: 0;
+}
+
+.premium-random:hover .random-premium-indicator {
+    color: rgba(100, 120, 130, 0.9);
+    border-color: rgba(150, 170, 180, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* ダークモード対応 */
+.dark-mode .carousel-premium-indicator {
+    background: rgba(40, 45, 50, 0.9);
+    color: rgba(180, 190, 200, 0.8);
+    border-color: rgba(80, 90, 100, 0.5);
+}
+
+.dark-mode .carousel-premium-indicator:hover {
+    color: rgba(180, 190, 200, 1);
+    border-color: rgba(120, 140, 150, 0.4);
+    background: rgba(40, 45, 50, 1);
+}
+
+
+
+.dark-mode .shorts-item.premium-short {
+    border-color: rgba(120, 140, 150, 0.2);
+}
+
+.dark-mode .shorts-premium-indicator {
+    background: rgba(40, 45, 50, 0.8);
+    color: rgba(180, 190, 200, 0.7);
+    border-color: rgba(80, 90, 100, 0.4);
+}
+
+.dark-mode .premium-short:hover .shorts-premium-indicator {
+    color: rgba(180, 190, 200, 0.9);
+    border-color: rgba(120, 140, 150, 0.3);
+    background: rgba(40, 45, 50, 0.95);
+}
+
+
+.dark-mode .random-premium-indicator {
+    background: rgba(40, 45, 50, 0.85);
+    color: rgba(180, 190, 200, 0.7);
+    border-color: rgba(80, 90, 100, 0.4);
+}
+
+.dark-mode .premium-random:hover .random-premium-indicator {
+    color: rgba(180, 190, 200, 0.9);
+    border-color: rgba(120, 140, 150, 0.3);
+    background: rgba(40, 45, 50, 0.95);
 }

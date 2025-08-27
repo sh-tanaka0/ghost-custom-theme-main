@@ -131,7 +131,14 @@
                                 {{!-- 「批評・レビュー」と同じカードデザインを適用 --}}
                                 <a href="{{url}}" class="post-card">
                                     {{#if feature_image}}
-                                        <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" loading="lazy" />
+                                        <div class="post-card-image-wrapper">
+                                            <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" />
+                                            {{#match visibility "!=" "public"}}
+                                                <div class="premium-indicator">
+                                                    <i class="fas fa-lock"></i>
+                                                </div>
+                                            {{/match}}
+                                        </div>
                                     {{/if}}
                                     <div class="post-card-content">
                                         <h2 class="post-card-title">{{title}}</h2>
@@ -174,6 +181,9 @@
 
         </article>
     {{/post}}
+
+                        
+
 </main>
 
 <style>

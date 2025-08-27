@@ -87,7 +87,7 @@
                     {{#get "posts" filter="featured:true" limit="5" include="tags"}}
                         {{#foreach posts}}
                             {{! data-* 属性に表示したい情報を格納する }}
-                            <a href="{{url}}" class="carousel-item" 
+                            <a href="{{url}}" class="carousel-item {{#match visibility "!=" "public"}}premium-carousel{{/match}}" 
                                 data-url="{{url}}"
                                 data-title="{{title}}"
                                 data-tag="{{primary_tag.name}}"
@@ -97,6 +97,11 @@
                                     {{#if feature_image}}
                                         <div class="carousel-item__bg-image" style="background-image: url({{feature_image}});"></div>
                                         <img class="carousel-item__image" src="{{feature_image}}" alt="{{title}}" loading="lazy">
+                                        {{#match visibility "!=" "public"}}
+                                            <div class="carousel-premium-indicator">
+                                                <i class="fas fa-lock"></i>
+                                            </div>
+                                        {{/match}}
                                     {{else}}
                                         <div class="placeholder-image"><span>No Image</span></div>
                                     {{/if}}
@@ -142,9 +147,16 @@
             {{#get "posts" filter="tag:rambles" limit="6"}}
                 {{#foreach posts}}
                     {{!-- ステップ4で作成したカードのデザインを再利用 --}}
-                    <a href="{{url}}" class="post-card">
+                    <a href="{{url}}" class="post-card {{#match visibility "!=" "public"}}premium-post{{/match}}">
                         {{#if feature_image}}
-                            <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" />
+                            <div class="post-card-image-wrapper">
+                                <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" />
+                                {{#match visibility "!=" "public"}}
+                                    <div class="premium-indicator">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                {{/match}}
+                            </div>
                         {{/if}}
                         <div class="post-card-content">
                             <h2 class="post-card-title">{{title}}</h2>
@@ -246,10 +258,17 @@
                 {{! --- limitを増やしてグリッドを満たす ---}}
                 {{#get "posts" filter="tag:short" limit="18"}}
                     {{#foreach posts}}
-                        <li class="shorts-item">
+                        <li class="shorts-item {{#match visibility "!=" "public"}}premium-short{{/match}}">
                             <a href="{{url}}">
                                 <h5 class="shorts-title">{{title}}</h5>
-                                <time class="shorts-date">{{date format="YYYY.MM.DD"}}</time>
+                                <div class="shorts-meta">
+                                    <time class="shorts-date">{{date format="YYYY.MM.DD"}}</time>
+                                    {{#match visibility "!=" "public"}}
+                                        <div class="shorts-premium-indicator">
+                                            <i class="fas fa-lock"></i>
+                                        </div>
+                                    {{/match}}
+                                </div>
                             </a>
                         </li>
                     {{/foreach}}
@@ -269,9 +288,16 @@
             {{#get "posts" filter="tag:review" limit="3"}}
                 {{#foreach posts}}
                     {{!-- 「思考・エッセイ」と同じカードデザインを再利用 --}}
-                    <a href="{{url}}" class="post-card">
+                    <a href="{{url}}" class="post-card {{#match visibility "!=" "public"}}premium-post{{/match}}">
                         {{#if feature_image}}
-                            <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" />
+                            <div class="post-card-image-wrapper">
+                                <img class="post-card-image" src="{{feature_image}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" />
+                                {{#match visibility "!=" "public"}}
+                                    <div class="premium-indicator">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                {{/match}}
+                            </div>
                         {{/if}}
                         <div class="post-card-content">
                             <h2 class="post-card-title">{{title}}</h2>
@@ -347,10 +373,14 @@
             {{#get "posts" filter="tag:dot-art" limit="15" include="tags"}}
                 {{#foreach posts}}
                     {{! --- タグのスラッグをクラスとして追加 ---}}
-                    <a href="{{url}}" class="gallery-item {{#foreach tags visibility="public"}}{{slug}} {{/foreach}}">
+                    <a href="{{url}}" class="gallery-item {{#foreach tags visibility="public"}}{{slug}} {{/foreach}}" data-published="{{date format="YYYY-MM-DDTHH:mm:ss.SSSZ"}}">
                         {{#if feature_image}}
                             <img src="{{feature_image}}" alt="{{title}}">
                         {{/if}}
+                        <div class="gallery-item-info">
+                            <h3 class="gallery-item-title">{{title}}</h3>
+                            <time class="gallery-item-date">{{date format="YYYY.MM.DD"}}</time>
+                        </div>
                     </a>
                 {{/foreach}}
             {{/get}}
