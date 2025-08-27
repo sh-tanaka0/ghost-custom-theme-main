@@ -3747,10 +3747,31 @@ button[data-portal="recommendations"]:hover {
     box-shadow: 0 2px 8px rgba(150, 170, 180, 0.15);
 }
 
-.carousel-premium-indicator:hover {
-    color: rgba(100, 120, 130, 1);
-    border-color: rgba(150, 170, 180, 0.4);
-    background: rgba(255, 255, 255, 1);
+/* ==========================================================================
+   Ghost Announcement Bar - 最低限の修正
+   ========================================================================== */
+
+/* バーの色をダークグレーに変更 */
+.gh-announcement-bar {
+    background: #333333 !important;
+}
+
+/* バツボタンを確実に押せるようにする */
+.gh-announcement-bar button {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* アナウンスバーに中身がある時はヘッダーを下げる */
+body:has(#announcement-bar-root .gh-announcement-bar) .site-header {
+    top: 40px !important;
+    transition: top 0.3s ease !important;
+}
+
+/* アナウンスバーが空になった後はヘッダーを元に戻す */
+body:not(:has(#announcement-bar-root .gh-announcement-bar)) .site-header {
+    top: 0 !important;
+    transition: top 0.3s ease !important;
 }
 
 
