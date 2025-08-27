@@ -2706,8 +2706,8 @@
 .sparkle {
     position: absolute;
     display: block;
-    width: 12px;
-    height: 12px;
+    width: 24px;
+    height: 24px;
     /* star-yellow.svgへのパスを修正 */
     background-image: url('../images/star-yellow.svg');
     background-size: contain;
@@ -2791,6 +2791,11 @@
 
     .filter-button {
         padding: 8px 20px;
+    }
+
+    .sparkle {
+        width: 18px;
+        height: 18px;
     }
 }
 
