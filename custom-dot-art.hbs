@@ -303,98 +303,12 @@
 
 
 /* ==========================================================================
-   New Post Sparkle Effect (JS Version)
+   New Post Sparkle Effect
+   Note: キラキラエフェクトのスタイルはscreen.cssに統一されています
    ========================================================================== */
-
-/* JSで生成されるキラキラ要素のスタイル */
-.sparkle {
-    position: absolute;
-    display: block;
-    width: 12px; /* キラキラのサイズ */
-    height: 12px;
-    background-image: url('{{asset "images/star-yellow.svg"}}'); /* キラキラの画像 */
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    pointer-events: none; /* クリックを邪魔しないように */
-    z-index: 3; /* ホバー時の情報より手前に */
-    /* アニメーションを適用 */
-    animation: sparkle-effect 1s forwards;
-}
-
-/* キラキラのアニメーション定義 */
-@keyframes sparkle-effect {
-    0% {
-        transform: scale(0) rotate(0deg);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.2) rotate(180deg);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(0) rotate(360deg);
-        opacity: 0;
-    }
-}
 
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    
-    /**
-     * 指定された要素内でキラキラを生成する関数
-     * @param {HTMLElement} element - キラキラを発生させる親要素
-     */
-    const createSparkle = (element) => {
-        const sparkle = document.createElement('span');
-        sparkle.className = 'sparkle';
-
-        // 親要素の範囲内にランダムな位置でキラキラを配置
-        const rect = element.getBoundingClientRect();
-        sparkle.style.left = Math.random() * rect.width + 'px';
-        sparkle.style.top = Math.random() * rect.height + 'px';
-
-        element.appendChild(sparkle);
-
-        // アニメーションが終了したら要素を削除（1000ms = 1秒）
-        setTimeout(() => {
-            sparkle.remove();
-        }, 1000);
-    };
-
-    /**
-     * 指定された要素でキラキラを定期的に発生させる関数
-     * @param {HTMLElement} element - キラキラを発生させる親要素
-     */
-    const startSparkling = (element) => {
-        // 300ミリ秒ごとにキラキラを1つ生成
-        setInterval(() => createSparkle(element), 300);
-    };
-
-    // --- メイン処理 ---
-    // 7日前の日付を計算
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-    // すべての関連記事アイテムをチェック
-    document.querySelectorAll('.related-art-item').forEach(item => {
-        const publishedDateStr = item.dataset.published;
-        if (publishedDateStr) {
-            const publishedDate = new Date(publishedDateStr);
-            
-            // 公開日が7日前より後（つまり新しい）場合
-            if (publishedDate > sevenDaysAgo) {
-                // is-newクラスを追加（もし他で使うなら残す）
-                item.classList.add('is-new');
-                // キラキラ生成を開始
-                startSparkling(item);
-            }
-        }
-    });
-});
-</script>
 
 <style>
     // フッターを非表示にする

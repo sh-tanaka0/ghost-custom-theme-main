@@ -2620,6 +2620,7 @@
     overflow: hidden;         /* 画像の角丸を適用するため */
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
 }
 
 .gallery-item:hover {
@@ -2631,7 +2632,105 @@
     width: 100%;
     height: auto;
     display: block;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.4s ease; /* transformを追加 */
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05); /* ホバー時に画像を少し拡大 */
+}
+
+/* ホバー時の半透明オーバーレイ */
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.gallery-item:hover::before {
+    opacity: 1;
+}
+
+/* ダークモード時のオーバーレイ */
+.dark-mode .gallery-item::before {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* ホバー時に表示する情報のコンテナ */
+.gallery-item-info {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    padding: 20px 15px 15px;
+    color: #fff;
+    z-index: 2;
+    text-align: right;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.gallery-item:hover .gallery-item-info {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ホバー時に表示するタイトル */
+.gallery-item-title {
+    font-family: 'DotGothic16', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0 0 5px;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+/* ホバー時に表示する日付 */
+.gallery-item-date {
+    font-family: sans-serif;
+    font-size: 0.75rem;
+    color: #fff;
+    opacity: 0.8;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+/* --- キラキラエフェクトのスタイル --- */
+.sparkle {
+    position: absolute;
+    display: block;
+    width: 12px;
+    height: 12px;
+    /* star-yellow.svgへのパスを修正 */
+    background-image: url('../images/star-yellow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 3;
+    animation: sparkle-effect 1s forwards;
+}
+
+@keyframes sparkle-effect {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 /* --- フィルタリングで非表示にするためのクラス --- */

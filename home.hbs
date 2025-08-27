@@ -373,10 +373,14 @@
             {{#get "posts" filter="tag:dot-art" limit="15" include="tags"}}
                 {{#foreach posts}}
                     {{! --- タグのスラッグをクラスとして追加 ---}}
-                    <a href="{{url}}" class="gallery-item {{#foreach tags visibility="public"}}{{slug}} {{/foreach}}">
+                    <a href="{{url}}" class="gallery-item {{#foreach tags visibility="public"}}{{slug}} {{/foreach}}" data-published="{{date format="YYYY-MM-DDTHH:mm:ss.SSSZ"}}">
                         {{#if feature_image}}
                             <img src="{{feature_image}}" alt="{{title}}">
                         {{/if}}
+                        <div class="gallery-item-info">
+                            <h3 class="gallery-item-title">{{title}}</h3>
+                            <time class="gallery-item-date">{{date format="YYYY.MM.DD"}}</time>
+                        </div>
                     </a>
                 {{/foreach}}
             {{/get}}

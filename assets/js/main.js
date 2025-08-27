@@ -351,6 +351,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    /**
+     * 新規投稿にキラキラエフェクトを追加する機能
+     */
+    const initSparkleEffect = () => {
+        // キラキラ要素を生成するヘルパー関数
+        const createSparkle = (element) => {
+            const sparkle = document.createElement('span');
+            sparkle.className = 'sparkle';
+            const rect = element.getBoundingClientRect();
+            // 親要素の表示領域を基準にランダムな位置を決定
+            // window.scrollX/Yを加味してスクロール位置がずれても対応
+            sparkle.style.left = Math.random() * rect.width + 'px';
+            sparkle.style.top = Math.random() * rect.height + 'px';
+            element.appendChild(sparkle);
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1000); // 1秒後にキラキラを消す
+        };
+
+        // キラキラを定期的に発生させるヘルパー関数
+        const startSparkling = (element) => {
+            // 既にキラキラ処理が開始されている場合は何もしない
+            if (element.dataset.sparkling) return;
+            element.dataset.sparkling = 'true'; // 開始フラグを立てる
+
+            // 300ミリ秒ごとにキラキラを1つ生成
+            setInterval(() => createSparkle(element), 300);
+        };
+
+        // --- メイン処理 ---
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        // data-published属性を持つすべての要素（ホームとカスタムページの両方）を対象にする
+        document.querySelectorAll('[data-published]').forEach(item => {
+            const publishedDateStr = item.dataset.published;
+            if (publishedDateStr) {
+                const publishedDate = new Date(publishedDateStr);
+                // 公開日が7日前より新しい場合
+                if (publishedDate > sevenDaysAgo) {
+                    item.classList.add('is-new'); // スタイル用のクラス（任意）
+                    startSparkling(item); // キラキラエフェクトを開始
+                }
+            }
+        });
+    };
+
 
    /**
      * ランダム記事セクションの機能（ミニマルデザイン版）
@@ -488,5 +535,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initCarouselReimagined();
     fetchNovelData();
     initArtGallery();
+    initSparkleEffect();
     initRandomPosts();
 });
